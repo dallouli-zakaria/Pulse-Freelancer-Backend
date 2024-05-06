@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ClientModelController;
+use App\Http\Controllers\FreelancerModelController;
+use App\Http\Controllers\PostModelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -7,14 +10,9 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('freelancer')->group(function () {
-    Route::get('auth', 'AdminController@dashboard');
-    Route::get('login', 'AdminController@users');
-    Route::get('user', 'AdminController@users');
-});
 
-Route::prefix('client')->group(function () {
-    Route::get('auth', 'AdminController@dashboard');
-    Route::get('login', 'AdminController@users');
-    Route::get('user', 'AdminController@users');
-});
+Route::resources([
+    'clients' => ClientModelController::class,
+    'freelancers' => FreelancerModelController::class,
+    'posts' => PostModelController::class,
+]);
