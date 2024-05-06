@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class FreelancerModel extends Model
 {
     use HasFactory;
-    //test
+    //test5
 }
