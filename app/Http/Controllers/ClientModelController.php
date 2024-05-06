@@ -19,7 +19,7 @@ class ClientModelController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:client_models,email',
             'password' => 'required|string|min:6',
-            'profession' => 'required|string|max:255',
+            'profession' => 'required|string|max:250',
         ]);
 
         $client = ClientModel::create($request->all());
