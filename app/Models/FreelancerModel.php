@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class FreelancerModel extends Model
+
+class FreelancerModel extends User
 {
     use HasFactory;
-    //test
+  protected $fillable=[];
+  
 }
