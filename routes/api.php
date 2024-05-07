@@ -14,9 +14,11 @@ route::prefix('role')->group(function(){
     route::get('index',[RoleController::class,'getAllRole']);
     route::post('add',[RoleController::class,'createRole']);
     route::delete('delete/{id}',[RoleController::class,'deleteRole']);
+    route::get('permissionRole/{id}',[RoleController::class,'permissionOfRole']);
 });
 route::prefix('permission')->group(function(){
     route::get('index',[PermissionController::class,'getAllPermission']);
     route::post('add',[PermissionController::class,'createPermission']);
-    route::delete('delete/{id}',[PermissionController::class,'deletePermission']);
+    route::delete('delete',[PermissionController::class,'deletePermission']);
+    route::post('assign/{id_role}/{id_permission}',[PermissionController::class,'assingPermissionToRole']);
 });
