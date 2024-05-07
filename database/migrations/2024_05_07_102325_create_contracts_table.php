@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('client_models', function (Blueprint $table) {
-            $table->foreignId('id')->constrained('users')->primary();
-            $table->string('profession');
+        Schema::create('contracts', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('period')->nullable();
+            $table->decimal('budget')->nullable();
+            $table->text('project_description');
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_models');
+        Schema::dropIfExists('contracts');
     }
 };

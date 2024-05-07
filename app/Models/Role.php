@@ -22,9 +22,5 @@ class Role extends Model
     {
         return $this->hasMany(Permission::class);
     }
-
-
-
-
     
 }

@@ -8,86 +8,100 @@ use Illuminate\Http\Request;
 class PostModelController extends Controller
 {
 
-    //afficher les post
     public function index()
     {
-        return response()->json(PostModel::orderBy('created_at', 'DESC')->get());
+        try {
+            $posts = PostModel::orderBy('created_at', 'DESC')->get();
+            return response()->json($posts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch posts.'], 500);
+        }
     }       
 
-    //afficher post par id
     public function show($id)
     {
-        $post = PostModel::find($id);
-        if (!$post) {
-            return response()->json(['error' => 'Post not found'], 404);
+        try {
+            $post = PostModel::find($id);
+            if (!$post) {
+                return response()->json(['error' => 'Post not found'], 404);
+            }
+            return response()->json($post);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch post.'], 500);
         }
-        return response()->json($post);
     }
 
-
-    //creer un post
-    public function store()
+    public function store(Request $request)
     {
-        $data = request()->validate([
-            'title' => 'required',
-            'location' => 'required',
-            'type' => 'required',
-            'description' => 'required',
-            'paiement_method' => 'required',
-            'title' => 'required',
-            'period' => 'string',
-            'description' => 'string',
-        ]);
+        try {
+            $data = $request->validate([
+                'title' => 'required|string',
+                'location' => 'required|string',
+                'type' => 'required|string',
+                'description' => 'required|string',
+                'paiement_method' => 'required|string',
+                'period' => 'nullable|string',
+            ]);
 
-        $post = PostModel::create($data);
+            $post = PostModel::create($data);
 
-        return response()->json($post, 201);
+            return response()->json($post, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create post.'], 500);
+        }
     }
 
-
-    //supprimer un post
     public function destroy($id)
     {
-        $post = PostModel::find($id);
+        try {
+            $post = PostModel::find($id);
 
-        if (!$post) {
-            return response()->json(['error' => 'Post not found'], 404);
+            if (!$post) {
+                return response()->json(['error' => 'Post not found'], 404);
+            }
+
+            $post->delete();
+
+            return response()->json(['message' => 'Post deleted successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete post.'], 500);
         }
-
-        $post->delete();
-
-        return response()->json(['message' => 'Post deleted successfully']);
     }
 
-
-    //mettre à jour un post
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        $data = request()->validate([
-            'name' => 'required',
-            'price' => 'string',
-            'description' => 'string'
-        ]);
+        try {
+            $data = $request->validate([
+                'title' => 'required|string',
+                'location' => 'required|string',
+                'type' => 'required|string',
+                'description' => 'required|string',
+                'paiement_method' => 'required|string',
+                'period' => 'nullable|string',
+            ]);
 
-        $post = PostModel::find($id);
+            $post = PostModel::find($id);
 
-        if (!$post) {
-            return response()->json(['error' => 'Post not found'], 404);
+            if (!$post) {
+                return response()->json(['error' => 'Post not found'], 404);
+            }
+
+            $post->update($data);
+
+            return response()->json($post);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update post.'], 500);
         }
-
-        $post->update($data);
-
-        return response()->json($post);
     }
 
-
-
-    //rechercher un post par titre
     public function searchByContent()
     {
-        $posts = PostModel::where('title', 'like', '%' . request()->get('title') . '%')->get();
-        return response()->json($posts);
+        try {
+            $posts = PostModel::where('title', 'like', '%' . request()->get('title') . '%')->get();
+            return response()->json($posts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to search for posts.'], 500);
+        }
     }
-
 
 }
