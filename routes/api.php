@@ -30,6 +30,12 @@ Route::resources([
 ]);
 
 
+
+
+
+
+
+
 //Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [UserContoller::class, 'register']);

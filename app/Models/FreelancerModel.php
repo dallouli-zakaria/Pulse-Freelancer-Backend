@@ -22,4 +22,5 @@ class FreelancerModel extends User
         'CV'
     ];
 
+
 }
