@@ -12,10 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('freelancer_models', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->foreignId('id')->constrained('users')->primary();
             $table->string('freelancer_profession')->nullable();
             $table->text('freelancer_description')->nullable();
             $table->string('freelancer_city')->nullable();

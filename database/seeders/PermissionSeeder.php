@@ -11,7 +11,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 class PermissionSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     *Run the database seeds.
      */
     public function run(): void
     { 
@@ -27,7 +27,6 @@ class PermissionSeeder extends Seeder
         // permission to the admin role
     
         $permissionIds = Permission::pluck('id');
-
         // Assign permissions to the admin role
         foreach ($permissionIds as $permissionId) {
             DB::table('role_permission')->insert([

@@ -19,4 +19,9 @@ class Client_Company extends Model
         'website',
 
     ];
+
+
+    function client(){
+        return $this->belongsToMany(ClientModel::class);
+    }
 }
