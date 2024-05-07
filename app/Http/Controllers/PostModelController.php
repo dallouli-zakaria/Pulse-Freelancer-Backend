@@ -34,9 +34,8 @@ class PostModelController extends Controller
             'type' => 'required',
             'description' => 'required',
             'paiement_method' => 'required',
-            'title' => 'required',
             'period' => 'string',
-            'description' => 'string',
+
         ]);
 
         $post = PostModel::create($data);

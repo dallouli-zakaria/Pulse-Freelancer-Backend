@@ -39,7 +39,7 @@ class ClientModelController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:client_models,email,'.$id,
+            'email' => 'required|email|unique:client_models,email,',
             'password' => 'required|string|min:6',
             'profession' => 'required|string|max:255',
         ]);

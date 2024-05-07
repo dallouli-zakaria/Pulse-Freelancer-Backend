@@ -14,5 +14,6 @@ class PostModel extends Model
         'type',
         'description',
         'paiement_method',
-        'period'];
+        'period'
+    ];
 }
