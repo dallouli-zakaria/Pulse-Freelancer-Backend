@@ -15,4 +15,12 @@ class Contract extends Model
         'project_description',
         
     ];
+
+    
+    function client(){
+        return $this->belongsTo(ClientModel::class);
+    }
+    function freelancer(){
+        return $this->belongsTo(FreelancerModel::class);
+    }
 }

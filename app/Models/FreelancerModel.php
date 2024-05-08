@@ -22,6 +22,18 @@ class FreelancerModel extends User
     ];
 
 
+     function lunguage(){
+        return $this->hasMany(languages::class);
+     }
+     function skill(){
+         return $this->hasMany(skills::class);
+     }
+
+      function contract(){
+        return $this->hasOne(Contract::class);
+      }
+
+
     public function skills()
     {
         return $this->belongsToMany(skills::class, 'freelancer_skill')->withPivot('proficiency');

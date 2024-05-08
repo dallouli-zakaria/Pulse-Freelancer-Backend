@@ -14,6 +14,8 @@ class languages extends Model
         'level',
     ];
 
-
+function freelancer(){
+    return $this->belongsTo(FreelancerModel::class);
+}
 
 }
