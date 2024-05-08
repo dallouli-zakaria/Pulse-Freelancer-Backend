@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class FreelancerModelController extends Controller
+class FreelancerController extends Controller
 {
     public function index()
     {

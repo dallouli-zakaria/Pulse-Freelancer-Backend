@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PostModel;
 use Illuminate\Http\Request;
 
-class PostModelController extends Controller
+class PostController extends Controller
 {
 
     public function index()
