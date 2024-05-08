@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_models', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('location');
-            $table->string('type');
-            $table->text('description');
-            $table->string('paiement_method');
-            $table->string('period')->nullable();
+            $table->string('level');
             $table->timestamps();
         });
+
+
     }
 
     /**
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_models');
+        Schema::dropIfExists('languages');
     }
 };

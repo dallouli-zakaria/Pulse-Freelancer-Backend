@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller
 {
@@ -22,5 +24,12 @@ class PermissionController extends Controller
         $permission=Permission::find($id);
         $permission->delete();
         return response()->json(['message'=>'Permission had been deleted']);
+     }
+     public function assingPermissionToRole($id_role,$id_permission){
+      $role=Role::find($id_role);
+      $permission=Permission::find($id_permission);
+  DB::table('role_permission')->insert(['role_id' => $role->id,'permission_id'=>$permission->id]);
+  
+  return response()->json();
      }
 }

@@ -9,5 +9,12 @@ class ClientModel extends User
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'password', 'profession'];
+    protected $fillable = [
+        'profession'];
+
+
+
+        function company(){
+            return $this->hasOne(Client_Company::class);
+        }
 }

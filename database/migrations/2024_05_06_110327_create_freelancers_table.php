@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('freelancer_models', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+        Schema::create('freelancers', function (Blueprint $table) {
+            $table->foreignId('id')->constrained('users')->primary();
             $table->string('freelancer_profession')->nullable();
             $table->text('freelancer_description')->nullable();
             $table->string('freelancer_city')->nullable();
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('freelancer_models');
+        Schema::dropIfExists('freelancers');
     }
 };
