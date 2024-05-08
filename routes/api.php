@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\ClientModelController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\FreelancerController;
 use App\Http\Controllers\LanguagesController;

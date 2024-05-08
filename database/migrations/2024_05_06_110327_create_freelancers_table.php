@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('id')->constrained('users')->primary();
             $table->string('freelancer_profession')->nullable();
             $table->text('freelancer_description')->nullable();
+            $table->string('freelancer_experience')->nullable();
             $table->string('freelancer_city')->nullable();
             $table->string('freelancer_phone_number')->nullable();
             $table->string('freelancer_adress')->nullable();

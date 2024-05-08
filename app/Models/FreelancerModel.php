@@ -12,6 +12,7 @@ class FreelancerModel extends User
     
         'freelancer_profession',
         'freelancer_description',
+        'freelancer_experience',
         'freelancer_city',
         'freelancer_phone_number',
         'freelancer_adress',
@@ -20,5 +21,10 @@ class FreelancerModel extends User
         'CV'
     ];
 
+
+    public function skills()
+    {
+        return $this->belongsToMany(skills::class, 'freelancer_skill')->withPivot('proficiency');
+    }
 
 }
