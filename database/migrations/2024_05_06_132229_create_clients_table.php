@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_models', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('location');
-            $table->string('type');
-            $table->text('description');
-            $table->string('paiement_method');
-            $table->string('period')->nullable();
+        Schema::create('clients', function (Blueprint $table) {
+            $table->foreignId('id')->constrained('users')->primary();
+            $table->string('profession');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_models');
+        Schema::dropIfExists('clients');
     }
 };

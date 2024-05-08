@@ -13,4 +13,7 @@ class languages extends Model
         'title',
         'level',
     ];
+
+
+
 }

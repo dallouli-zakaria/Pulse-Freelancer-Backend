@@ -6,7 +6,7 @@ use App\Models\ClientModel;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class ClientModelController extends Controller
+class ClientController extends Controller
 {
     public function index()
     {

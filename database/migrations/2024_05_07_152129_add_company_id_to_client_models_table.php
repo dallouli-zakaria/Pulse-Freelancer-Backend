@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('client_models', function (Blueprint $table) {
-            $table->foreignId('company_id')->constrained('client__companies');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->foreignId('company_id')
+                  ->constrained('client__companies')
+                  ->onDelete('cascade'); // Adding cascade delete constraint
         });
     }
 
@@ -21,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('client_models', function (Blueprint $table) {
-            //
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropForeign(['company_id']); // Dropping foreign key constraint
         });
     }
 };

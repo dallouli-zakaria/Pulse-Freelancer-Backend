@@ -1,16 +1,16 @@
 <?php
 
 use App\Http\Controllers\ClientCompanyController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientModelController;
 use App\Http\Controllers\ContractController;
-use App\Http\Controllers\FreelancerModelController;
+use App\Http\Controllers\FreelancerController;
 use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\PostModelController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\UserContoller;
-use App\Models\languages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,14 +20,20 @@ Route::get('/user', function (Request $request) {
 
 //Routes for Posts, Freelancers and Clients
 Route::resources([
-    'clients' => ClientModelController::class,
-    'freelancers' => FreelancerModelController::class,
-    'posts' => PostModelController::class,
+    'clients' => ClientController::class,
+    'freelancers' => FreelancerController::class,
+    'posts' => PostController::class,
     'client-company'=>ClientCompanyController::class,
     'contract'=>ContractController::class,
     'skills'=>SkillsController::class,
     'language'=>LanguagesController::class,
 ]);
+
+
+
+
+
+
 
 
 //Routes for user authentification

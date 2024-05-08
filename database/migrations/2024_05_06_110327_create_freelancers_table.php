@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('freelancer_models', function (Blueprint $table) {
+        Schema::create('freelancers', function (Blueprint $table) {
             $table->foreignId('id')->constrained('users')->primary();
             $table->string('freelancer_profession')->nullable();
             $table->text('freelancer_description')->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('freelancer_models');
+        Schema::dropIfExists('freelancers');
     }
 };
