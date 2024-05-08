@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('period')->nullable();
             $table->decimal('budget')->nullable();
+            $table->foreignId('frelancer_id')->constrained('freelancer_models')->cascadeOnDelete();
+            $table->foreignId('client_id')->constrained('client_models')->cascadeOnDelete();
             $table->text('project_description');
             $table->timestamps();
         });
