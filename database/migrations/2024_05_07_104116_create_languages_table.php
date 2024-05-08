@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('level');
+            $table->foreignId('freelacer_id')->constrained('freelancers')->cascadeOnDelete();
             $table->timestamps();
         });
 
