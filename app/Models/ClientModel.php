@@ -17,4 +17,9 @@ class ClientModel extends User
         function company(){
             return $this->hasOne(Client_Company::class);
         }
+
+
+        function postModel(){
+            return $this->hasMany(postModel::class);
+        }
 }

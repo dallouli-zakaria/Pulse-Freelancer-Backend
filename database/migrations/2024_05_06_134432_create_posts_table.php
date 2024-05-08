@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('paiement_method');
             $table->string('period')->nullable();
+            $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -16,4 +16,11 @@ class PostModel extends Model
         'paiement_method',
         'period'
     ];
+
+
+
+    function clientModel(){
+
+        return $this->belongsTo(ClientModel::class);
+    }
 }
