@@ -18,7 +18,7 @@ class Contract extends Model
 
     
     function client(){
-        return $this->belongsTo(ClientModel::class);
+        return $this->belongsTo(client::class);
     }
     function freelancer(){
         return $this->belongsTo(FreelancerModel::class);
