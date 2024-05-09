@@ -23,3 +23,4 @@ class ClientModel extends User
             return $this->hasMany(postModel::class);
         }
 }
+
