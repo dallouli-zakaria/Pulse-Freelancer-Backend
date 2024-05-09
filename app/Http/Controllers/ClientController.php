@@ -14,7 +14,7 @@ class ClientController extends Controller
             $clients = ClientModel::all();
             return response()->json($clients);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch clients.'], 500);
+            return response()->json(['error' => 'Failed to create client: ' . $e->getMessage()], 500);
         }
     }
 
