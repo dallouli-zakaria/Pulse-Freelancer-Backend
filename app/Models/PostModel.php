@@ -21,6 +21,6 @@ class PostModel extends Model
 
     function clientModel(){
 
-        return $this->belongsTo(ClientModel::class);
+        return $this->belongsTo(Client::class);
     }
 }
