@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,4 +45,15 @@ class RoleController extends Controller
     // Return the permission names as a JSON response
     return response()->json($permissionNames);
   }
+
+
+
+
+//   public function clinetRole($id){
+//     $client =Client::find($id);
+//     $role=Role::all();
+//    if($client->id){
+//     $role->name='client';
+//    }
+//   }
  }

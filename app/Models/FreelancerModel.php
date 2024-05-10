@@ -9,7 +9,6 @@ class FreelancerModel extends User
     use HasFactory;
 
     protected $fillable = [
-    
         'freelancer_profession',
         'freelancer_description',
         'freelancer_city',

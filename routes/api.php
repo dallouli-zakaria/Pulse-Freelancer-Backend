@@ -23,16 +23,10 @@ Route::resources([
     'clients' => ClientController::class,
     'freelancers' => FreelancerController::class,
     'posts' => PostController::class,
-    'client-company'=>ClientCompanyController::class,
     'contract'=>ContractController::class,
     'skills'=>SkillsController::class,
     'language'=>LanguagesController::class,
 ]);
-
-
-
-
-
 
 
 
