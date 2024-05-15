@@ -17,8 +17,7 @@ class ClientController extends Controller
             $clients = Client::all(); // Use the correct model name
             $clients = client::all();
             return response()->json($clients);
-        } // Add a closing brace here
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch clients.'], 500);
         }
     }

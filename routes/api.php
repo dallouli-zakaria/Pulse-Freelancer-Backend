@@ -2,13 +2,16 @@
 
 use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\ClientModelController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\FreelancerController;
+use App\Http\Controllers\grantRolesAndPermissionsContoller;
 use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RolesAndPermissionController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\UserContoller;
 use Illuminate\Http\Request;
@@ -18,11 +21,19 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+
+
+
+
 //Routes for Posts, Freelancers and Clients
 Route::resources([
     'clients' => ClientController::class,
     'freelancers' => FreelancerController::class,
     'posts' => PostController::class,
+<<<<<<< HEAD
+=======
+    'client-company'=>ClientController::class,
+>>>>>>> 8b6a5f1e8779263cfe1e23ffd31e226d01561adb
     'contract'=>ContractController::class,
     'skills'=>SkillsController::class,
     'language'=>LanguagesController::class,
@@ -30,6 +41,10 @@ Route::resources([
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8b6a5f1e8779263cfe1e23ffd31e226d01561adb
 //Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [UserContoller::class, 'register']);
@@ -40,21 +55,60 @@ Route::group(['prefix' => 'auth'], function () {
 
 
 
-//routes for Roles
 
-route::prefix('role')->group(function(){
-    route::get('index',[RoleController::class,'getAllRole']);
-    route::post('add',[RoleController::class,'createRole']);
-    route::delete('delete/{id}',[RoleController::class,'deleteRole']);
-    route::get('permissionRole/{id}',[RoleController::class,'permissionOfRole']);
-});
+//ROLES AND PERMISSIONS 
+//manage roles and permissions
+Route::apiResource('permissions', PermissionController::class);
+Route::apiResource('roles', RolesController::class);
+Route::apiResource('roles', RolesController::class);
 
-//Routes for Persmissions
-route::prefix('permission')->group(function(){
-    route::get('index',[PermissionController::class,'getAllPermission']);
-    route::post('add',[PermissionController::class,'createPermission']);
-    route::delete('delete',[PermissionController::class,'deletePermission']);
-    route::post('assign/{id_role}/{id_permission}',[PermissionController::class,'assingPermissionToRole']);
-});
+//grant roles and permissions to user
+Route::get('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);
+Route::get('grantPermissionsToRole', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToRole']);
+Route::get('grantRoleToUser', [grantRolesAndPermissionsContoller::class, 'grantRoleToUser']);
+
+
+//delete roles and permissions
+Route::delete('/users/{user}/roles/{role}', [revokeRolesAndPermissions::class, 'removeRoleFromUser']);
+Route::delete('roles/{role}/permissions/{permission}', [RevokeRolesAndPermissions::class, 'revokePermission']);
+
+
+
+//Route::get('RevokeRolesAndPermissions', [RevokeRolesAndPermissions::class, 'RevokeRoles']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //routes for Roles
+
+// route::prefix('role')->group(function(){
+//     route::get('index',[RoleController::class,'getAllRole']);
+//     route::post('add',[RoleController::class,'createRole']);
+//     route::delete('delete/{id}',[RoleController::class,'deleteRole']);
+//     route::get('permissionRole/{id}',[RoleController::class,'permissionOfRole']);
+// });
+
+// //Routes for Persmissions
+// route::prefix('permission')->group(function(){
+//     route::get('index',[PermissionController::class,'getAllPermission']);
+//     route::post('add',[PermissionController::class,'createPermission']);
+//     route::delete('delete',[PermissionController::class,'deletePermission']);
+//     route::post('assign/{id_role}/{id_permission}',[PermissionController::class,'assingPermissionToRole']);
+// });
 
 

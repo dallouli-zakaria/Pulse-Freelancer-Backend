@@ -11,6 +11,7 @@ class FreelancerModel extends User
     protected $fillable = [
         'freelancer_profession',
         'freelancer_description',
+        'freelancer_experience',
         'freelancer_city',
         'freelancer_phone_number',
         'freelancer_adress',
@@ -31,5 +32,10 @@ class FreelancerModel extends User
         return $this->hasOne(Contract::class);
       }
 
+
+    public function skills()
+    {
+        return $this->belongsToMany(skills::class, 'freelancer_skill')->withPivot('proficiency');
+    }
 
 }
