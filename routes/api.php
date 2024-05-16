@@ -8,11 +8,8 @@ use App\Http\Controllers\ExpericenceController;
 use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
 use App\Http\Controllers\LanguagesController;
-<<<<<<< HEAD
-use App\Http\Controllers\OfferController;
-=======
 use App\Http\Controllers\MailSend;
->>>>>>> 7e239afe30046289fd4b03512acca876d25f9da8
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\revokeRolesAndPermissions;
@@ -48,11 +45,8 @@ Route::resources([
 
 
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 7e239afe30046289fd4b03512acca876d25f9da8
 //Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [UserContoller::class, 'register']);
