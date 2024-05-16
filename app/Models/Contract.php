@@ -21,6 +21,6 @@ class Contract extends Model
         return $this->belongsTo(client::class);
     }
     function freelancer(){
-        return $this->belongsTo(FreelancerModel::class);
+        return $this->belongsTo(Freelancers::class);
     }
 }

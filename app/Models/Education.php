@@ -20,6 +20,6 @@ class Education extends Model
 
 
     function freelancer(){
-        return $this->belongsTo(FreelancerModel::class);
+        return $this->belongsTo(Freelancers::class);
     }
 }

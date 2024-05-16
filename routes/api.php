@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ExpericenceController;
 use App\Http\Controllers\FreelancerController;
+use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
 use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\PermissionController;
@@ -29,7 +30,7 @@ Route::get('/user', function (Request $request) {
 //Routes for Posts, Freelancers and Clients
 Route::resources([
     'clients' => ClientController::class,
-    'freelancers' => FreelancerController::class,
+    'freelancers' => FreelancersController::class,
     'posts' => PostController::class,
     'client-company'=>ClientController::class,
     'contract'=>ContractController::class,

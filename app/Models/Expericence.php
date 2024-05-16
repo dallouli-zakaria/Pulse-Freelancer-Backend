@@ -20,6 +20,6 @@ class Expericence extends Model
         'description'
     ];
     function freelancer(){
-        return $this->belongsTo(FreelancerModel::class);
+        return $this->belongsTo(Freelancers::class);
     }
 }

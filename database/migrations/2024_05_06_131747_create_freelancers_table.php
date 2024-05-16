@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('freelancers', function (Blueprint $table) {
+
             $table->foreignId('id')->constrained('users')->primary();
             $table->string('title');
             $table->date('dateOfBirth');
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string('TJM');
             $table->text('summary');
             $table->string('availability');
-            $table->string('address');
+            $table->string('adress');
             $table->string('phone');
             $table->string('portfolio_url')->nullable();
             $table->string('cv')->nullable();
