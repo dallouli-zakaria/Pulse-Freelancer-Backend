@@ -15,7 +15,8 @@ class Education extends Model
         'startDate',
         'endDate',
         'institution',
-        'city'
+        'city',
+        'freelancer_id'
     ];
 
 

@@ -17,7 +17,8 @@ class Expericence extends Model
         'city',
         'startDate',
         'endDate',
-        'description'
+        'description',
+        'freelancer_id'
     ];
     function freelancer(){
         return $this->belongsTo(Freelancers::class);

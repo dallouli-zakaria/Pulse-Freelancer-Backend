@@ -50,5 +50,8 @@ class Freelancers extends Model
     function education(){
         return $this->hasMany(Education::class);
     }
+    function posts(){
+        return $this->belongsToMany(Post::class);
+    }
 
 }

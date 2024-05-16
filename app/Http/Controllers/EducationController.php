@@ -27,7 +27,8 @@ class EducationController extends Controller
                 'startDate' => 'required|date',
                 'endDate' => 'required|date',
                 'institution' => 'required|string',
-                'city' => 'required|string'
+                'city' => 'required|string',
+                'freelancer_id'=>'required|numeric'
             ]);
 
             $education = Education::create($validatedData);
@@ -35,7 +36,7 @@ class EducationController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create education.'], 500);
+            return response()->json(['error' => $e], 500);
         }
     }
 

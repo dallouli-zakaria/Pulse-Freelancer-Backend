@@ -30,7 +30,8 @@ class ExpericenceController extends Controller
                 'city' => 'required|string',
                 'startDate' => 'required|date',
                 'endDate' => 'required|date',
-                'description' => 'required|string'
+                'description' => 'required|string',
+                'freelancer_id'=>'required|numeric'
             ]);
 
             $expericence = Expericence::create($validatedData);
@@ -38,7 +39,7 @@ class ExpericenceController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create expericence.'], 500);
+            return response()->json(['error' => $e], 500);
         }
     }
 

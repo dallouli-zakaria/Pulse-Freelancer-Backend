@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('startDate');
             $table->date('endDate');
             $table->text('description');
-            $table->foreignId('freelacer_id')->constrained('freelancers')->cascadeOnDelete()->nullable();
+            $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete()->nullable();
             $table->timestamps();
         });
     }
