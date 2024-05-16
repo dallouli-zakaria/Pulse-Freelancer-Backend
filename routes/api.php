@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserContoller;
 
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ClientController;
