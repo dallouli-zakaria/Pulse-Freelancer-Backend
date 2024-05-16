@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserContoller;
 
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ClientController;
@@ -97,9 +96,9 @@ Route::post('email',[MailSend::class,'send']);
 
 route::prefix('role')->group(function(){
     route::get('index',[RolesController::class,'getAllRole']);
-    route::post('add',[RoleController::class,'createRole']);
-    route::delete('delete/{id}',[RoleController::class,'deleteRole']);
-    route::get('permissionRole/{id}',[RoleController::class,'permissionOfRole']);
+    route::post('add',[RolesController::class,'createRole']);
+    route::delete('delete/{id}',[RolesController::class,'deleteRole']);
+    route::get('permissionRole/{id}',[RolesController::class,'permissionOfRole']);
 });
 
 //Routes for Persmissions
