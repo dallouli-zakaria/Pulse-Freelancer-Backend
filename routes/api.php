@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\ExpericenceController;
 use App\Http\Controllers\FreelancerController;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
 use App\Http\Controllers\LanguagesController;
@@ -34,6 +35,7 @@ Route::resources([
     'contract'=>ContractController::class,
     'skills'=>SkillsController::class,
     'language'=>LanguagesController::class,
+    'experience'=>ExpericenceController::class
 ]);
 
 

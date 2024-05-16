@@ -32,11 +32,16 @@ class FreelancerModel extends User
       function contract(){
         return $this->hasOne(Contract::class);
       }
-
-
     public function skills()
     {
         return $this->belongsToMany(skills::class, 'freelancer_skill')->withPivot('proficiency');
+    }
+    function experience(){
+        return $this->hasMany(Expericence::class);
+    }
+
+    function education(){
+        return $this->hasMany(Education::class);
     }
 
 }
