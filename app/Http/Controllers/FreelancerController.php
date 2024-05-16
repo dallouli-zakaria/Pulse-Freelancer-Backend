@@ -24,16 +24,18 @@ class FreelancerController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:freelancers,email',
+                'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:6',
-                'freelancer_profession' => 'required|string|max:255',
-                'freelancer_description' => 'nullable|string',
-                'freelancer_city' => 'required|string|max:255',
-                'freelancer_phone_number' => 'required|string|max:20',
-                'freelancer_adress' => 'required|string|max:20',
-                'freelancer_birth_date' => 'required|date',
-                'portfolio_URL' => 'required|string|max:20',
-                'CV' => '',
+                'title' => 'required|string|max:255',
+                'dateOfBirth' => 'required|date',
+                'city' => 'required|string|max:255',
+                'TJM' => 'required|numeric',
+                'summary' => 'required|string',
+                'availability' => 'required|string',
+                'adress' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'portfolio_Url' => 'nullable|url|max:255',
+                'CV' => 'nullable|string',
             ]);
 
             $freelancer = FreelancerModel::create($request->all());

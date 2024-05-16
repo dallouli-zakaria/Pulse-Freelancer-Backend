@@ -10,17 +10,23 @@ class FreelancerModel extends User
 
     protected $fillable = [
     
-        'freelancer_profession',
-        'freelancer_description',
-        'freelancer_experience',
-        'freelancer_city',
-        'freelancer_phone_number',
-        'freelancer_adress',
-        'freelancer_birth_date',
-        'portfolio_URL',
+        'title',
+        'dateOfBirth',
+        'city',
+        'TJM',
+        'summary',
+        'availability',
+        'adress',
+        'phone',
+        'portfolio_Url',
         'CV'
     ];
 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
      function lunguage(){
         return $this->hasMany(languages::class);

@@ -9,12 +9,15 @@ class Client extends User
 {
     use HasFactory;
     protected $fillable = [
-        'profession'];
+
+        'profession'
+    
+    ];
 
 
 
         
-        public function user()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
