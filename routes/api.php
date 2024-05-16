@@ -96,7 +96,7 @@ Route::post('email',[MailSend::class,'send']);
 //routes for Roles
 
 route::prefix('role')->group(function(){
-    route::get('index',[RoleController::class,'getAllRole']);
+    route::get('index',[RolesController::class,'getAllRole']);
     route::post('add',[RoleController::class,'createRole']);
     route::delete('delete/{id}',[RoleController::class,'deleteRole']);
     route::get('permissionRole/{id}',[RoleController::class,'permissionOfRole']);
