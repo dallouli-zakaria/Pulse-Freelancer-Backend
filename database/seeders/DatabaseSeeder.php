@@ -26,16 +26,7 @@ class DatabaseSeeder extends Seeder
             //grant all permissions to role super admin
 
         // find super-admin role
-        $superAdminRole = Role::where('name', 'super-admin')->first();
-
-        // Get all permissions
-        $permissions = Permission::all();
-                    
-        // Assign all permissions to super-admin role
-        $superAdminRole->syncPermissions($permissions->all());
-
-
-
+    
         
     }
 }
