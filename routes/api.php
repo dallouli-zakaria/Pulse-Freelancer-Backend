@@ -6,6 +6,7 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\FreelancerController;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
 use App\Http\Controllers\LanguagesController;
+use App\Http\Controllers\MailSend;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\revokeRolesAndPermissions;
@@ -30,10 +31,7 @@ Route::resources([
     'clients' => ClientController::class,
     'freelancers' => FreelancerController::class,
     'posts' => PostController::class,
-<<<<<<< HEAD
-=======
     'client-company'=>ClientController::class,
->>>>>>> 8b6a5f1e8779263cfe1e23ffd31e226d01561adb
     'contract'=>ContractController::class,
     'skills'=>SkillsController::class,
     'language'=>LanguagesController::class,
@@ -41,10 +39,6 @@ Route::resources([
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 8b6a5f1e8779263cfe1e23ffd31e226d01561adb
 //Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [UserContoller::class, 'register']);
@@ -75,8 +69,8 @@ Route::delete('roles/{role}/permissions/{permission}', [RevokeRolesAndPermission
 
 
 //Route::get('RevokeRolesAndPermissions', [RevokeRolesAndPermissions::class, 'RevokeRoles']);
-
-
+//email seder
+Route::post('email',[MailSend::class,'send']);
 
 
 
