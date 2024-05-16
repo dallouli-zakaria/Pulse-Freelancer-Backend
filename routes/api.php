@@ -1,17 +1,22 @@
 <?php
 
-use App\Http\Controllers\ClientCompanyController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContractController;
-use App\Http\Controllers\FreelancerController;
+use App\Http\Controllers\EducationController;
+use App\Http\Controllers\ExpericenceController;
+
+use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
 use App\Http\Controllers\LanguagesController;
+<<<<<<< HEAD
 use App\Http\Controllers\MailSend;
+=======
+use App\Http\Controllers\OfferController;
+>>>>>>> 59143b47bd26c3638d81da7bf5ef9673de5eac2e
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\revokeRolesAndPermissions;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\RolesAndPermissionController;
+
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\UserContoller;
@@ -29,16 +34,25 @@ Route::get('/user', function (Request $request) {
 //Routes for Posts, Freelancers and Clients
 Route::resources([
     'clients' => ClientController::class,
-    'freelancers' => FreelancerController::class,
+    'freelancers' => FreelancersController::class,
     'posts' => PostController::class,
     'client-company'=>ClientController::class,
     'contract'=>ContractController::class,
     'skills'=>SkillsController::class,
     'language'=>LanguagesController::class,
+    'experience'=>ExpericenceController::class,
+    'offers'=>OfferController::class,
+    'education'=>EducationController::class,
+
 ]);
 
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 59143b47bd26c3638d81da7bf5ef9673de5eac2e
 //Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [UserContoller::class, 'register']);

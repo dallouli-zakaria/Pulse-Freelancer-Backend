@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contracts', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('location');
+            $table->string('type');
+            $table->text('description');
+            $table->string('paiement_method');
             $table->string('period')->nullable();
-            $table->decimal('budget')->nullable();
-            $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete();
-            $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
-            $table->text('project_description');
+            $table->foreignId('client_id')->constrained('clients')->nullable();
+            
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contracts');
+        Schema::dropIfExists('posts');
     }
 };

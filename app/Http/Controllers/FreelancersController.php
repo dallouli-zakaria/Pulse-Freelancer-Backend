@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FreelancerModel;
+use App\Models\Freelancers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class FreelancerController extends Controller
+class FreelancersController extends Controller
 {
     public function index()
     {
         try {
-            $freelancers = FreelancerModel::all();
+            $freelancers = Freelancers::all();
             return response()->json($freelancers);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch freelancers.'], 500);
+            return response()->json(['error' => $e], 500);
         }
     }
 
@@ -24,32 +25,50 @@ class FreelancerController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:freelancers,email',
+                'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:6',
-                'freelancer_profession' => 'required|string|max:255',
-                'freelancer_description' => 'nullable|string',
-                'freelancer_city' => 'required|string|max:255',
-                'freelancer_phone_number' => 'required|string|max:20',
-                'freelancer_adress' => 'required|string|max:20',
-                'freelancer_birth_date' => 'required|date',
-                'portfolio_URL' => 'required|string|max:20',
-                'CV' => '',
+                'title' => 'required|string|max:255',
+                'dateOfBirth' => 'required|date',
+                'city' => 'required|string|max:255',
+                'TJM' => 'required|numeric',
+                'summary' => 'required|string',
+                'availability' => 'required|string',
+                'adress' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'portfolio_Url' => 'nullable|url|max:255',
+                'CV' => 'nullable|string',
             ]);
-
-            $freelancer = FreelancerModel::create($request->all());
-
-            return response()->json($freelancer, 201);
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+    
+            $freelancers = new Freelancers;
+            $freelancers->id = $user->id;
+            $freelancers->title = $request->title;
+            $freelancers->dateOfBirth = $request->dateOfBirth;
+            $freelancers->city = $request->city;
+            $freelancers->TJM = $request->TJM;
+            $freelancers->summary = $request->summary;
+            $freelancers->availability = $request->availability;
+            $freelancers->adress = $request->adress;
+            $freelancers->phone = $request->phone;
+            $freelancers->portfolio_Url = $request->portfolio_Url;
+            $freelancers->CV = $request->CV;
+            $freelancers->save();
+            return response()->json('created');
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create freelancer.'], 500);
+            return response()->json(['error' => $e], 500);
         }
     }
 
     public function show($id)
     {
         try {
-            $freelancer = FreelancerModel::findOrFail($id);
+            $freelancer = Freelancers::findOrFail($id);
             return response()->json($freelancer);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Freelancer not found.'], 404);
@@ -59,7 +78,7 @@ class FreelancerController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $freelancer = FreelancerModel::findOrFail($id);
+            $freelancer = Freelancers::findOrFail($id);
             $freelancer->update($request->all());
 
             return response()->json($freelancer, 200);
@@ -73,7 +92,7 @@ class FreelancerController extends Controller
     public function destroy($id)
     {
         try {
-            $freelancer = FreelancerModel::findOrFail($id);
+            $freelancer = Freelancers::findOrFail($id);
             $freelancer->delete();
 
             return response()->json(null, 204);
