@@ -25,6 +25,7 @@ class LanguagesController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|string',
                 'level' => 'required|string',
+                'freelancer_id'=>'required|numeric'
             ]);
 
             $language = languages::create($validatedData);
