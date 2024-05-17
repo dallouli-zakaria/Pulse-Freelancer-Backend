@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class skills extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $fillable=
+    [
         'title',
         'level',
     ];
+
+
 }

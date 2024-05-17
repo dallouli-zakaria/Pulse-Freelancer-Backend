@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('languages', function (Blueprint $table) {
+        Schema::create('education', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('level');
+            $table->string('description');
+            $table->date('startDate');
+            $table->date('endDate');
+            $table->string('institution');
+            $table->string('city');
             $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete();
             $table->timestamps();
         });
-
-
     }
 
     /**
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('languages');
+        Schema::dropIfExists('education');
     }
 };

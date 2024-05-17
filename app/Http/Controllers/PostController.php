@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PostModel;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-
     public function index()
     {
         try {
-            $posts = PostModel::orderBy('created_at', 'DESC')->get();
+            $posts = Post::orderBy('created_at', 'DESC')->get();
             return response()->json($posts);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch posts.'], 500);
+            return response()->json(['error' => $e ], 500);
         }
     }       
 
     public function show($id)
     {
         try {
-            $post = PostModel::find($id);
+            $post = Post::find($id);
             if (!$post) {
                 return response()->json(['error' => 'Post not found'], 404);
             }
@@ -41,20 +40,21 @@ class PostController extends Controller
                 'description' => 'required|string',
                 'paiement_method' => 'required|string',
                 'period' => 'nullable|string',
+                'client_id'=>'required'
             ]);
 
-            $post = PostModel::create($data);
+            $post = Post::create($data);
 
             return response()->json($post, 201);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create post.'], 500);
+            return response()->json(['error' => $e], 500);
         }
     }
 
     public function destroy($id)
     {
         try {
-            $post = PostModel::find($id);
+            $post = Post::find($id);
 
             if (!$post) {
                 return response()->json(['error' => 'Post not found'], 404);
@@ -80,7 +80,7 @@ class PostController extends Controller
                 'period' => 'nullable|string',
             ]);
 
-            $post = PostModel::find($id);
+            $post = Post::find($id);
 
             if (!$post) {
                 return response()->json(['error' => 'Post not found'], 404);
@@ -97,11 +97,10 @@ class PostController extends Controller
     public function searchByContent()
     {
         try {
-            $posts = PostModel::where('title', 'like', '%' . request()->get('title') . '%')->get();
+            $posts = Post::where('title', 'like', '%' . request()->get('title') . '%')->get();
             return response()->json($posts);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to search for posts.'], 500);
         }
     }
-
 }

@@ -12,8 +12,11 @@ class languages extends Model
     protected $fillable=[
         'title',
         'level',
+        'freelancer_id'
     ];
 
-
+function freelancer(){
+    return $this->belongsTo(Freelancers::class);
+}
 
 }

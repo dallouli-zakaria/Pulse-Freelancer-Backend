@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('languages', function (Blueprint $table) {
+        Schema::create('expericences', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('level');
-            $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete();
+            $table->string('companyName');
+            $table->string('country');
+            $table->string('city');
+            $table->date('startDate');
+            $table->date('endDate');
+            $table->text('description');
+            $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete()->nullable();
             $table->timestamps();
         });
-
-
     }
 
     /**
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('languages');
+        Schema::dropIfExists('expericences');
     }
 };
