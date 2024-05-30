@@ -124,4 +124,53 @@ class UserContoller extends Controller
      }
      return response()->json($user);
  }
+
+
+
+
+public function index(){
+    $user=User::all();
+    return response()->json();
+}
+
+public function store(Request $request){
+    $vlaidaton=$request->validate([
+       'name' =>'required|min=6',
+        'email'=>'required|email',
+        'password'=>[
+            'required',
+            'string',
+            'min:8', 
+            'regex:/[A-Z]/', // Must contain at least one uppercase letter
+            'regex:/[a-z]/', // Must contain at least one lowercase letter
+            'regex:/[0-9]/', // Must contain at least one number
+        ],
+    ]);
+    $user=User::create($vlaidaton);
+return response()->json(['message comfermation'=>$user]);
+}
+
+public function update($id,Request $request){
+    $user=User::findOrFail($id);
+    $vlaidaton=$request->validate([
+        'name' =>'required|min=6',
+         'email'=>'required|email',
+         'password'=>[
+             'required',
+             'string',
+             'min:8', 
+             'regex:/[A-Z]/', // Must contain at least one uppercase letter
+             'regex:/[a-z]/', // Must contain at least one lowercase letter
+             'regex:/[0-9]/', // Must contain at least one number
+         ],
+     ]);
+    $user->update($vlaidaton);
+
+return response()->json(['message'=>'user updated']);
+}
+public function destroy($id){
+    $user=User::findOrFail($id);
+    $user->delete();
+     return response()->json(['message'=>'user deleted']);
+}
 }

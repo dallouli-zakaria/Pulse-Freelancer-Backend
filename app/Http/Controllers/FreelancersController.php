@@ -23,21 +23,21 @@ class FreelancersController extends Controller
     public function store(Request $request)
     {
         try {
-            // $request->validate([
-            //     'name' => 'required|string|max:255',
-            //     'email' => 'required|email|unique:users,email',
-            //     'password' => 'required|string|min:6',
-            //     'title' => 'required|string|max:255',
-            //     'dateOfBirth' => 'required|date',
-            //     'city' => 'required|string|max:255',
-            //     'TJM' => 'required|numeric',
-            //     'summary' => 'required|string',
-            //     'availability' => 'required|string',
-            //     'adress' => 'required|string|max:255',
-            //     'phone' => 'required|string|max:20',
-            //     'portfolio_Url' => 'nullable|url|max:255',
-            //     'CV' => 'nullable|string',
-            // ]);
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:6',
+                'title' => 'required|string|max:255',
+                'dateOfBirth' => 'required|date',
+                'city' => 'required|string|max:255',
+                'TJM' => 'required|numeric',
+                'summary' => 'required|string',
+                'availability' => 'required|string',
+                'adress' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'portfolio_Url' => 'nullable|url|max:255',
+                'CV' => 'nullable|string',
+            ]);
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -115,5 +115,10 @@ class FreelancersController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to assign role to user.'], 500);
         }
+    }
+
+    public function count(){
+        $freelancer=Freelancers::count();
+        return response()->json($freelancer);
     }
 }

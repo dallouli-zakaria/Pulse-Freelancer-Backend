@@ -40,6 +40,7 @@ Route::resources([
     'experience'=>ExpericenceController::class,
     'offers'=>OfferController::class,
     'education'=>EducationController::class,
+    'users'=>UserContoller::class
 
 ]);
 
@@ -51,7 +52,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('user/{id}', [UserContoller::class, 'show']);
 });
 
-
+//count
+Route::get('clientCount',[ClientController::class,'count']);
+Route::get('contractCount',[ContractController::class,'count']);
+Route::get('freelancerCount',[FreelancersController::class,'count']);
 
 
 //ROLES AND PERMISSIONS 
