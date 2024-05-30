@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,7 +17,7 @@ class ProfilMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(private readonly User $user)
     {
         //
     }
@@ -30,15 +31,20 @@ class ProfilMail extends Mailable
             subject: 'Profil Mail',
         );
     }
-
+    
     /**
      * Get the message content definition.
      */
     public function content(): Content
-    {$random = rand(1000, 9999);
+    {
+        $random=rand(1000,9999);
         return new Content(
-            view: 'email',
-            
+            view: 'email', 
+         
+            with: [  'name' => $this->user->name,
+                    'email' => $this->user->email,
+                    'random'=>$random
+                  ]
         );
     }
 

@@ -15,7 +15,7 @@ class ClientController extends Controller
      {
         try{
             $clients = Client::all(); // Use the correct model name
-            $clients = client::all();
+          
             return response()->json($clients);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch clients.'], 500);
@@ -90,6 +90,11 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to delete client.'], 500);
         }
+    }
+
+    public function count(){
+        $clientCount = Client::count();
+        return response()->json($clientCount);
     }
 
 }

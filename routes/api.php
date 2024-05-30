@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserContoller;
 
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ClientController;
@@ -41,6 +40,7 @@ Route::resources([
     'experience'=>ExpericenceController::class,
     'offers'=>OfferController::class,
     'education'=>EducationController::class,
+    'users'=>UserContoller::class
 
 ]);
 
@@ -52,7 +52,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('user/{id}', [UserContoller::class, 'show']);
 });
 
-
+//count
+Route::get('clientCount',[ClientController::class,'count']);
+Route::get('contractCount',[ContractController::class,'count']);
+Route::get('freelancerCount',[FreelancersController::class,'count']);
 
 
 //ROLES AND PERMISSIONS 

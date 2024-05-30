@@ -9,7 +9,7 @@ class Client extends User
 {
     use HasFactory;
     protected $fillable = [
-
+          
         'profession'
     
     ];
