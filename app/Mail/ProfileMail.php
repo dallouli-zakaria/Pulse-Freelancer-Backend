@@ -19,7 +19,7 @@ class ProfileMail extends Mailable
      */
     public function __construct(private readonly User $user)
     {
-        //
+        
     }
 
     /**
