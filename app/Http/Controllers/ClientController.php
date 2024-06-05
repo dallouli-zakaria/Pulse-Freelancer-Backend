@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Hash;
 use Dotenv\Exception\ValidationException;
-use App\Models\Client; // Add this import statement
+use App\Models\Client; 
 use App\Models\User; 
 
 class ClientController extends Controller
@@ -14,8 +14,8 @@ class ClientController extends Controller
     public function index()
      {
         try{
-            $clients = Client::all(); // Use the correct model name
-            $clients = client::all();
+            $clients = Client::with('user:id,name,email')->get();
+
             return response()->json($clients);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch clients.'], 500);
@@ -51,7 +51,9 @@ class ClientController extends Controller
     public function show($id)
     {
         try {
-            $client = client::findOrFail($id);
+            
+            $client = Client::with('user:id,name,email')->findOrFail($id);
+
             return response()->json($client);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Client not found.'], 404);
