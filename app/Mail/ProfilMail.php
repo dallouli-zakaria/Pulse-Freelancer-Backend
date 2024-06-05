@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\User;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ProfileMail extends Mailable
+class ProfilMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,7 +19,7 @@ class ProfileMail extends Mailable
      */
     public function __construct(private readonly User $user)
     {
-        
+        //
     }
 
     /**
@@ -28,10 +28,10 @@ class ProfileMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Profile Mail',
+            subject: 'Profil Mail',
         );
     }
-
+    
     /**
      * Get the message content definition.
      */
