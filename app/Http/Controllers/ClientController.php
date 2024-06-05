@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Dotenv\Exception\ValidationException;
 use App\Models\Client; 
 use App\Models\User; 
-
+use Illuminate\Support\Facades\DB;
 class ClientController extends Controller
 {
     public function index()
@@ -94,12 +94,14 @@ class ClientController extends Controller
     public function destroy($id)
     {
         try {
-            $client = Client::findOrFail($id);
-            $client->delete();
+        
 
-            return response()->json(['message' => 'Client deleted successfully']);
+                User::where('id', $id)->delete();
+        
+
+            return response()->json(['message' => 'Client deleted successfully.']);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to delete client.'], 500);
+            return response()->json(['error' => 'Failed to delete client: ' . $e->getMessage()], 500);
         }
     }
 

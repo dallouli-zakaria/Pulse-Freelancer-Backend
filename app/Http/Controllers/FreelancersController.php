@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\DB;
 class FreelancersController extends Controller
 {
     public function index()
@@ -131,12 +131,13 @@ class FreelancersController extends Controller
     public function destroy($id)
     {
         try {
-            $freelancer = Freelancers::findOrFail($id);
-            $freelancer->delete();
+       
+                User::where('id', $id)->delete();
+         
 
-            return response()->json(null, 204);
+            return response()->json(['message' => 'Freelancer and associated user deleted successfully.']);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to delete freelancer.'], 500);
+            return response()->json(['error' => 'Failed to delete freelancer: ' . $e->getMessage()], 500);
         }
     }
 

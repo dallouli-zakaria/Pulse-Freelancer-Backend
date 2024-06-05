@@ -28,7 +28,7 @@ Route::get('/user', function (Request $request) {
 
 
 
-//Routes for Posts, Freelancers and Clients
+//Main routes 
 Route::resources([
     'clients' => ClientController::class,
     'freelancers' => FreelancersController::class,
