@@ -13,7 +13,7 @@ class FreelancersController extends Controller
     public function index()
     {
         try {
-            $freelancers = Freelancers::all();
+            $freelancers = Freelancers::with('user:id,name,email')->get();
             return response()->json($freelancers);
         } catch (\Exception $e) {
             return response()->json(['error' => $e], 500);
@@ -68,8 +68,8 @@ class FreelancersController extends Controller
     public function show($id)
     {
         try {
-            $freelancer = Freelancers::findOrFail($id);
-            return response()->json($freelancer);
+            $freelancers = Freelancers::with('user:id,name,email')->findOrFail($id);
+            return response()->json($freelancers);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Freelancer not found.'], 404);
         }
