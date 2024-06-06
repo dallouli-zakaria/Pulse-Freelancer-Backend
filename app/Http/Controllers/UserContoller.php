@@ -120,7 +120,7 @@ class UserContoller extends Controller
  {
      $user = User::find($id);
      if (!$user) {
-         return response()->json(['error' => 'Idea not found'], 404);
+         return response()->json(['error' => 'user not found'], 404);
      }
      return response()->json($user);
  }
@@ -147,7 +147,7 @@ public function store(Request $request){
         ],
     ]);
     $user=User::create($vlaidaton);
-return response()->json(['message comfermation'=>$user]);
+return response()->json(['message'=>$user]);
 }
 
 public function update($id,Request $request){

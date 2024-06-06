@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\DB;
 class FreelancersController extends Controller
 {
     public function index()
@@ -68,8 +68,8 @@ class FreelancersController extends Controller
     public function show($id)
     {
         try {
-            $freelancer = Freelancers::findOrFail($id);
-            return response()->json($freelancer);
+            $freelancers = Freelancers::with('user:id,name,email')->findOrFail($id);
+            return response()->json($freelancers);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Freelancer not found.'], 404);
         }
@@ -78,26 +78,66 @@ class FreelancersController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $id,
+                'password' => 'nullable|string|min:6',
+                'title' => 'required|string|max:255',
+                'dateOfBirth' => 'required|date',
+                'city' => 'required|string|max:255',
+                'TJM' => 'required|numeric',
+                'summary' => 'required|string',
+                'availability' => 'required|string',
+                'adress' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'portfolio_Url' => 'nullable|url|max:255',
+                'CV' => 'nullable|string',
+            ]);
+    
+            // Find the user and freelancer by id
+            $user = User::findOrFail($id);
             $freelancer = Freelancers::findOrFail($id);
-            $freelancer->update($request->all());
-
-            return response()->json($freelancer, 200);
+    
+            // Update user attributes
+            $user->name = $request->name;
+            $user->email = $request->email;
+            if ($request->password) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->save();
+    
+            // Update freelancer attributes
+            $freelancer->title = $request->title;
+            $freelancer->dateOfBirth = $request->dateOfBirth;
+            $freelancer->city = $request->city;
+            $freelancer->TJM = $request->TJM;
+            $freelancer->summary = $request->summary;
+            $freelancer->availability = $request->availability;
+            $freelancer->adress = $request->adress;
+            $freelancer->phone = $request->phone;
+            $freelancer->portfolio_Url = $request->portfolio_Url;
+            $freelancer->CV = $request->CV;
+            $freelancer->save();
+    
+            return response()->json('updated');
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update freelancer.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    
 
     public function destroy($id)
     {
         try {
-            $freelancer = Freelancers::findOrFail($id);
-            $freelancer->delete();
+       
+                User::where('id', $id)->delete();
+         
 
-            return response()->json(null, 204);
+            return response()->json(['message' => 'Freelancer and associated user deleted successfully.']);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to delete freelancer.'], 500);
+            return response()->json(['error' => 'Failed to delete freelancer: ' . $e->getMessage()], 500);
         }
     }
 

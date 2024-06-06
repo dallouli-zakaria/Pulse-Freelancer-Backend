@@ -11,7 +11,7 @@ class Client extends User
     protected $fillable = [
           
         'profession'
-    
+        
     ];
 
 
@@ -25,5 +25,8 @@ class Client extends User
     public function posts(){
         return $this->hasMany(Post::class);
     }
+
+
+    
 
 }

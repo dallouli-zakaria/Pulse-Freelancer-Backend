@@ -28,7 +28,7 @@ Route::get('/user', function (Request $request) {
 
 
 
-//Routes for Posts, Freelancers and Clients
+//Main routes 
 Route::resources([
     'clients' => ClientController::class,
     'freelancers' => FreelancersController::class,
@@ -59,6 +59,7 @@ Route::get('freelancerCount',[FreelancersController::class,'count']);
 
 
 //ROLES AND PERMISSIONS 
+    
 //manage roles and permissions
 Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('roles', RolesController::class);
@@ -75,7 +76,7 @@ Route::delete('/users/{user}/roles/{role}', [revokeRolesAndPermissions::class, '
 Route::delete('roles/{role}/permissions/{permission}', [RevokeRolesAndPermissions::class, 'revokePermission']);
 
 
-
+ 
 //Route::get('RevokeRolesAndPermissions', [RevokeRolesAndPermissions::class, 'RevokeRoles']);
 //email seder
 Route::post('email',[MailSend::class,'send']);

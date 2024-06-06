@@ -24,6 +24,7 @@ class SkillsController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|string',
                 'level' => 'required|string',
+                
             ]);
 
             $skill = skills::create($validatedData);

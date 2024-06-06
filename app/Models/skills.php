@@ -12,6 +12,7 @@ class skills extends Model
     [
         'title',
         'level',
+        
     ];
 
 
