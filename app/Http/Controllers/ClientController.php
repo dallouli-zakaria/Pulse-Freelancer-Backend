@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Dotenv\Exception\ValidationException;
 use App\Models\Client; 
 use App\Models\User; 
-
+use Illuminate\Support\Facades\DB;
 class ClientController extends Controller
 {
     public function index()
@@ -63,34 +63,45 @@ class ClientController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $client = client::findOrFail($id);
-
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:client_models,email,' . $id,
-                'password' => 'required|string|min:6',
+                'email' => 'required|email|unique:users,email,' . $id,
+                'password' => 'nullable|string|min:6',
                 'profession' => 'required|string|max:255',
             ]);
-
-            $client->update($request->all());
-
-            return response()->json($client, 200);
-        } catch (ValidationException $e) {
-            return response()->json(['errors' => $e->getMessage()], 422);
+    
+            $user = User::findOrFail($id);
+            $client = Client::findOrFail($id);
+    
+       
+            $user->name = $request->name;
+            $user->email = $request->email;
+            if ($request->password) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->save();
+    
+          
+            $client->profession = $request->profession;
+            $client->save();
+    
+            return response()->json('updated');
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update client.'], 500);
+            return response()->json(['error' => 'Failed to update client: ' . $e->getMessage()], 500);
         }
     }
 
     public function destroy($id)
     {
         try {
-            $client = Client::findOrFail($id);
-            $client->delete();
+        
 
-            return response()->json(['message' => 'Client deleted successfully']);
+                User::where('id', $id)->delete();
+        
+
+            return response()->json(['message' => 'Client deleted successfully.']);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to delete client.'], 500);
+            return response()->json(['error' => 'Failed to delete client: ' . $e->getMessage()], 500);
         }
     }
 
