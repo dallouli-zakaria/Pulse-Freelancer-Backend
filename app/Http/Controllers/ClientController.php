@@ -78,10 +78,9 @@ class ClientController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->getMessage()], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update client.'], 500);
+            return response()->json(['error' => 'Failed to update client.'.$e], 500);
         }
     }
-
     public function destroy($id)
     {
         try {
@@ -93,10 +92,8 @@ class ClientController extends Controller
             return response()->json(['error' => 'Failed to delete client.'], 500);
         }
     }
-
     public function count(){
         $clientCount = Client::count();
         return response()->json($clientCount);
     }
-
 }
