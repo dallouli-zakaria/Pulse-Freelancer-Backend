@@ -26,6 +26,8 @@ class ContractController extends Controller
                 'period' => 'nullable|string',
                 'budget' => 'nullable|numeric',
                 'project_description' => 'required|string',
+                'client_id'=>'',
+                'freelancer_id'=>''
             ]);
 
             $contract = Contract::create($validatedData);
@@ -33,7 +35,7 @@ class ContractController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create contract.'], 500);
+            return response()->json(['error' => 'Failed to create contract.'."erreur".$e], 500);
         }
     }
 

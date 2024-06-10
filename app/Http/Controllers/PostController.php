@@ -103,4 +103,7 @@ class PostController extends Controller
             return response()->json(['error' => 'Failed to search for posts.'], 500);
         }
     }
+
+
+    
 }
