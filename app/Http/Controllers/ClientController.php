@@ -65,9 +65,9 @@ class ClientController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . $id,
+                'email' => 'required|email|unique:users,email,',
                 'password' => 'nullable|string|min:6',
-                'profession' => 'required|string|max:255',
+                'profession' => 'nullable|string|max:255',
             ]);
     
             $user = User::findOrFail($id);
@@ -87,7 +87,7 @@ class ClientController extends Controller
     
             return response()->json('updated');
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update client.'], 500);
+            return response()->json($e, 500);
         }
     }
     public function destroy($id)
