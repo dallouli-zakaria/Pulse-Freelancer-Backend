@@ -78,4 +78,13 @@ class ContractController extends Controller
             return response()->json(['error' => 'Failed to delete contract.'], 500);
         }
     }
+
+
+
+
+    //counte contract
+    public function count(){
+        $contract=Contract::count();
+        return response()->json($contract);
+    }
 }

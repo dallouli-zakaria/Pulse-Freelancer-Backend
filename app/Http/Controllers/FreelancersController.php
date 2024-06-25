@@ -116,4 +116,9 @@ class FreelancersController extends Controller
             return response()->json(['error' => 'Failed to assign role to user.'], 500);
         }
     }
+
+    public function count(){
+        $freelancer=Freelancers::count();
+        return response()->json($freelancer);
+    }
 }
