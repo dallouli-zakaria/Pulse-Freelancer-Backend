@@ -14,9 +14,12 @@ class Post extends Model
         'location',
         'type',
         'description',
-        'paiement_method',
         'period',
-        'client_id'
+        'periodvalue',
+        'budget',
+        'budgetvalue',
+        'client_id',
+        'created_at',
     ];
 
     function clientModel(){

@@ -38,8 +38,10 @@ class PostController extends Controller
                 'location' => 'required|string',
                 'type' => 'required|string',
                 'description' => 'required|string',
-                'paiement_method' => 'required|string',
-                'period' => 'nullable|string',
+                'period' => 'required|string',
+                'periodvalue' => 'nullable|numeric',
+                'budget' => 'required|string',
+                'budgetvalue' => 'nullable|numeric',
                 'client_id'=>'required'
             ]);
 
@@ -76,8 +78,10 @@ class PostController extends Controller
                 'location' => 'required|string',
                 'type' => 'required|string',
                 'description' => 'required|string',
-                'paiement_method' => 'required|string',
-                'period' => 'nullable|string',
+                'period' => 'required|string',
+                'Periodvalue' => 'nullable|numeric',
+                'budget' => 'required|string',
+                'Budgetvalue' => 'nullable|numeric',
             ]);
 
             $post = Post::find($id);
