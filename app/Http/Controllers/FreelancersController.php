@@ -25,7 +25,7 @@ class FreelancersController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email',
+                'email' => 'required|email',
                 'password' => 'required|string|min:6',
                 'title' => 'required|string|max:255',
                 'dateOfBirth' => 'required|date',
@@ -33,9 +33,9 @@ class FreelancersController extends Controller
                 'TJM' => 'required|numeric',
                 'summary' => 'required|string',
                 'availability' => 'required|string',
-                'adress' => 'required|string|max:255',
+                'adress' => '',
                 'phone' => 'required|string|max:20',
-                'portfolio_Url' => 'nullable|url|max:255',
+                'portfolio_Url' => '',
                 'CV' => 'nullable|string',
             ]);
             $user = new User;
@@ -79,17 +79,17 @@ class FreelancersController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . $id,
-                'password' => 'nullable|string|min:6',
-                'title' => 'required|string|max:255',
-                'dateOfBirth' => 'required|date',
-                'city' => 'required|string|max:255',
-                'TJM' => 'required|numeric',
-                'summary' => 'required|string',
-                'availability' => 'required|string',
-                'adress' => 'required|string|max:255',
-                'phone' => 'required|string|max:20',
+                'name' => '',
+                'email' => '' ,
+                'password' => 'nullable|string|max:100',
+                'title' => '',
+                'dateOfBirth' => 'nullable|date',
+                'city' => 'nullable|string|max:255',
+                'TJM' => 'nullable|numeric',
+                'summary' => 'nullable|string',
+                'availability' => 'nullable|string',
+                'adress' => 'nullable|string|max:255',
+                'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
                 'CV' => 'nullable|string',
             ]);
@@ -121,7 +121,7 @@ class FreelancersController extends Controller
     
             return response()->json('updated');
         } catch (ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
+            return response()->json(['errors' => $e], 422);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

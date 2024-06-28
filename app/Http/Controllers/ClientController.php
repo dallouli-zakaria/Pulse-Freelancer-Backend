@@ -27,7 +27,7 @@ class ClientController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email',
+                'email' => 'required|email',
                 'password' => 'required|string|min:6',
                 'profession' => 'required|string|max:255',
             ]);
@@ -65,7 +65,7 @@ class ClientController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,',
+                'email' => 'required|email',
                 'password' => 'nullable|string|min:6',
                 'profession' => 'nullable|string|max:255',
             ]);
