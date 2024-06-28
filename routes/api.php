@@ -19,6 +19,21 @@ use App\Http\Controllers\ExpericenceController;
 use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
+// use App\Http\Controllers\LanguagesController;
+
+// use App\Http\Controllers\OfferController;
+
+// use App\Http\Controllers\MailSend;
+
+// use App\Http\Controllers\PermissionController;
+// use App\Http\Controllers\PostController;
+// use App\Http\Controllers\revokeRolesAndPermissions;
+
+// use App\Http\Controllers\RolesController;
+// use App\Http\Controllers\SkillsController;
+// use App\Http\Controllers\UserContoller;
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -43,6 +58,9 @@ Route::resources([
     'users'=>UserContoller::class
 
 ]);
+
+
+
 
 //Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
