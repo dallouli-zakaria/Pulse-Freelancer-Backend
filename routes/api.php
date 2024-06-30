@@ -81,7 +81,7 @@ Route::get('freelancerCount',[FreelancersController::class,'count']);
 //manage roles and permissions
 Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('roles', RolesController::class);
-Route::apiResource('roles', RolesController::class);
+
 
 //grant roles and permissions to user
 Route::get('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);
