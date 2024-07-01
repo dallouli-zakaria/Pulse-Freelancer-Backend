@@ -20,6 +20,21 @@ use App\Http\Controllers\ExpericenceController;
 use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
+// use App\Http\Controllers\LanguagesController;
+
+// use App\Http\Controllers\OfferController;
+
+// use App\Http\Controllers\MailSend;
+
+// use App\Http\Controllers\PermissionController;
+// use App\Http\Controllers\PostController;
+// use App\Http\Controllers\revokeRolesAndPermissions;
+
+// use App\Http\Controllers\RolesController;
+// use App\Http\Controllers\SkillsController;
+// use App\Http\Controllers\UserContoller;
+// use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -46,6 +61,9 @@ Route::resources([
 
 ]);
 
+
+
+
 //Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
@@ -69,7 +87,7 @@ Route::get('offerCount', [OfferController::class,'count']);
 //manage roles and permissions
 Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('roles', RolesController::class);
-Route::apiResource('roles', RolesController::class);
+
 
 //grant roles and permissions to user
 Route::get('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);

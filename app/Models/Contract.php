@@ -13,7 +13,8 @@ class Contract extends Model
         'period',
         'budget',
         'project_description',
-        'freelancer_id','client_id'
+        'freelancer_id',
+        'client_id'
         
     ];
 
