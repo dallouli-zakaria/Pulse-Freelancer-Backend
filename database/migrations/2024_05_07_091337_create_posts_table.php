@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('location');
             $table->string('type');
             $table->text('description');
-            $table->string('paiement_method');
-            $table->string('period')->nullable();
+            $table->string('period');
+            $table->integer('periodvalue')->nullable();
+            $table->string('budget');
+            $table->integer('budgetvalue')->nullable();
             $table->foreignId('client_id')->constrained('clients')->nullable();
-            
             $table->timestamps();
         });
     }

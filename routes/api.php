@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MailSend;
 use Illuminate\Support\Facades\Route;
@@ -47,11 +48,15 @@ Route::resources([
 
 //Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('register', [UserContoller::class, 'register']);
-    Route::post('login', [UserContoller::class, 'login'])->name('login');
-    Route::get('user', [UserContoller::class, 'user']);
-    Route::get('user/{id}', [UserContoller::class, 'show']);
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::get('user', [AuthController::class, 'user']);
+    Route::get('user/{id}', [AuthController::class, 'show']);
 });
+
+
+
+
 
 //count
 Route::get('clientCount',[ClientController::class,'count']);

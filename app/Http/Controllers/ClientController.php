@@ -29,7 +29,10 @@ class ClientController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:6',
-                'profession' => 'required|string|max:255',
+                'profession' => 'nullable|string|max:255',
+                'company_name' => 'nullable|string|max:255',
+                'company_activity' => 'nullable|string|max:255',
+                'company_email' => 'nullable|email',
             ]);
     
             $user = new User;
@@ -41,6 +44,9 @@ class ClientController extends Controller
             $client = new Client;
             $client->id = $user->id;
             $client->profession = $request->profession;
+            $client->company_name = $request->company_name;
+            $client->company_activity = $request->company_activity;
+            $client->company_email = $request->company_email;
             $client->save();
             return response()->json('created');
         } catch (\Exception $e) {
@@ -64,27 +70,64 @@ class ClientController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,',
+                'name' => 'nullable|string|max:255',
+                'email' => 'nullable|email|unique:users,email,' . $id,
                 'password' => 'nullable|string|min:6',
                 'profession' => 'nullable|string|max:255',
+                'company_name' => 'nullable|string|max:255',
+                'company_activity' => 'nullable|string|max:255',
+                'company_email' => 'nullable|email',
             ]);
     
             $user = User::findOrFail($id);
             $client = Client::findOrFail($id);
     
        
-            $user->name = $request->name;
-            $user->email = $request->email;
-            if ($request->password) {
+            // $user->name = $request->name;
+            // $user->email = $request->email;
+            // if ($request->password) {
+            //     $user->password = Hash::make($request->password);
+            // }
+            // $user->save();
+    
+          
+            // $client->profession = $request->profession;
+            // $client->company_name = $request->company_name;
+            // $client->company_activity = $request->company_activity;
+            // $client->company_email = $request->company_email;
+            // $client->save();
+    
+
+            // Update user fields only if they are provided in the request
+            if ($request->has('name')) {
+                $user->name = $request->name;
+            }
+            if ($request->has('email')) {
+                $user->email = $request->email;
+            }
+            if ($request->has('password')) {
                 $user->password = Hash::make($request->password);
             }
             $user->save();
-    
-          
-            $client->profession = $request->profession;
+
+            // Update client fields only if they are provided in the request
+            if ($request->has('profession')) {
+                $client->profession = $request->profession;
+            }
+            if ($request->has('company_name')) {
+                $client->company_name = $request->company_name;
+            }
+            if ($request->has('company_activity')) {
+                $client->company_activity = $request->company_activity;
+            }
+            if ($request->has('company_email')) {
+                $client->company_email = $request->company_email;
+            }
             $client->save();
-    
+
+            
+
+
             return response()->json('updated');
         } catch (\Exception $e) {
             return response()->json($e, 500);
