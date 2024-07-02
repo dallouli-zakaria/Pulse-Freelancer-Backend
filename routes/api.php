@@ -62,19 +62,21 @@ Route::resources([
 
 
 
+//Routes for authentification
 
-//Routes for user authentification
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::get('user', [AuthController::class, 'user']);
+    Route::get('user', [AuthController::class, 'user'])->middleware('auth');
     Route::get('user/{id}', [AuthController::class, 'show']);
 });
+
 
 //count
 Route::get('clientCount',[ClientController::class,'count']);
 Route::get('contractCount',[ContractController::class,'count']);
 Route::get('freelancerCount',[FreelancersController::class,'count']);
+Route::get('offerCount',[OfferController::class,'count']);
 
 
 //ROLES AND PERMISSIONS 

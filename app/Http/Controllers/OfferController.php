@@ -82,4 +82,9 @@ class OfferController extends Controller
             return response()->json(['error' => 'Failed to delete offer.'], 500);
         }
     }
+
+        public function count(){
+        $OfferCount = Offer::count();
+        return response()->json($OfferCount);
+    }
 }
