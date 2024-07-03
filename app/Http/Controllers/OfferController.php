@@ -83,7 +83,7 @@ class OfferController extends Controller
         }
     }
 
-    public function count(){
+        public function count(){
         $OfferCount = Offer::count();
         return response()->json($OfferCount);
     }
