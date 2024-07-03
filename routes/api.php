@@ -67,7 +67,7 @@ Route::resources([
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::get('user', [AuthController::class, 'user'])->middleware('auth');
+    Route::get('user', [AuthController::class, 'user']);
     Route::get('user/{id}', [AuthController::class, 'show']);
 });
 

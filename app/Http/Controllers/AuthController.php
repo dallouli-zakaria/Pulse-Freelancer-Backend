@@ -16,7 +16,7 @@ class AuthController extends Controller
            try {
                $token = auth()->attempt($request->validated());
                if ($token) {
-                   return $this->responseWithToken($token, auth()->user());
+                   return $this->responseWithToken($token);
                } else {
                    return response()->json([
                        'status' => 'failed',
@@ -38,7 +38,7 @@ class AuthController extends Controller
                $user = User::create($request->validated());
                if ($user) {
                    $token = auth()->login($user);
-                   return $this->responseWithToken($token, $user);
+                   return $this->responseWithToken($token);
                } else {
                    return response()->json([
                        'status' => 'failed',
@@ -54,11 +54,21 @@ class AuthController extends Controller
        }
    
        // Return JWT access token
-       public function responseWithToken($token, $user)
+    //    public function responseWithToken($token, $user)
+    //    {
+    //        return response()->json([
+    //            'status' => 'success',
+    //            'user' => $user,
+    //            'access_token' => $token,
+    //            'type' => 'bearer'
+    //        ]);
+    //    }
+
+
+       public function responseWithToken($token)
        {
            return response()->json([
                'status' => 'success',
-               'user' => $user,
                'access_token' => $token,
                'type' => 'bearer'
            ]);
@@ -117,4 +127,7 @@ class AuthController extends Controller
                ], 500);
            }
        }
+
+
+       
 }
