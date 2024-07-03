@@ -72,14 +72,14 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
+//add Poser
+Route::post('/posts/{id}/posts', [PostController::class, 'addPost']);
 
-
-
-//count
+//count 
 Route::get('clientCount',[ClientController::class,'count']);
 Route::get('contractCount',[ContractController::class,'count']);
 Route::get('freelancerCount',[FreelancersController::class,'count']);
-
+Route::get('postCount',[PostController::class,'count']);
 
 //ROLES AND PERMISSIONS 
     

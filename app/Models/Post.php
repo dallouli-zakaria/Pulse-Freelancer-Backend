@@ -19,7 +19,7 @@ class Post extends Model
         'budget',
         'budgetvalue',
         'client_id',
-        'created_at',
+        
     ];
 
     function clientModel(){
