@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -79,9 +81,9 @@ class PostController extends Controller
                 'type' => 'required|string',
                 'description' => 'required|string',
                 'period' => 'required|string',
-                'Periodvalue' => 'nullable|numeric',
-                'budget' => 'required|string',
-                'Budgetvalue' => 'nullable|numeric',
+                'Periodvalue' => '',
+                'budget' => '',
+                'Budgetvalue' => '',
             ]);
 
             $post = Post::find($id);
@@ -105,6 +107,48 @@ class PostController extends Controller
             return response()->json($posts);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to search for posts.'], 500);
+        }
+    }
+
+    public function addPost(Request $request,$id){
+       $client_id=User::findOrFail($id);
+       $post=new Post;
+       if($client_id !==null){
+        //  $data=$request.validator([
+        //     'title' => 'required',
+        //     'location' => 'required',
+        //     'type' => 'required',
+        //     'description' => '',
+        //     'period' => '',
+        //     'Periodvalue' => '',
+        //     'budget' => '',
+        //     'Budgetvalue' => '',
+         
+            
+        //  ]);
+        
+
+
+        $post->title=$request->title;
+       $post->location= $request->location;
+       $post->type=$request->type;
+       $post->description=$request->description;
+       $post->period=$request->perid;
+       $post->periodvalue=$request->peridvalue;
+       $post->budget=$request->budget;
+       $post->budgetvalue=$request->budgetvalue;
+       $post->client_id=$id;
+        $post=Post::create([$post]);
+        return response()->json('created post');
+        }
+       
+
+
+    }
+    public function count(){
+      try   {$freelancer=Post::count();
+        return response()->json($freelancer);} catch (\Exception $e){
+            return response()->json($e);
         }
     }
 

@@ -130,7 +130,7 @@ class UserContoller extends Controller
 
 public function index(){
     $user=User::all();
-    return response()->json($user, 200);
+    return response()->json($user);
 }
 
 public function store(Request $request){
@@ -172,5 +172,9 @@ public function destroy($id){
     $user=User::findOrFail($id);
     $user->delete();
      return response()->json(['message'=>'user deleted']);
+}
+public function verifyId($id){
+    
+
 }
 }
