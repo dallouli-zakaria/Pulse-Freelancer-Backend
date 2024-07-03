@@ -173,8 +173,5 @@ public function destroy($id){
     $user->delete();
      return response()->json(['message'=>'user deleted']);
 }
-public function verifyId($id){
-    
 
-}
 }
