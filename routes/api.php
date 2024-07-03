@@ -77,7 +77,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::get('clientCount',[ClientController::class,'count']);
 Route::get('contractCount',[ContractController::class,'count']);
 Route::get('freelancerCount',[FreelancersController::class,'count']);
-
+Route::get('postCount',[PostController::class,'count']);
 
 //ROLES AND PERMISSIONS 
     
