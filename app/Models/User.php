@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasPermissions;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,9 +13,14 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable , HasRoles;
+    use HasFactory, Notifiable , HasRoles,HasPermissions;
     
 
+    //TO REVISITE !
+    public function permissions()
+    {
+        return $this->getAllPermissions();
+    }
 
      // Rest omitted for brevity
 

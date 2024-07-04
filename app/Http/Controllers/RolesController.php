@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Database\QueryException;
@@ -69,4 +70,35 @@ class RolesController extends Controller
             return response()->json(['error' => 'Failed to delete role.'], 500);
         }
     }
+
+
+    public function getUserRoles($userId)
+    {
+        $user = User::findOrFail($userId);
+        $roles = $user->getRoleNames();
+        
+        return response()->json($roles);
+    }
+
+
+    public function getAllUserRoles()
+    {
+        $users = User::with('roles')->get();
+        $usersRoles = [];
+
+        foreach ($users as $user) {
+            $usersRoles[$user->name] = $user->getRoleNames();
+        }
+
+        return response()->json(['users_roles' => $usersRoles]);
+    }
+
+
+    public function getUsersWithRole($roleName)
+    {
+        $usersWithRole = User::role($roleName)->get();
+
+        return response()->json(['users_with_role' => $usersWithRole]);
+    }
+
 }
