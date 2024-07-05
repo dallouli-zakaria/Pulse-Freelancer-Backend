@@ -32,7 +32,6 @@ use App\Http\Controllers\grantRolesAndPermissionsContoller;
 
 // use App\Http\Controllers\RolesController;
 // use App\Http\Controllers\SkillsController;
-// use App\Http\Controllers\UserContoller;
 // use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Route;
 
@@ -90,6 +89,7 @@ Route::apiResource('roles', RolesController::class);
 Route::get('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);
 Route::get('grantPermissionsToRole', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToRole']);
 Route::get('grantRoleToUser', [grantRolesAndPermissionsContoller::class, 'grantRoleToUser']);
+Route::post('/user/{userId}/grant-permission', [PermissionController::class, 'grantPermissionToUser']);
 
 
 //delete roles and permissions
@@ -97,7 +97,33 @@ Route::delete('/users/{user}/roles/{role}', [revokeRolesAndPermissions::class, '
 Route::delete('roles/{role}/permissions/{permission}', [RevokeRolesAndPermissions::class, 'revokePermission']);
 
 
+//ROLES
+//get all roles for one user
+Route::get('/user/{userId}/roles', [RolesController::class, 'getUserRoles']);
+//get users with a given role 
+Route::get('/users/role/{roleName}', [RolesController::class, 'getUsersWithRole']);
+//get all users with their role
+Route::get('/user/roles', [RolesController::class, 'getAllUserRoles']);
+
+//PERMISSIONS
+//get all users with given permission
+Route::get('/users/with-permission/{permission}', [PermissionController::class, 'getUsersWithPermission']);
+//get all permissions with a given user
+Route::get('/user/{userId}/permissions', [PermissionController::class, 'getUserPermissions']);
+//get all users with their permissions
+Route::get('/users/with-permissions', [PermissionController::class, 'getUsersWithPermissions']);
+//get all permissions with a given role
+Route::get('/role/{roleName}/permissions', [PermissionController::class, 'getRolePermissions'] );
+//get all roles with their permissions
+Route::get('/get-roles/with-permissions', [PermissionController::class, 'getRolesWithPermissions']);
+
+
+
+
  
+
+
+
 //Route::get('RevokeRolesAndPermissions', [RevokeRolesAndPermissions::class, 'RevokeRoles']);
 //email seder
 Route::post('email',[MailSend::class,'send']);

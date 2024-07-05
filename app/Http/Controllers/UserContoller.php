@@ -175,25 +175,12 @@ public function destroy($id){
     $user->delete();
      return response()->json(['message'=>'user deleted']);
 }
-// public function verifyId($id){
-   
 
-//     if(User::find($id) & Client::find($id)){
 
-//         $client=Client::get();
-//         $client->role='client';
-        
-//         return response()->json($client);
-//     }elseif(User::find($id) & FreelancerModel::find($id)){
-//       $freelancer=FreelancerModel::get();
-//       $freelancer->role='freelancer';
-//         return response()->json($freelancer);
-//     }else{
-//         $admin=User::get();
-//         $admin->id='admin';
 
-//         return response()->json($admin);
-//     }
 
-// }
+
+
+
+
 }
