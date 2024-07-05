@@ -90,43 +90,66 @@ class AuthController extends Controller
    
        public function user()
        {
-           try {
-               $user = Auth::user(); // Retrieve the authenticated user
-               if ($user) {
-                   return response()->json([
-                       'status' => 'success',
-                       'user' => $user,
-                   ]);
-               } else {
-                   return response()->json([
-                       'status' => 'failed',
-                       'message' => 'User not authenticated'
-                   ], 401);
-               }
-           } catch (\Exception $e) {
-               return response()->json([
-                   'status' => 'error',
-                   'message' => $e->getMessage()
-               ], 500);
-           }
+        try {
+            $user = Auth::user(); // Retrieve the authenticated user
+    
+            if (!$user) {
+                return response()->json([
+                    'error' => 'User not found'
+                ], 404);
+            }
+    
+            // Load roles eagerly to avoid N+1 query problem
+            $userWithRoles = User::with('roles')->find($user->id);
+    
+            // Extract role names from the loaded relationship
+            $roles = $userWithRoles->roles->pluck('name');
+    
+            // Return JSON response with user and roles
+            return response()->json([
+                'user' => $userWithRoles,
+                'roles' => $roles
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to fetch user roles',
+                'message' => $e->getMessage()
+            ], 500);
+        }
        }
    
        // Show user
        public function show($id)
-       {
-           try {
-               $user = User::find($id);
-               if (!$user) {
-                   return response()->json(['error' => 'User not found'], 404);
-               }
-               return response()->json($user);
-           } catch (\Exception $e) {
-               return response()->json([
-                   'status' => 'error',
-                   'message' => $e->getMessage()
-               ], 500);
-           }
-       }
+{
+    try {
+        // Fetch the user data by ID
+        $user = User::find($id);
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Get the roles associated with the user
+        $roles = $user->getRoleNames(); // This returns a collection of role names
+
+        // Prepare the response data
+        $responseData = [
+            'user' => $user,
+            'roles' => $roles
+        ];
+
+        // Return the combined response data as JSON
+        return response()->json($responseData);
+    } catch (\Exception $e) {
+        // Handle any exceptions that occur
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
 
 
        

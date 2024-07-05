@@ -14,6 +14,7 @@ class FreelancersController extends Controller
     {
         try {
             $freelancers = Freelancers::with('user:id,name,email')->get();
+            
             return response()->json($freelancers);
         } catch (\Exception $e) {
             return response()->json(['error' => $e], 500);
@@ -57,6 +58,7 @@ class FreelancersController extends Controller
             $freelancers->portfolio_Url = $request->portfolio_Url;
             $freelancers->CV = $request->CV;
             $freelancers->save();
+            $user->assignRole('freelancer_role');
             return response()->json('created');
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
@@ -69,7 +71,17 @@ class FreelancersController extends Controller
     {
         try {
             $freelancers = Freelancers::with('user:id,name,email')->findOrFail($id);
-            return response()->json($freelancers);
+            $user = User::findOrFail($id);
+            $roles = $user->getRoleNames();
+            
+            $responseData = [
+                'freelancer' => $freelancers,
+                'roles' => $roles
+            ];
+    
+            // Return the combined response data as JSON
+            return response()->json($responseData);
+
         } catch (\Exception $e) {
             return response()->json(['error' => 'Freelancer not found.'], 404);
         }

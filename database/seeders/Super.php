@@ -19,7 +19,7 @@ class Super extends Seeder
         // Get all permissions
         $permissions = Permission::all();
                
-        // Assign all permissions to super-admin role
+        // Assign all permissions to super-admin role -- TO FIX
         $superAdminRole->syncPermissions($permissions->all());
 
 

@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Traits\HasRoles;
 
 class Client extends User
 {
-    use HasFactory;
+    use HasFactory,HasRoles;
+
+
     protected $fillable = [
 
         'profession',
