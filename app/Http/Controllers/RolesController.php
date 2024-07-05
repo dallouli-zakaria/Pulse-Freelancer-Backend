@@ -27,7 +27,7 @@ class RolesController extends Controller
                 'name' => 'required|string|unique:roles',
             ]);
             
-            $role = Role::create(['name' => $request->name]);
+            $role = Role::create(['name' => $request->name, 'guard_name' => 'api']);
             return response()->json($role, 201);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->validator->errors()], 400);

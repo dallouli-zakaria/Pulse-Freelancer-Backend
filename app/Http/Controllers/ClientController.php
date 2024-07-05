@@ -9,6 +9,8 @@ use Dotenv\Exception\ValidationException;
 use App\Models\Client; 
 use App\Models\User; 
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+
 class ClientController extends Controller
 {
     public function index()
@@ -48,6 +50,15 @@ class ClientController extends Controller
             $client->company_activity = $request->company_activity;
             $client->company_email = $request->company_email;
             $client->save();
+            
+            $user->assignRole('client_role');
+
+            // $role = Role::where('name', $request->name)->firstOrFail();
+  
+            // foreach ($request->users as $user) {
+            //     $user = Client::findOrFail($user);
+            //     $user->assignRole($role->name);
+            // }
             return response()->json('created');
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to create client: ' . $e->getMessage()], 500);
@@ -59,8 +70,18 @@ class ClientController extends Controller
         try {
             
             $client = Client::with('user:id,name,email')->findOrFail($id);
+            $user = User::findOrFail($id);
+            $roles = $user->getRoleNames();
+            
+            $responseData = [
+                'client' => $client,
+                'roles' => $roles
+            ];
+    
+            // Return the combined response data as JSON
+            return response()->json($responseData);
 
-            return response()->json($client);
+            // return response()->json($client);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Client not found.'], 404);
         }
