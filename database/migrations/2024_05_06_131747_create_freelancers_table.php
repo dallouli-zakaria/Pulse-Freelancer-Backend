@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('phone')->nullable();;
             $table->string('portfolio_url')->nullable();
             $table->string('cv')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }

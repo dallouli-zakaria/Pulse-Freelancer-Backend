@@ -17,7 +17,8 @@ class FreelancerModel extends User
         'freelancer_adress',
         'freelancer_birth_date',
         'portfolio_URL',
-        'CV'
+        'CV',
+        'status'
     ];
 
 

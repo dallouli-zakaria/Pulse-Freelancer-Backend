@@ -98,7 +98,7 @@ class RolesController extends Controller
     {
         $usersWithRole = User::role($roleName)->get();
 
-        return response()->json(['users_with_role' => $usersWithRole]);
+        return response()->json($usersWithRole);
     }
 
 }
