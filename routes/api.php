@@ -60,6 +60,10 @@ Route::resources([
 
 ]);
 
+//get posts related to a client
+Route::get('/posts/client/{client_id}', [PostController::class, 'showPostsByClient']);
+
+
 
 
 //Routes for authentification
@@ -91,6 +95,11 @@ Route::get('grantPermissionsToRole', [grantRolesAndPermissionsContoller::class, 
 Route::get('grantRoleToUser', [grantRolesAndPermissionsContoller::class, 'grantRoleToUser']);
 Route::post('/user/{userId}/grant-permission', [PermissionController::class, 'grantPermissionToUser']);
 
+//tests
+Route::post('/grantPermissionsToUser', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToUser']);
+Route::get('/users-with-permissions', [grantRolesAndPermissionsContoller::class, 'getAllUsersWithPermissions']);
+
+
 
 //delete roles and permissions
 Route::delete('/users/{user}/roles/{role}', [revokeRolesAndPermissions::class, 'removeRoleFromUser']);
@@ -108,10 +117,10 @@ Route::get('/user/roles', [RolesController::class, 'getAllUserRoles']);
 //PERMISSIONS
 //get all users with given permission
 Route::get('/users/with-permission/{permission}', [PermissionController::class, 'getUsersWithPermission']);
-//get all permissions with a given user
-Route::get('/user/{userId}/permissions', [PermissionController::class, 'getUserPermissions']);
+//get all permissions with a given user !! changed
+Route::get('/user/{userId}/permissions', [grantRolesAndPermissionsContoller::class, 'getUserPermissions']);
 //get all users with their permissions
-Route::get('/users/with-permissions', [PermissionController::class, 'getUsersWithPermissions']);
+Route::get('/allusers/with-permissions', [PermissionController::class, 'getUsersWithPermissions']);
 //get all permissions with a given role
 Route::get('/role/{roleName}/permissions', [PermissionController::class, 'getRolePermissions'] );
 //get all roles with their permissions

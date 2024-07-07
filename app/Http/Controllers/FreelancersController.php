@@ -13,7 +13,7 @@ class FreelancersController extends Controller
     public function index()
     {
         try {
-            $freelancers = Freelancers::with('user:id,name,email')->get();
+            $freelancers = Freelancers::with('user:id,name,email')->orderBy('created_at', 'DESC')->get();
             
             return response()->json($freelancers);
         } catch (\Exception $e) {
