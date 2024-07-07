@@ -153,5 +153,23 @@ class PostController extends Controller
     }
 
 
+
+    public function showPostsByClient($client_id)
+{
+    try {
+        $client = Client::find($client_id);
+
+        if (!$client) {
+            return response()->json(['error' => 'Client not found'], 404);
+        }
+
+        $posts = Post::where('client_id', $client_id)->orderBy('created_at', 'DESC')->get();
+        
+        return response()->json($posts);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to fetch posts.'], 500);
+    }
+}
+
     
 }

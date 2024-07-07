@@ -16,7 +16,7 @@ class ClientController extends Controller
     public function index()
      {
         try{
-            $clients = Client::with('user:id,name,email')->get();
+            $clients = Client::with('user:id,name,email')->orderBy('created_at', 'DESC')->get();
 
             return response()->json($clients);
         } catch (\Exception $e) {
@@ -70,18 +70,9 @@ class ClientController extends Controller
         try {
             
             $client = Client::with('user:id,name,email')->findOrFail($id);
-            $user = User::findOrFail($id);
-            $roles = $user->getRoleNames();
             
-            $responseData = [
-                'client' => $client,
-                'roles' => $roles
-            ];
-    
-            // Return the combined response data as JSON
-            return response()->json($responseData);
 
-            // return response()->json($client);
+            return response()->json($client);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Client not found.'], 404);
         }

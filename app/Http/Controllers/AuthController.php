@@ -120,35 +120,35 @@ class AuthController extends Controller
    
        // Show user
        public function show($id)
-{
-    try {
-        // Fetch the user data by ID
-        $user = User::find($id);
+            {
+                try {
+                    // Fetch the user data by ID
+                    $user = User::find($id);
 
-        // Check if the user exists
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
+                    // Check if the user exists
+                    if (!$user) {
+                        return response()->json(['error' => 'User not found'], 404);
+                    }
 
-        // Get the roles associated with the user
-        $roles = $user->getRoleNames(); // This returns a collection of role names
+                    // Get the roles associated with the user
+                    $roles = $user->getRoleNames(); // This returns a collection of role names
 
-        // Prepare the response data
-        $responseData = [
-            'user' => $user,
-            'roles' => $roles
-        ];
+                    // Prepare the response data
+                    $responseData = [
+                        'user' => $user,
+                        'roles' => $roles
+                    ];
 
-        // Return the combined response data as JSON
-        return response()->json($responseData);
-    } catch (\Exception $e) {
-        // Handle any exceptions that occur
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-    }
-}
+                    // Return the combined response data as JSON
+                    return response()->json($responseData);
+                } catch (\Exception $e) {
+                    // Handle any exceptions that occur
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => $e->getMessage()
+                    ], 500);
+                }
+            }
 
 
 
