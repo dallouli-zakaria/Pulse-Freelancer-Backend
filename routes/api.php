@@ -60,9 +60,13 @@ Route::resources([
 
 ]);
 
+
+
 //get posts related to a client
 Route::get('/posts/client/{client_id}', [PostController::class, 'showPostsByClient']);
-
+Route::get('/offers/freelancer/{freelancer_id}', [OfferController::class, 'showByFreelancerId']);
+Route::get('/posts/post_id/{post_id}', [PostController::class, 'showByPostId']);
+Route::get('/posts/{postId}/freelancers/{freelancerId}/offer', [PostController::class, 'checkFreelancerOffer']);
 
 
 

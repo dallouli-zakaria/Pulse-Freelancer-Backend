@@ -87,4 +87,22 @@ class OfferController extends Controller
         $OfferCount = Offer::count();
         return response()->json($OfferCount);
     }
+
+
+
+    public function showByFreelancerId($freelancer_id)
+    {
+        try {
+            $offers = Offer::where('freelancer_id', $freelancer_id)->get();
+            if ($offers->isEmpty()) {
+                return response()->json(['error' => 'No offers found for this freelancer.'], 404);
+            }
+            return response()->json($offers);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch offers.'], 500);
+        }
+    }
+
+
+    
 }

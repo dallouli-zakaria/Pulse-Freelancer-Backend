@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -170,6 +171,34 @@ class PostController extends Controller
         return response()->json(['error' => 'Failed to fetch posts.'], 500);
     }
 }
+
+
+public function showByPostId($post_id)
+    {
+        try {
+            $posts = Post::where('id', $post_id)->get();
+            if ($posts->isEmpty()) {
+                return response()->json(['error' => 'No offers found.'], 404);
+            }
+            return response()->json($posts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch offers.'], 500);
+        }
+    }
+
+
+    public function checkFreelancerOffer($postId, $freelancerId)
+    {
+        $offerExists = DB::table('posts')
+                            ->join('offers', 'posts.id', '=', 'offers.post_id')
+                            ->where('posts.id', $postId)
+                            ->where('offers.freelancer_id', $freelancerId)
+                            ->exists();
+
+        return response()->json([
+            'offer_exists' => $offerExists,
+        ]);
+    }
 
     
 }
