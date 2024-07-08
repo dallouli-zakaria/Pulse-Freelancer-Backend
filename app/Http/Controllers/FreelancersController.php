@@ -73,16 +73,10 @@ class FreelancersController extends Controller
     {
         try {
             $freelancers = Freelancers::with('user:id,name,email')->findOrFail($id);
-            $user = User::findOrFail($id);
-            $roles = $user->getRoleNames();
             
-            $responseData = [
-                'freelancer' => $freelancers,
-                'roles' => $roles
-            ];
     
             // Return the combined response data as JSON
-            return response()->json($responseData);
+            return response()->json($freelancers);
 
         } catch (\Exception $e) {
             return response()->json(['error' => 'Freelancer not found.'], 404);
@@ -106,6 +100,7 @@ class FreelancersController extends Controller
                 'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
                 'CV' => 'nullable|string',
+                'status'=>'nullable|string'
             ]);
     
             // Find the user and freelancer by id

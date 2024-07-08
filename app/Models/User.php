@@ -13,7 +13,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable , HasRoles;
+    use HasFactory, Notifiable ; 
+   use HasRoles, HasPermissions;
     
 
 
