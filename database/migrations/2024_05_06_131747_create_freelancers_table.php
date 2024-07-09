@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('availability')->nullable();;
             $table->string('adress')->nullable();;
             $table->string('phone')->nullable();;
-            $table->string('portfolio_url')->nullable();
+            $table->string('portfolio_Url')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
         });

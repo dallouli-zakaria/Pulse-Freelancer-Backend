@@ -37,7 +37,7 @@ class FreelancersController extends Controller
                 'adress' => 'nullable|string|max:255',
                 'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
-                'status'=> '',
+                'status'=> 'nullable|string'
             ]);
             $user = new User;
             $user->name = $request->name;
@@ -56,9 +56,7 @@ class FreelancersController extends Controller
             $freelancers->adress = $request->adress;
             $freelancers->phone = $request->phone;
             $freelancers->portfolio_Url = $request->portfolio_Url;
-        
             $freelancers->status= $request->status;
-            $freelancers->profile=$request->profile;
             $freelancers->save();
             $user->assignRole('freelancer_role');
             return response()->json('created');
@@ -87,8 +85,8 @@ class FreelancersController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . $id,
+                'name' => 'nullable|string|max:255',
+                'email' => 'nullable|email|unique:users,email,' . $id,
                 'password' => 'nullable|string|min:6',
                 'title' => 'nullable|string|max:255',
                 'dateOfBirth' => 'nullable|date',
@@ -99,32 +97,56 @@ class FreelancersController extends Controller
                 'adress' => 'nullable|string|max:255',
                 'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
-                'status'=>''
+                'status'=>'nullable|string'
             ]);
     
             // Find the user and freelancer by id
             $user = User::findOrFail($id);
             $freelancer = Freelancers::findOrFail($id);
     
-            // Update user attributes
-            $user->name = $request->name;
-            $user->email = $request->email;
-            if ($request->password) {
+           // Update user fields only if they are provided in the request
+            if ($request->has('name')) {
+                $user->name = $request->name;
+            }
+            if ($request->has('email')) {
+                $user->email = $request->email;
+            }
+            if ($request->has('password')) {
                 $user->password = Hash::make($request->password);
             }
             $user->save();
-    
-            // Update freelancer attributes
-            $freelancer->title = $request->title;
-            $freelancer->dateOfBirth = $request->dateOfBirth;
-            $freelancer->city = $request->city;
-            $freelancer->TJM = $request->TJM;
-            $freelancer->summary = $request->summary;
-            $freelancer->availability = $request->availability;
-            $freelancer->adress = $request->adress;
-            $freelancer->phone = $request->phone;
-            $freelancer->portfolio_Url = $request->portfolio_Url;
-            $freelancer->status = $request->status;
+
+            // Update freelancer fields only if they are provided in the request
+            if ($request->has('title')) {
+                $freelancer->title = $request->title;
+            }
+            if ($request->has('dateOfBirth')) {
+                $freelancer->dateOfBirth = $request->dateOfBirth;
+            }
+            if ($request->has('city')) {
+                $freelancer->city = $request->city;
+            }
+            if ($request->has('TJM')) {
+                $freelancer->TJM = $request->TJM;
+            }
+            if ($request->has('summary')) {
+                $freelancer->summary = $request->summary;
+            }
+            if ($request->has('availability')) {
+                $freelancer->availability = $request->availability;
+            }
+            if ($request->has('adress')) {
+                $freelancer->adress = $request->adress;
+            }
+            if ($request->has('phone')) {
+                $freelancer->phone = $request->phone;
+            }
+            if ($request->has('portfolio_Url')) {
+                $freelancer->portfolio_Url = $request->portfolio_Url;
+            }
+            if ($request->has('status')) {
+                $freelancer->status = $request->status;
+            }
             $freelancer->save();
     
             return response()->json('updated');
