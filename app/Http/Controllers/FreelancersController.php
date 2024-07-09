@@ -37,7 +37,7 @@ class FreelancersController extends Controller
                 'adress' => 'nullable|string|max:255',
                 'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
-                'status'=> 'nullable|string'
+                'status'=> '',
             ]);
             $user = new User;
             $user->name = $request->name;
@@ -56,8 +56,9 @@ class FreelancersController extends Controller
             $freelancers->adress = $request->adress;
             $freelancers->phone = $request->phone;
             $freelancers->portfolio_Url = $request->portfolio_Url;
-   
+        
             $freelancers->status= $request->status;
+            $freelancers->profile=$request->profile;
             $freelancers->save();
             $user->assignRole('freelancer_role');
             return response()->json('created');
@@ -98,7 +99,7 @@ class FreelancersController extends Controller
                 'adress' => 'nullable|string|max:255',
                 'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
-                'status'=>'nullable|string'
+                'status'=>''
             ]);
     
             // Find the user and freelancer by id
