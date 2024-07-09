@@ -21,7 +21,7 @@ class Freelancers extends User
         'adress',
         'phone',
         'portfolio_Url',
-        'CV'
+        'status'
     ];
 
 
