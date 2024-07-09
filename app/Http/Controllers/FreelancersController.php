@@ -37,7 +37,6 @@ class FreelancersController extends Controller
                 'adress' => 'nullable|string|max:255',
                 'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
-                'CV' => 'nullable|string',
                 'status'=> 'nullable|string'
             ]);
             $user = new User;
@@ -57,7 +56,7 @@ class FreelancersController extends Controller
             $freelancers->adress = $request->adress;
             $freelancers->phone = $request->phone;
             $freelancers->portfolio_Url = $request->portfolio_Url;
-            $freelancers->CV = $request->CV;
+   
             $freelancers->status= $request->status;
             $freelancers->save();
             $user->assignRole('freelancer_role');
@@ -99,7 +98,6 @@ class FreelancersController extends Controller
                 'adress' => 'nullable|string|max:255',
                 'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
-                'CV' => 'nullable|string',
                 'status'=>'nullable|string'
             ]);
     
@@ -125,7 +123,7 @@ class FreelancersController extends Controller
             $freelancer->adress = $request->adress;
             $freelancer->phone = $request->phone;
             $freelancer->portfolio_Url = $request->portfolio_Url;
-            $freelancer->CV = $request->CV;
+            $freelancer->status = $request->status;
             $freelancer->save();
     
             return response()->json('updated');

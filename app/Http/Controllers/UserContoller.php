@@ -170,10 +170,17 @@ public function update($id,Request $request){
 
 return response()->json(['message'=>'user updated']);
 }
-public function destroy($id){
-    $user=User::findOrFail($id);
-    $user->delete();
-     return response()->json(['message'=>'user deleted']);
+public function destroy($id)
+{
+    try {
+   
+            User::where('id', $id)->delete();
+     
+
+        return response()->json(['message' => 'Freelancer and associated user deleted successfully.']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to delete freelancer: ' . $e->getMessage()], 500);
+    }
 }
 
 
