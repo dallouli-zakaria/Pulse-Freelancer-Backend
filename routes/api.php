@@ -12,14 +12,17 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\ContractController;
-
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ExpericenceController;
+use App\Http\Controllers\freelancer_skillController;
 use App\Http\Controllers\FreelancersController;
+use App\Http\Controllers\FreelancerSkillController;
 use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
+
+
 // use App\Http\Controllers\LanguagesController;
 
 // use App\Http\Controllers\OfferController;
@@ -56,8 +59,8 @@ Route::resources([
     'offers'=>OfferController::class,
     'education'=>EducationController::class,
     'users'=>UserContoller::class,
-    'role'=>RolesController::class
-
+    'role'=>RolesController::class,
+    'freelancer_skills'=>FreelancerSkillController::class,
 ]);
 
 
@@ -65,6 +68,7 @@ Route::resources([
 //get posts related to a client
 Route::get('/posts/client/{client_id}', [PostController::class, 'showPostsByClient']);
 Route::get('/offers/freelancer/{freelancer_id}', [OfferController::class, 'showByFreelancerId']);
+Route::get('/offers/post/{post_id}', [OfferController::class, 'showByPostId']);
 Route::get('/posts/post_id/{post_id}', [PostController::class, 'showByPostId']);
 Route::get('/posts/{postId}/freelancers/{freelancerId}/offer', [PostController::class, 'checkFreelancerOffer']);
 
@@ -142,6 +146,18 @@ Route::get('/get-roles/with-permissions', [PermissionController::class, 'getRole
 Route::post('email',[MailSend::class,'send']);
 
 
+//manage freelancer skills
+// Route::post('freelancers/{freelancerId}/attach-skill/{skillId}', [FreelancerSkillController::class, 'attachSkill']);
+// Route::post('freelancers/{freelancerId}/detach-skill/{skillId}', [FreelancerSkillController::class, 'detachSkill']);
+// Route::post('freelancers/{freelancerId}/sync-skills', [FreelancerSkillController::class, 'syncSkills']);
+// Route::get('freelancers/{freelancerId}/skills', [FreelancerSkillController::class, 'getFreelancerSkills']);
+
+
+// //manage post skills
+// Route::post('posts/{postId}/attach-skill', [PostSkillController::class, 'attachSkill']);
+// Route::post('posts/{postId}/detach-skill', [PostSkillController::class, 'detachSkill']);
+// Route::post('posts/{postId}/sync-skills', [PostSkillController::class, 'syncSkills']);
+// Route::get('posts/{postId}/skills', [PostSkillController::class, 'getPostSkills']);
 
 
 
@@ -175,3 +191,6 @@ route::prefix('permission')->group(function(){
 });
 
 
+Route::get('/freelancers/{freelancer}/skills', 'freelancer_skills@skills');
+Route::post('/freelancers/{freelancer}/skills', 'freelancer_skills@storeSkill');
+Route::delete('/freelancers/{freelancer}/skills/{skill}', 'freelancer_skills@destroySkill');

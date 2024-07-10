@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             // GrantClientRoleToClientsSeeder::class,
             RoleSeeder::class,
             AdminUser::class,
+            // SkillSeeder::class,
         ]);
 
     

@@ -55,7 +55,9 @@ class OfferController extends Controller
     {
         try {
             $request->validate([
-                // Validation rules here
+                'selected'=>'required|string',
+                'freelancer_id'=>'required|numeric',
+                'post_id'=>'required|numeric'
             ]);
 
             $offer = Offer::findOrFail($id);
@@ -94,6 +96,19 @@ class OfferController extends Controller
     {
         try {
             $offers = Offer::where('freelancer_id', $freelancer_id)->get();
+            if ($offers->isEmpty()) {
+                return response()->json(['error' => 'No offers found for this freelancer.'], 404);
+            }
+            return response()->json($offers);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch offers.'], 500);
+        }
+    }
+
+    public function showByPostId($post_id)
+    {
+        try {
+            $offers = Offer::where('post_id', $post_id)->get();
             if ($offers->isEmpty()) {
                 return response()->json(['error' => 'No offers found for this freelancer.'], 404);
             }

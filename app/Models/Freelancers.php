@@ -42,7 +42,7 @@ class Freelancers extends User
       }
     public function skills()
     {
-        return $this->belongsToMany(skills::class, 'freelancer_skill')->withPivot('proficiency');
+        return $this->belongsToMany(skills::class);
     }
     function experience(){
         return $this->hasMany(Expericence::class);

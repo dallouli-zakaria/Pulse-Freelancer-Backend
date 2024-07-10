@@ -11,9 +11,19 @@ class skills extends Model
     protected $fillable=
     [
         'title',
-        'level',
         
     ];
+
+
+    public function posts(){
+        return $this->belongsToMany(Post::class);
+    }
+
+    public function freelancer(){
+        return $this->belongsToMany(Freelancers::class);
+    }
+
+
 
 
 }

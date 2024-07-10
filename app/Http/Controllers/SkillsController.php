@@ -23,12 +23,12 @@ class SkillsController extends Controller
         try {
             $validatedData = $request->validate([
                 'title' => 'required|string',
-                'level' => 'required|string',
+
                 
             ]);
 
             $skill = skills::create($validatedData);
-            return response()->json(['message' => 'Skill created successfully', 'data' => $skill], 201);
+            return response()->json($skill, 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
@@ -51,13 +51,12 @@ class SkillsController extends Controller
         try {
             $validatedData = $request->validate([
                 'title' => 'string',
-                'level' => 'string',
             ]);
 
             $skill = skills::findOrFail($id);
             $skill->update($validatedData);
 
-            return response()->json(['message' => 'Skill updated successfully', 'data' => $skill]);
+            return response()->json($skill);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {

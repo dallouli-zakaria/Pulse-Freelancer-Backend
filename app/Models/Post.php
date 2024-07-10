@@ -27,4 +27,15 @@ class Post extends Model
         return $this->belongsTo(Client::class);
     }
 
+    
+    function skills(){
+
+        return $this->hasMany(skills::class);
+    }
+
+    function offer(){
+        return $this->belongsToMany(Freelancers::class);
+    }
+    
+
 }
