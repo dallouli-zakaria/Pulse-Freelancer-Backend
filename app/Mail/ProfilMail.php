@@ -17,7 +17,7 @@ class ProfilMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private readonly User $user)
+    public function __construct(private readonly User $user, public $message)
     {
         //
     }
@@ -43,7 +43,7 @@ class ProfilMail extends Mailable
          
             with: [  'name' => $this->user->name,
                     'email' => $this->user->email,
-                    'random'=>$random
+                    'messageContent'=>$this->message
                   ]
         );
     }
