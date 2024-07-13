@@ -43,7 +43,7 @@ class grantRolesAndPermissionsContoller extends Controller
   
               return response()->json(['message' => 'Permissions granted to role successfully']);
           } catch (ModelNotFoundException $e) {
-              return response()->json(['error' => 'Role not found'], 404);
+              return response()->json($e->getMessage(), 404);
           } catch (\Exception $e) {
               return response()->json(['error' => 'Failed to grant permissions to role: ' . $e->getMessage()], 500);
           }

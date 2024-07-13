@@ -87,23 +87,19 @@ Route::get('freelancerCount',[FreelancersController::class,'count']);
 Route::get('postCount',[PostController::class,'count']);
 
 //ROLES AND PERMISSIONS 
-    
 //manage roles and permissions
 Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('roles', RolesController::class);
 
-
 //grant roles and permissions to user
-Route::get('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);
-Route::get('grantPermissionsToRole', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToRole']);
+Route::post('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);
+Route::post('/grantPermissionsToRole', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToRole']);
 Route::get('grantRoleToUser', [grantRolesAndPermissionsContoller::class, 'grantRoleToUser']);
 Route::post('/user/{userId}/grant-permission', [PermissionController::class, 'grantPermissionToUser']);
 
 //tests
 Route::post('/grantPermissionsToUser', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToUser']);
 Route::get('/users-with-permissions', [grantRolesAndPermissionsContoller::class, 'getAllUsersWithPermissions']);
-
-
 
 //delete roles and permissions
 Route::delete('/users/{user}/roles/{role}', [revokeRolesAndPermissions::class, 'removeRoleFromUser']);
@@ -119,6 +115,7 @@ Route::get('/users/role/{roleName}', [RolesController::class, 'getUsersWithRole'
 Route::get('/user/roles', [RolesController::class, 'getAllUserRoles']);
 
 //PERMISSIONS
+
 //get all users with given permission
 Route::get('/users/with-permission/{permission}', [PermissionController::class, 'getUsersWithPermission']);
 //get all permissions with a given user !! changed
@@ -131,31 +128,9 @@ Route::get('/role/{roleName}/permissions', [PermissionController::class, 'getRol
 Route::get('/get-roles/with-permissions', [PermissionController::class, 'getRolesWithPermissions']);
 
 
-
-
- 
-
-
-
 //Route::get('RevokeRolesAndPermissions', [RevokeRolesAndPermissions::class, 'RevokeRoles']);
 //email seder
 Route::post('email',[MailSend::class,'send']);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //routes for Roles
 
