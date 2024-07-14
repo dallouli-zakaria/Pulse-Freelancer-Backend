@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FreelancerSkill;
+use App\Models\skills;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
@@ -74,7 +75,7 @@ class FreelancerSkillController extends Controller
         try {
             $FreelancerSkill = FreelancerSkill::findOrFail($id);
             $FreelancerSkill->delete();
-            return response()->json(null, 204);
+            return response()->json('Deleted succesfull', 204);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'FreelancerSkill not found.'], 404);
         } catch (\Exception $e) {
@@ -86,4 +87,64 @@ class FreelancerSkillController extends Controller
         $FreelancerSkillCount = FreelancerSkill::count();
         return response()->json($FreelancerSkillCount);
     }
+
+    public function showSkillsByFreelancerId($freelancer_id)
+    {
+        try {
+            $FreelancerSkills = FreelancerSkill::where('freelancer_id', $freelancer_id)->get();
+            return response()->json($FreelancerSkills);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch skills for the given freelancer.'], 500);
+        }
+    }
+
+
+    public function showSkillsByFreelancer($freelancer_id)
+        {
+            try {
+                $FreelancerSkills = FreelancerSkill::with('skill')
+                    ->where('freelancer_id', $freelancer_id)
+                    ->get()
+                    ->map(function ($freelancerSkill) {
+                        return [
+                            'level' => $freelancerSkill->level,
+                            'freelancer_id' => $freelancerSkill->freelancer_id,
+                            'skill_id' => $freelancerSkill->skill_id,
+                            'title' => $freelancerSkill->skill->title,
+                        ];
+                    });
+
+                return response()->json($FreelancerSkills);
+            } catch (\Exception $e) {
+                return response()->json($e, 500);
+            }
+        }
+
+
+//         public function searchByName(Request $request)
+// {
+//     try {
+//         $name = $request->input('name');
+//         $FreelancerSkills = FreelancerSkill::with('skill')
+//             ->whereHas('skill', function ($query) use ($name) {
+//                 $query->where('title', 'like', "%{$name}%");
+//             })
+//             ->get()
+//             ->map(function ($freelancerSkill) {
+//                 return [
+//                     'level' => $freelancerSkill->level,
+//                     'freelancer_id' => $freelancerSkill->freelancer_id,
+//                     'skill_id' => $freelancerSkill->skill_id,
+//                     'title' => $freelancerSkill->skill->title,
+//                 ];
+//             });
+
+//         return response()->json($FreelancerSkills);
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => 'Failed to search for freelancer skills by name.'], 500);
+//     }
+// }
+
+
+
 }

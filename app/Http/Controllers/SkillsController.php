@@ -74,4 +74,22 @@ class SkillsController extends Controller
             return response()->json(['error' => 'Failed to delete skill.'], 500);
         }
     }
+
+
+
+    public function searchByTitle(Request $request)
+    {
+        try {
+            $searchQuery = $request->input('title');
+            $skills = Skills::where('title', 'LIKE', "%{$searchQuery}%")->get();
+    
+            if ($skills->isEmpty()) {
+                return response()->json(['error' => 'No skills found with the given title.'], 404);
+            }
+    
+            return response()->json($skills);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to search skills.'], 500);
+        }
+    }
 }

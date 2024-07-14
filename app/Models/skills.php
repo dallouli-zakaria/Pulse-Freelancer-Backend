@@ -24,6 +24,12 @@ class skills extends Model
     }
 
 
+    public function freelancerSkills()
+    {
+        return $this->hasMany(FreelancerSkill::class, 'skill_id');
+    }
+
+
 
 
 }

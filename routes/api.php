@@ -167,12 +167,6 @@ Route::post('email',[MailSend::class,'send']);
 
 
 
-
-
-
-
-
-
 //routes for Roles
 
 route::prefix('role')->group(function(){
@@ -191,6 +185,8 @@ route::prefix('permission')->group(function(){
 });
 
 
-Route::get('/freelancers/{freelancer}/skills', 'freelancer_skills@skills');
-Route::post('/freelancers/{freelancer}/skills', 'freelancer_skills@storeSkill');
-Route::delete('/freelancers/{freelancer}/skills/{skill}', 'freelancer_skills@destroySkill');
+Route::get('/freelancer/{freelancer_id}/skill', [FreelancerSkillController::class, 'showSkillsByFreelancerId']);
+Route::get('/freelancer/{freelancer_id}/skills', [FreelancerSkillController::class, 'showSkillsByFreelancer']);
+Route::get('/skills/search', [SkillsController::class, 'searchByTitle']);
+Route::get('/experience/freelancer/{freelancerId}', [ExpericenceController::class, 'getByFreelancerId']);
+Route::get('/details/{freelancerId}/{title}/{companyName}', [ExpericenceController::class, 'getExperienceDetails']);
