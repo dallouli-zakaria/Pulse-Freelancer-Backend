@@ -71,18 +71,14 @@ class grantRolesAndPermissionsContoller extends Controller
       public function grantPermissionsToUser(Request $request)
       {
           // Validate the incoming request
-          $request->validate([
-              'id' => 'required|integer|exists:users,id',
-              'permissions' => 'required|array',
-              'permissions.*' => 'string|exists:permissions,name'
-          ]);
+       
       
           try {
               // Fetch the user by ID
               $user = User::findOrFail($request->id);
       
               // Loop through each permission in the request
-              foreach ($request->permissions as $permissionName) {
+              foreach ([$request->permissions]as $permissionName) {
                   // Find the permission by its name
                   $permission = Permission::where('name', $permissionName)->firstOrFail();
       
@@ -94,7 +90,7 @@ class grantRolesAndPermissionsContoller extends Controller
       
               return response()->json(['message' => 'Permissions granted to user successfully']);
           } catch (ModelNotFoundException $e) {
-              return response()->json(['error' => 'User or permission not found'], 404);
+              return response()->json(['error' => 'User or permission not found',$e->getMessage()], 404);
           } catch (\Exception $e) {
               return response()->json(['error' => 'Failed to grant permissions to user: ' . $e->getMessage()], 500);
           }
