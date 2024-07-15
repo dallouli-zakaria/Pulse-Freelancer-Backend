@@ -21,7 +21,7 @@ use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\FreelancerSkillController;
 use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
-
+use App\Http\Controllers\PostSkillController;
 
 // use App\Http\Controllers\LanguagesController;
 
@@ -61,6 +61,7 @@ Route::resources([
     'users'=>UserContoller::class,
     'role'=>RolesController::class,
     'freelancer_skills'=>FreelancerSkillController::class,
+    'post_skills'=>PostSkillController::class,
 ]);
 
 
@@ -91,23 +92,19 @@ Route::get('freelancerCount',[FreelancersController::class,'count']);
 Route::get('postCount',[PostController::class,'count']);
 
 //ROLES AND PERMISSIONS 
-    
 //manage roles and permissions
 Route::apiResource('permissions', PermissionController::class);
 Route::apiResource('roles', RolesController::class);
 
-
 //grant roles and permissions to user
-Route::get('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);
-Route::get('grantPermissionsToRole', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToRole']);
+Route::post('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);
+Route::post('/grantPermissionsToRole', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToRole']);
 Route::get('grantRoleToUser', [grantRolesAndPermissionsContoller::class, 'grantRoleToUser']);
 Route::post('/user/{userId}/grant-permission', [PermissionController::class, 'grantPermissionToUser']);
 
 //tests
 Route::post('/grantPermissionsToUser', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToUser']);
 Route::get('/users-with-permissions', [grantRolesAndPermissionsContoller::class, 'getAllUsersWithPermissions']);
-
-
 
 //delete roles and permissions
 Route::delete('/users/{user}/roles/{role}', [revokeRolesAndPermissions::class, 'removeRoleFromUser']);
@@ -123,6 +120,7 @@ Route::get('/users/role/{roleName}', [RolesController::class, 'getUsersWithRole'
 Route::get('/user/roles', [RolesController::class, 'getAllUserRoles']);
 
 //PERMISSIONS
+
 //get all users with given permission
 Route::get('/users/with-permission/{permission}', [PermissionController::class, 'getUsersWithPermission']);
 //get all permissions with a given user !! changed
@@ -135,37 +133,9 @@ Route::get('/role/{roleName}/permissions', [PermissionController::class, 'getRol
 Route::get('/get-roles/with-permissions', [PermissionController::class, 'getRolesWithPermissions']);
 
 
-
-
- 
-
-
-
 //Route::get('RevokeRolesAndPermissions', [RevokeRolesAndPermissions::class, 'RevokeRoles']);
 //email seder
 Route::post('email',[MailSend::class,'send']);
-
-
-//manage freelancer skills
-// Route::post('freelancers/{freelancerId}/attach-skill/{skillId}', [FreelancerSkillController::class, 'attachSkill']);
-// Route::post('freelancers/{freelancerId}/detach-skill/{skillId}', [FreelancerSkillController::class, 'detachSkill']);
-// Route::post('freelancers/{freelancerId}/sync-skills', [FreelancerSkillController::class, 'syncSkills']);
-// Route::get('freelancers/{freelancerId}/skills', [FreelancerSkillController::class, 'getFreelancerSkills']);
-
-
-// //manage post skills
-// Route::post('posts/{postId}/attach-skill', [PostSkillController::class, 'attachSkill']);
-// Route::post('posts/{postId}/detach-skill', [PostSkillController::class, 'detachSkill']);
-// Route::post('posts/{postId}/sync-skills', [PostSkillController::class, 'syncSkills']);
-// Route::get('posts/{postId}/skills', [PostSkillController::class, 'getPostSkills']);
-
-
-
-
-
-
-
-
 
 //routes for Roles
 
@@ -190,3 +160,12 @@ Route::get('/freelancer/{freelancer_id}/skills', [FreelancerSkillController::cla
 Route::get('/skills/search', [SkillsController::class, 'searchByTitle']);
 Route::get('/experience/freelancer/{freelancerId}', [ExpericenceController::class, 'getByFreelancerId']);
 Route::get('/details/{freelancerId}/{title}/{companyName}', [ExpericenceController::class, 'getExperienceDetails']);
+
+
+//permissions tests
+Route::post('/users/{userId}/permissions/{permissionName}', [grantRolesAndPermissionsContoller::class, 'assignPermissionToUser']);
+Route::get('/users-with-permissionss', [grantRolesAndPermissionsContoller::class, 'getAllUsersWithPermissionss']);
+
+
+Route::get('/post/{post_id}/skill', [PostSkillController::class, 'showSkillsByPostId']);
+Route::get('/post/{post_id}/skills', [PostSkillController::class, 'showSkillsByPost']);

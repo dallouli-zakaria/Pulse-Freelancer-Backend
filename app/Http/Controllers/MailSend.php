@@ -20,12 +20,8 @@ class MailSend extends Controller
         try {
             
              $user = User::where("id",$request->id)->firstOrFail();
-
-            Mail::to($user->email)->send(new ProfilMail);
-
-            Mail::to($user->email)->send(new ProfileMail($user));
-
-            Mail::to($user->email)->send(new ProfilMail($user));
+           $message=$request->message;
+            Mail::to($user->email)->send(new ProfilMail($user,$message));
 
             return response()->json("message sedde to".$user->email, 200);
         } catch (ModelNotFoundException $e) {

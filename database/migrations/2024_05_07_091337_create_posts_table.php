@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('type');
             $table->text('description');
             $table->string('period');
+            $table->string('freelancers_number');
+            $table->string('skills_required');
             $table->integer('periodvalue')->nullable();
             $table->string('budget');
             $table->integer('budgetvalue')->nullable();

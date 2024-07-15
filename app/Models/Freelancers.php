@@ -30,7 +30,7 @@ class Freelancers extends User
         return $this->belongsTo(User::class,'id','id');
     }
 
-     function lunguage(){
+     function language(){
         return $this->hasMany(languages::class);
      }
      function skill(){

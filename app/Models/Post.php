@@ -14,6 +14,8 @@ class Post extends Model
         'location',
         'type',
         'description',
+        'freelancers_number',
+        'skills_required',
         'period',
         'periodvalue',
         'budget',
@@ -28,13 +30,18 @@ class Post extends Model
     }
 
     
-    function skills(){
+    // function skills(){
 
-        return $this->hasMany(skills::class);
-    }
+    //     return $this->hasMany(skills::class);
+    // }
 
     function offer(){
         return $this->belongsToMany(Freelancers::class);
+    }
+
+    public function skills()
+    {
+        return $this->belongsToMany(skills::class);
     }
     
 
