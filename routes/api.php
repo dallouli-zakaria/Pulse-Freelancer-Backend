@@ -94,7 +94,7 @@ Route::apiResource('roles', RolesController::class);
 //grant roles and permissions to user
 Route::post('grantRolesAndPermissions', [grantRolesAndPermissionsContoller::class, 'grantRolesAndPermissions']);
 Route::post('/grantPermissionsToRole', [grantRolesAndPermissionsContoller::class, 'grantPermissionsToRole']);
-Route::get('grantRoleToUser', [grantRolesAndPermissionsContoller::class, 'grantRoleToUser']);
+Route::post('grantRoleToUser', [grantRolesAndPermissionsContoller::class, 'grantRoleToUser']);
 Route::post('/user/{userId}/grant-permission', [PermissionController::class, 'grantPermissionToUser']);
 
 //tests
