@@ -72,6 +72,8 @@ Route::get('/offers/freelancer/{freelancer_id}', [OfferController::class, 'showB
 Route::get('/offers/post/{post_id}', [OfferController::class, 'showByPostId']);
 Route::get('/posts/post_id/{post_id}', [PostController::class, 'showByPostId']);
 Route::get('/posts/{postId}/freelancers/{freelancerId}/offer', [PostController::class, 'checkFreelancerOffer']);
+Route::get('/offer/freelancers/{postId}', [OfferController::class, 'getFreelancerDetailsByPostId']);
+Route::get('/posts/{post_id}/client', [PostController::class, 'getClientDetailsByPostId']);
 
 
 

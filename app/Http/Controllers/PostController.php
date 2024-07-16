@@ -204,5 +204,29 @@ public function showByPostId($post_id)
         ]);
     }
 
+    public function getClientDetailsByPostId($post_id)
+        {
+            try {
+                // Retrieve offers with given post_id
+                $posts = Post::where('id', $post_id)->get();
+                
+                // Extract freelancer ids from offers
+                $clientids = $posts->pluck('client_id')->unique()->toArray();
+                
+                // Retrieve freelancers details for the extracted ids
+                $client = Client::whereIn('id', $clientids)
+                ->with('user:id,name,email') 
+                ->orderBy('created_at', 'DESC')
+                ->get();
+                
+                return response()->json($client);
+            } catch (\Exception $e) {
+                return response()->json($e, 500);
+            }
+        }
+
+
+    
+
     
 }
