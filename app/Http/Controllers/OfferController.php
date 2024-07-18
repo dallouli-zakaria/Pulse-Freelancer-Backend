@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Freelancers;
 use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -115,6 +116,27 @@ class OfferController extends Controller
             return response()->json($offers);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch offers.'], 500);
+        }
+    }
+
+    public function getFreelancerDetailsByPostId($postId)
+    {
+        try {
+            // Retrieve offers with given post_id
+            $offers = Offer::where('post_id', $postId)->get();
+            
+            // Extract freelancer ids from offers
+            $freelancerIds = $offers->pluck('freelancer_id')->unique()->toArray();
+            
+            // Retrieve freelancers details for the extracted ids
+            $freelancers = Freelancers::whereIn('id', $freelancerIds)
+            ->with('user:id,name,email') 
+            ->orderBy('created_at', 'DESC')
+            ->get();
+            
+            return response()->json($freelancers);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch freelancer details.'], 500);
         }
     }
 
