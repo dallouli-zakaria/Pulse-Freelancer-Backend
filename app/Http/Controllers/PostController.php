@@ -42,7 +42,7 @@ class PostController extends Controller
                 'type' => 'required|string',
                 'description' => 'required|string',
                 'freelancers_number' => 'required|numeric',
-                'skills_required' => 'required|string',        
+                'skills_required' => 'required|array',        
                 'period' => 'required|string',
                 'periodvalue' => 'nullable|numeric',
                 'budget' => 'required|string',
@@ -50,11 +50,13 @@ class PostController extends Controller
                 'client_id'=>'required'
             ]);
 
+            $data['skills_required'] = implode(',', $data['skills_required']) ;
+
             $post = Post::create($data);
 
             return response()->json($post, 201);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
