@@ -15,7 +15,7 @@ class FreelancersController extends Controller
     public function index()
     {
         try {
-            $freelancers = Freelancers::with('skills')->get();
+            $freelancers = Freelancers::with(['user:id,name,email', 'skills'])->get();
             return response()->json($freelancers);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
