@@ -3,21 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Freelancers;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 class FreelancersController extends Controller
 {
     public function index()
     {
         try {
-            $freelancers = Freelancers::with('user:id,name,email')->orderBy('created_at', 'DESC')->get();
-            
+            $freelancers = Freelancers::with('skills')->get();
             return response()->json($freelancers);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -70,7 +71,7 @@ class FreelancersController extends Controller
     public function show($id)
     {
         try {
-            $freelancers = Freelancers::with('user:id,name,email')->findOrFail($id);
+            $freelancers = Freelancers::with(['user:id,name,email', 'skills'])->findOrFail($id);
             
     
             // Return the combined response data as JSON
@@ -191,4 +192,122 @@ class FreelancersController extends Controller
         $freelancer=Freelancers::count();
         return response()->json($freelancer);
     }
+
+    public function assignSkills(Request $request, $freelancerId)
+    {
+        try {
+            // Validate input
+            $validator = Validator::make($request->all(), [
+                'skills' => 'required|array',
+                'skills.*' => 'exists:skills,id'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            // Find the freelancer
+            $freelancer = Freelancers::findOrFail($freelancerId);
+
+            // Attach skills to the freelancer
+            $freelancer->skills()->sync($request->skills);
+
+            return response()->json(['message' => 'Skills assigned successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to assign skills.'], 500);
+        }
+    }
+
+    public function getSkills($freelancerId)
+    {
+        try {
+            // Find the freelancer
+            $freelancer = Freelancers::with('skills')->findOrFail($freelancerId);
+
+            // Return the freelancer's skills
+            return response()->json($freelancer->skills, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve skills.'], 500);
+        }
+    }
+
+    public function getFreelancersBySkill($skillId)
+{
+    try {
+        $freelancers = Freelancers::whereHas('skills', function ($query) use ($skillId) {
+            $query->where('skills.id', $skillId);
+        })->get();
+
+        return response()->json($freelancers);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to retrieve freelancers.'], 500);
+    }
+}
+
+
+// public function updateFreelancerSkills(Request $request, $freelancerId)
+// {
+//     try {
+//         $validatedData = $request->validate([
+//             'skills' => 'required|array',
+//             'skills.*' => 'exists:skills,id',
+//         ]);
+
+//         $freelancer = Freelancers::findOrFail($freelancerId);
+//         $currentSkillIds = $freelancer->skills->pluck('id')->toArray();
+//         $newSkillIds = $validatedData['skills'];
+
+//         // Merge current and new skill IDs
+//         $allSkillIds = array_unique(array_merge($currentSkillIds, $newSkillIds));
+
+//         // Sync the skills
+//         $freelancer->skills()->sync($allSkillIds);
+
+//         return response()->json(['message' => 'Freelancer skills updated successfully.']);
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => 'Failed to update freelancer skills.'], 500);
+//     }
+// }
+
+public function updateFreelancerSkills(Request $request, $freelancerId)
+{
+    try {
+        $validatedData = $request->validate([
+            'skills' => 'required|array',
+            'skills.*' => 'exists:skills,id',
+        ]);
+
+        $freelancer = Freelancers::findOrFail($freelancerId);
+        $currentSkillIds = $freelancer->skills->pluck('id')->toArray();
+        $newSkillIds = $validatedData['skills'];
+
+        // Merge current and new skill IDs
+        $allSkillIds = array_unique(array_merge($currentSkillIds, $newSkillIds));
+
+        // Sync the skills
+        $freelancer->skills()->sync($allSkillIds);
+        
+        return response()->json(['message' => 'Freelancer skills updated successfully.']);
+    } catch (\Exception $e) {
+ 
+        return response()->json( $e->getMessage(), 500);
+    }
+}
+
+
+public function getMatchingPostsForFreelancer($freelancerId)
+{
+    try {
+        $freelancer = Freelancers::with('skills')->findOrFail($freelancerId);
+        $skills = $freelancer->skills->pluck('id');
+
+        $posts = Post::whereHas('skills', function ($query) use ($skills) {
+            $query->whereIn('id', $skills);
+        })->get();
+
+        return response()->json($posts);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to retrieve matching posts.'], 500);
+    }
+}
 }

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('post_skills', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete();
-            $table->foreignId('skill_id')->constrained('skills')->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->foreignId('skill_id')->constrained('skills')->onDelete('cascade');
+            $table->string('level')->nullable(); 
             $table->timestamps();
         });
     }

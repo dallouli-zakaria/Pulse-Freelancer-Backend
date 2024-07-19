@@ -10,29 +10,34 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
+
+
     public function index()
     {
         try {
-            $posts = Post::orderBy('created_at', 'DESC')->get();
+            // Retrieve all posts with their related skills
+            $posts = Post::with('skills')->orderBy('created_at', 'DESC')->get();
+            
             return response()->json($posts);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e ], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-    }       
-
+    }
     public function show($id)
     {
         try {
-            $post = Post::find($id);
+            // Retrieve the post with its related skills
+            $post = Post::with('skills')->find($id);
+
             if (!$post) {
                 return response()->json(['error' => 'Post not found'], 404);
             }
+
             return response()->json($post);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch post.'], 500);
         }
     }
-
     public function store(Request $request)
     {
         try {
@@ -42,21 +47,26 @@ class PostController extends Controller
                 'type' => 'required|string',
                 'description' => 'required|string',
                 'freelancers_number' => 'required|numeric',
-                'skills_required' => 'required|string',        
+                'skills_required' => 'required|array',
                 'period' => 'required|string',
                 'periodvalue' => 'nullable|numeric',
                 'budget' => 'required|string',
                 'budgetvalue' => 'nullable|numeric',
-                'client_id'=>'required'
+                'client_id' => 'required'
             ]);
-
-            $post = Post::create($data);
-
-            return response()->json($post, 201);
+    
+            $postData = array_diff_key($data, ['skills_required' => '']);
+            $post = Post::create($postData);
+    
+            if (isset($data['skills_required'])) {
+                $post->skills()->attach($data['skills_required']);
+            }
+            return response()->json($post->load('skills'), 201);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e], 500);
+            return response()->json(['error' =>  $e->getMessage()], 500);
         }
     }
+    
 
     public function destroy($id)
     {
@@ -84,22 +94,29 @@ class PostController extends Controller
                 'type' => 'required|string',
                 'description' => 'required|string',
                 'freelancers_number' => 'required|numeric',
-                'skills_required' => 'required|string',   
+                'skills_required' => 'nullable|array',   
                 'period' => 'required|string',
-                'Periodvalue' => '',
-                'budget' => '',
-                'Budgetvalue' => '',
+                'periodvalue' => 'nullable|numeric',
+                'budget' => 'required|string',
+                'budgetvalue' => 'nullable|numeric',
             ]);
 
+            // Find the post
             $post = Post::find($id);
-
             if (!$post) {
                 return response()->json(['error' => 'Post not found'], 404);
             }
 
+            // Update post data
             $post->update($data);
 
-            return response()->json($post);
+            // Sync skills if provided
+            if (isset($data['skills_required'])) {
+                $post->skills()->sync($data['skills_required']);
+            }
+
+            // Return the updated post with skills
+            return response()->json($post->load('skills'));
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to update post.'], 500);
         }
@@ -226,6 +243,18 @@ public function showByPostId($post_id)
         }
 
 
+        public function getSkills($postId)
+        {
+            try {
+                // Find the post with related skills
+                $post = Post::with('skills')->findOrFail($postId);
+    
+                // Return the skills associated with the post
+                return response()->json($post->skills, 200);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to retrieve skills.'], 500);
+            }
+        }
     
 
     

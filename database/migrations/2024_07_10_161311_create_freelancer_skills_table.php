@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('freelancer_skills', function (Blueprint $table) {
             $table->id();
-            $table->string('level');
-            $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete();
-            $table->foreignId('skill_id')->constrained('skills')->cascadeOnDelete();
+            // $table->string('level');
+            $table->foreignId('freelancer_id')->constrained('freelancers')->onDelete('cascade');
+            $table->foreignId('skill_id')->constrained('skills')->onDelete('cascade');
             $table->timestamps();
         });
     }

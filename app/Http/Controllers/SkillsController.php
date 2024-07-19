@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Freelancers;
+use App\Models\Post;
 use App\Models\skills;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -90,6 +92,40 @@ class SkillsController extends Controller
             return response()->json($skills);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to search skills.'], 500);
+        }
+    }
+
+
+    public function checkFreelancerSkillsMatchWithScore($freelancerId, $postId)
+    {
+        try {
+            // Retrieve the post and its required skills
+            $post = Post::findOrFail($postId);
+            $postSkills = $post->skills->pluck('id')->toArray(); // Get required skills IDs
+
+            // Retrieve the freelancer and their skills
+            $freelancer = Freelancers::findOrFail($freelancerId);
+            $freelancerSkills = $freelancer->skills->pluck('id')->toArray(); // Get freelancer's skills IDs
+
+            // Calculate the number of required skills
+            $totalRequiredSkills = count($postSkills);
+            
+            // Calculate the number of matched skills
+            $matchedSkills = array_intersect($postSkills, $freelancerSkills);
+            $totalMatchedSkills = count($matchedSkills);
+
+            // Calculate the score as a percentage
+            $score = $totalRequiredSkills > 0 ? ($totalMatchedSkills / $totalRequiredSkills) * 100 : 0;
+
+            return response()->json([
+                'matches' => $totalMatchedSkills === $totalRequiredSkills,
+                'score' => $score,
+                'matched_skills' => $totalMatchedSkills,
+                'total_required_skills' => $totalRequiredSkills
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error occurred while checking skills.'], 500);
         }
     }
 }

@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\MailSend;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserContoller;
-
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\RolesController;
@@ -16,27 +15,11 @@ use App\Http\Controllers\EducationController;
 use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ExpericenceController;
-use App\Http\Controllers\freelancer_skillController;
 use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\FreelancerSkillController;
 use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
 use App\Http\Controllers\PostSkillController;
-
-// use App\Http\Controllers\LanguagesController;
-
-// use App\Http\Controllers\OfferController;
-
-// use App\Http\Controllers\MailSend;
-
-// use App\Http\Controllers\PermissionController;
-// use App\Http\Controllers\PostController;
-// use App\Http\Controllers\revokeRolesAndPermissions;
-
-// use App\Http\Controllers\RolesController;
-// use App\Http\Controllers\SkillsController;
-// use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -171,3 +154,23 @@ Route::get('/users-with-permissionss', [grantRolesAndPermissionsContoller::class
 
 Route::get('/post/{post_id}/skill', [PostSkillController::class, 'showSkillsByPostId']);
 Route::get('/post/{post_id}/skills', [PostSkillController::class, 'showSkillsByPost']);
+
+
+//assing skills to freelancer
+Route::post('/freelancers/{id}/assign-skills', [FreelancersController::class, 'assignSkills']);
+//get freelancerskills
+Route::get('/freelancers/{id}/skills', [FreelancersController::class, 'getSkills']);
+//get post skiils
+Route::get('/posts/{id}/skills', [PostController::class, 'getSkills']);
+//match skills score
+Route::get('/freelancers/{freelancerId}/posts/{postId}/skills-match-score', [SkillsController::class, 'checkFreelancerSkillsMatchWithScore']);
+
+
+
+
+Route::get('/freelancers/{freelancerId}/skills', [FreelancersController::class, 'getFreelancerSkills']);
+Route::get('/freelancers/skills/{skillId}', [FreelancersController::class, 'getFreelancersBySkill']);
+//update freelancer skills
+Route::put('/freelancers/{freelancerId}/skills', [FreelancersController::class, 'updateFreelancerSkills']);
+Route::get('/freelancers/{freelancerId}/matching-posts', [FreelancersController::class, 'getMatchingPostsForFreelancer']);
+Route::get('/freelancers/{freelancerId}/profile', [FreelancersController::class, 'getFreelancerProfile']);
