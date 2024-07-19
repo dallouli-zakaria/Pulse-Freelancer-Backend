@@ -15,34 +15,25 @@ class Post extends Model
         'type',
         'description',
         'freelancers_number',
-        'skills_required',
         'period',
         'periodvalue',
         'budget',
         'budgetvalue',
         'client_id',
-        
     ];
 
-    function clientModel(){
-
+    public function client()
+    {
         return $this->belongsTo(Client::class);
     }
 
-    
-    // function skills(){
-
-    //     return $this->hasMany(skills::class);
-    // }
-
-    function offer(){
-        return $this->belongsToMany(Freelancers::class);
+    public function freelancers()
+    {
+        return $this->belongsToMany(Freelancers::class, 'freelancer_post'); // Adjust 'freelancer_post' to your actual pivot table name
     }
 
     public function skills()
     {
-        return $this->belongsToMany(skills::class);
+        return $this->belongsToMany(skills::class, 'post_skills', 'post_id', 'skill_id'); // Adjust 'post_skill' to your actual pivot table name
     }
-    
-
 }
