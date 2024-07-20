@@ -174,3 +174,8 @@ Route::get('/freelancers/skills/{skillId}', [FreelancersController::class, 'getF
 Route::put('/freelancers/{freelancerId}/skills', [FreelancersController::class, 'updateFreelancerSkills']);
 Route::get('/freelancers/{freelancerId}/matching-posts', [FreelancersController::class, 'getMatchingPostsForFreelancer']);
 Route::get('/freelancers/{freelancerId}/profile', [FreelancersController::class, 'getFreelancerProfile']);
+
+
+
+//get verified freelancers
+Route::get('freelancer/verified', [FreelancersController::class, 'getVerifiedFreelancers']);

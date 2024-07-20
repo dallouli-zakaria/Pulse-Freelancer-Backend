@@ -15,7 +15,7 @@ class FreelancersController extends Controller
     public function index()
     {
         try {
-            $freelancers = Freelancers::with('skills')->get();
+            $freelancers = Freelancers::with(['user:id,name,email', 'skills'])->orderBy('created_at', 'DESC')->get();
             return response()->json($freelancers);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -71,7 +71,7 @@ class FreelancersController extends Controller
     public function show($id)
     {
         try {
-            $freelancers = Freelancers::with(['user:id,name,email', 'skills'])->findOrFail($id);
+            $freelancers = Freelancers::with(['user:id,name,email', 'skills'])->orderBy('created_at', 'DESC')->findOrFail($id);
             
     
             // Return the combined response data as JSON
@@ -310,4 +310,21 @@ public function getMatchingPostsForFreelancer($freelancerId)
         return response()->json(['error' => 'Failed to retrieve matching posts.'], 500);
     }
 }
+
+public function getVerifiedFreelancers()
+{
+    try {
+        // Fetch only freelancers with status 'verified'
+        $freelancers = Freelancers::with(['user:id,name,email', 'skills'])->orderBy('created_at', 'DESC')
+            ->where('status', 'verified')
+            ->get();
+
+        return response()->json($freelancers);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+
+
 }

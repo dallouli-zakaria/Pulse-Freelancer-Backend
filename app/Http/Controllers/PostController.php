@@ -94,31 +94,29 @@ class PostController extends Controller
                 'type' => 'required|string',
                 'description' => 'required|string',
                 'freelancers_number' => 'required|numeric',
-                'skills_required' => 'nullable|array',   
+                'skills_required' => 'required|array',
                 'period' => 'required|string',
                 'periodvalue' => 'nullable|numeric',
                 'budget' => 'required|string',
                 'budgetvalue' => 'nullable|numeric',
+                'client_id' => 'required'
             ]);
-
-            // Find the post
-            $post = Post::find($id);
-            if (!$post) {
-                return response()->json(['error' => 'Post not found'], 404);
-            }
-
-            // Update post data
-            $post->update($data);
-
-            // Sync skills if provided
+    
+            // Find the post by id
+            $post = Post::findOrFail($id);
+    
+            // Update the post with the validated data
+            $postData = array_diff_key($data, ['skills_required' => '']);
+            $post->update($postData);
+    
+            // Sync the skills
             if (isset($data['skills_required'])) {
                 $post->skills()->sync($data['skills_required']);
             }
-
-            // Return the updated post with skills
-            return response()->json($post->load('skills'));
+    
+            return response()->json($post->load('skills'), 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update post.'], 500);
+            return response()->json(['error' =>  $e->getMessage()], 500);
         }
     }
 
@@ -177,21 +175,21 @@ class PostController extends Controller
 
 
     public function showPostsByClient($client_id)
-{
-    try {
-        $client = Client::find($client_id);
+        {
+            try {
+                $client = Client::find($client_id);
 
-        if (!$client) {
-            return response()->json(['error' => 'Client not found'], 404);
+                if (!$client) {
+                    return response()->json(['error' => 'Client not found'], 404);
+                }
+
+                $posts = Post::with('skills')->where('client_id', $client_id)->orderBy('created_at', 'DESC')->get();
+                
+                return response()->json($posts);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to fetch posts.'], 500);
+            }
         }
-
-        $posts = Post::where('client_id', $client_id)->orderBy('created_at', 'DESC')->get();
-        
-        return response()->json($posts);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Failed to fetch posts.'], 500);
-    }
-}
 
 
 public function showByPostId($post_id)
@@ -255,6 +253,10 @@ public function showByPostId($post_id)
                 return response()->json(['error' => 'Failed to retrieve skills.'], 500);
             }
         }
+
+
+
+        
     
 
     
