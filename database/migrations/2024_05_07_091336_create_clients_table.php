@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('company_activity')->nullable();
             $table->string('company_email')->nullable();
+            $table->foreignId('pack_id')->constrained('packs')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\FreelancerSkillController;
 use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
+use App\Http\Controllers\PackController;
 use App\Http\Controllers\PostSkillController;
 
 Route::get('/user', function (Request $request) {
@@ -45,6 +46,7 @@ Route::resources([
     'role'=>RolesController::class,
     'freelancer_skills'=>FreelancerSkillController::class,
     'post_skills'=>PostSkillController::class,
+    'pack'=>PackController::class
 ]);
 
 
