@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('periodvalue')->nullable();
             $table->string('budget');
             $table->integer('budgetvalue')->nullable();
+            $table->string('status')->default('open')->nullable();
             $table->foreignId('client_id')->constrained('clients')->nullable();
             $table->timestamps();
         });

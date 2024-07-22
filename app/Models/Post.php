@@ -19,6 +19,7 @@ class Post extends Model
         'periodvalue',
         'budget',
         'budgetvalue',
+        'status',
         'client_id',
     ];
 

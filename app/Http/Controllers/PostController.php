@@ -52,6 +52,7 @@ class PostController extends Controller
                 'periodvalue' => 'nullable|numeric',
                 'budget' => 'required|string',
                 'budgetvalue' => 'nullable|numeric',
+                'status'=>'nullable|string',
                 'client_id' => 'required'
             ]);
     
@@ -89,22 +90,58 @@ class PostController extends Controller
     {
         try {
             $data = $request->validate([
-                'title' => 'required|string',
-                'location' => 'required|string',
-                'type' => 'required|string',
-                'description' => 'required|string',
-                'freelancers_number' => 'required|numeric',
-                'skills_required' => 'required|array',
-                'period' => 'required|string',
+                'title' => 'nullable|string',
+                'location' => 'nullable|string',
+                'type' => 'nullable|string',
+                'description' => 'nullable|string',
+                'freelancers_number' => 'nullable|numeric',
+                'skills_required' => 'nullable|array',
+                'period' => 'nullable|string',
                 'periodvalue' => 'nullable|numeric',
-                'budget' => 'required|string',
+                'budget' => 'nullable|string',
                 'budgetvalue' => 'nullable|numeric',
-                'client_id' => 'required'
+                'client_id' => 'nullable'
             ]);
-    
+
+
             // Find the post by id
             $post = Post::findOrFail($id);
-    
+            if ($request->has('title')) {
+                $post->title = $request->input('title');
+            }
+            if ($request->has('location')) {
+                $post->location = $request->input('location');
+            }
+            if ($request->has('type')) {
+                $post->type = $request->input('type');
+            }
+            if ($request->has('description')) {
+                $post->description = $request->input('description');
+            }
+            if ($request->has('freelancers_number')) {
+                $post->freelancers_number = $request->input('freelancers_number');
+            }
+            if ($request->has('skills_required')) {
+                $post->skills()->sync($request->input('skills_required'));
+            }
+            if ($request->has('period')) {
+                $post->period = $request->input('period');
+            }
+            if ($request->has('periodvalue')) {
+                $post->periodvalue = $request->input('periodvalue');
+            }
+            if ($request->has('budget')) {
+                $post->budget = $request->input('budget');
+            }
+            if ($request->has('budgetvalue')) {
+                $post->budgetvalue = $request->input('budgetvalue');
+            }
+            if ($request->has('client_id')) {
+                $post->client_id = $request->input('client_id');
+            }
+            if ($request->has('status')) {
+                $post->status = $request->input('status');
+            }
             // Update the post with the validated data
             $postData = array_diff_key($data, ['skills_required' => '']);
             $post->update($postData);
