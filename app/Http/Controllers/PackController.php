@@ -6,7 +6,7 @@ use App\Models\Client;
 use App\Models\Pack;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
+use Illuminate\Validation\ValidationException;
 class PackController extends Controller
 {
     /**
