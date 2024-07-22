@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pack;
 use Illuminate\Http\Request;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
 class PackController extends Controller
 {
     /**
@@ -63,15 +64,26 @@ class PackController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $pack=Pack::find($id);
-      $validation=$request->validate([
-        'title'=>'required|string',
-        'description'=>'required|string',
-        'price' => 'nullable|numeric'
 
-      ]);
-      $pack->update($validation);
-      return response()->json('updated');
+      try {
+        $request->validate([
+          'title'=>'required|string',
+          'description'=>'required|string',
+          'price' => 'nullable|numeric'
+  
+        ]);
+        $pack=Pack::find($id);
+        $pack->update($request->all());
+        return response()->json($pack, 200);
+    } catch (ValidationException $e) {
+        return response()->json(['errors' => $e->errors()], 422);
+    } catch (ModelNotFoundException $e) {
+        return response()->json(['error' => 'Offer not found.'], 404);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to update offer.'], 500);
+    }
+     
+     
     } 
 
     /**
