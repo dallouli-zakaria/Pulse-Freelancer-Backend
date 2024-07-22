@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->float('price');
+            $table->json('client_ids')->nullable();
             $table->timestamps();
         });
     }

@@ -18,8 +18,6 @@ class Client extends User
         'company_activity',
         'company_email',
         
-    
-        
     ];
 
 
@@ -32,6 +30,11 @@ class Client extends User
 
     public function posts(){
         return $this->hasMany(Post::class);
+    }
+
+    public function pack()
+    {
+        return $this->belongsTo(Pack::class);
     }
 
 

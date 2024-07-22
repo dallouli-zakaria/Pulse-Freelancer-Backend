@@ -12,9 +12,16 @@ class Pack extends Model
     protected $fillable=[
         'title',
         'description',
-        'price'
+        'price',
+        'client_ids'
     ];
 
+
+    protected $casts = [
+        'client_ids' => 'array',
+    ];
+
+    
     public function client(){
         $this->belongsTo(Client::class);
     }

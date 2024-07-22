@@ -121,29 +121,7 @@ class FreelancerSkillController extends Controller
         }
 
 
-//         public function searchByName(Request $request)
-// {
-//     try {
-//         $name = $request->input('name');
-//         $FreelancerSkills = FreelancerSkill::with('skill')
-//             ->whereHas('skill', function ($query) use ($name) {
-//                 $query->where('title', 'like', "%{$name}%");
-//             })
-//             ->get()
-//             ->map(function ($freelancerSkill) {
-//                 return [
-//                     'level' => $freelancerSkill->level,
-//                     'freelancer_id' => $freelancerSkill->freelancer_id,
-//                     'skill_id' => $freelancerSkill->skill_id,
-//                     'title' => $freelancerSkill->skill->title,
-//                 ];
-//             });
 
-//         return response()->json($FreelancerSkills);
-//     } catch (\Exception $e) {
-//         return response()->json(['error' => 'Failed to search for freelancer skills by name.'], 500);
-//     }
-// }
 
 
 

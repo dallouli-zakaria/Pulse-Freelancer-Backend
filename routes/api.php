@@ -181,3 +181,18 @@ Route::get('/freelancers/{freelancerId}/profile', [FreelancersController::class,
 
 //get verified freelancers
 Route::get('freelancer/verified', [FreelancersController::class, 'getVerifiedFreelancers']);
+
+
+//assign pack to client
+Route::post('packs/{id}/add-client', [PackController::class, 'addClientId']);
+
+
+//get client details from a given pack
+Route::get('packs/{id}/clients', [PackController::class, 'getClientDetails']);
+
+//get pack details from given clientId
+Route::get('/packs/client/{client_id}', [PackController::class, 'getPackByClientId']);
+
+//remove client from pack
+Route::delete('packs/{packId}/revoke-client/{clientId}', [PackController::class, 'revokeClientId']);
+

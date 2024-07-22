@@ -162,4 +162,8 @@ class ClientController extends Controller
         $clientCount = Client::count();
         return response()->json($clientCount);
     }
+
+
+
+    
 }
