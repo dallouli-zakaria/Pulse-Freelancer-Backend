@@ -1,10 +1,10 @@
 <?php
-
-use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\MailSend;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserContoller;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PackController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\RolesController;
@@ -13,22 +13,18 @@ use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\LanguagesController;
+use App\Http\Controllers\PostSkillController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ExpericenceController;
 use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\FreelancerSkillController;
 use App\Http\Controllers\revokeRolesAndPermissions;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
-use App\Http\Controllers\PackController;
-use App\Http\Controllers\PostSkillController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-
-
-
-
 
 //Main routes 
 Route::resources([
@@ -49,8 +45,6 @@ Route::resources([
     'pack'=>PackController::class
 ]);
 
-
-
 //get posts related to a client
 Route::get('/posts/client/{client_id}', [PostController::class, 'showPostsByClient']);
 Route::get('/offers/freelancer/{freelancer_id}', [OfferController::class, 'showByFreelancerId']);
@@ -64,13 +58,22 @@ Route::get('/posts/{post_id}/client', [PostController::class, 'getClientDetailsB
 
 //Routes for authentification
 
+
 Route::group(['prefix' => 'auth'], function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::get('user', [AuthController::class, 'user']);
     Route::get('user/{id}', [AuthController::class, 'show']);
-});
+    Route::post('logout', [AuthController::class, 'logout']);
 
+    // Email verification routes
+    Route::post('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
+
+    Route::post('email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return response()->json(['message' => 'Verification link sent.']);
+    })->middleware(['throttle:6,1'])->name('verification.send');
+});
 
 //count 
 Route::get('clientCount',[ClientController::class,'count']);

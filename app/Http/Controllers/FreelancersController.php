@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Freelancers;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Freelancers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+
 class FreelancersController extends Controller
 {
     public function index()
@@ -45,6 +47,7 @@ class FreelancersController extends Controller
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->save();
+            event(new Registered($user));
     
             $freelancers = new Freelancers;
             $freelancers->id = $user->id;
@@ -116,6 +119,7 @@ class FreelancersController extends Controller
                 $user->password = Hash::make($request->password);
             }
             $user->save();
+            
 
             // Update freelancer fields only if they are provided in the request
             if ($request->has('title')) {

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Hash;
-use Dotenv\Exception\ValidationException;
-use App\Models\Client; 
 use App\Models\User; 
+
+use App\Models\Client; 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Dotenv\Exception\ValidationException;
 
 class ClientController extends Controller
 {
@@ -42,6 +43,7 @@ class ClientController extends Controller
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->save();
+            event(new Registered($user));
     
             $client = new Client;
             $client->id = $user->id;

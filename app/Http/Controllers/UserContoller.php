@@ -152,23 +152,50 @@ public function store(Request $request){
 return response()->json(['message'=>$user]);
 }
 
-public function update($id,Request $request){
-    $user=User::findOrFail($id);
-    $vlaidaton=$request->validate([
-        'name' =>'required|min=6',
-         'email'=>'required|email',
-         'password'=>[
-             'required',
-             'string',
-             'min:8', 
-             'regex:/[A-Z]/', // Must contain at least one uppercase letter
-             'regex:/[a-z]/', // Must contain at least one lowercase letter
-             'regex:/[0-9]/', // Must contain at least one number
-         ],
-     ]);
-    $user->update($vlaidaton);
+public function update(Request $request, $id) {
+    try {
+        // Find the user by ID or fail
+        $user = User::findOrFail($id);
 
-return response()->json(['message'=>'user updated']);
+        // Validate the request data
+        $validation = $request->validate([
+            'name' => 'required|string|min:6',
+            'email' => 'required|email',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[A-Z]/', // Must contain at least one uppercase letter
+                'regex:/[a-z]/', // Must contain at least one lowercase letter
+                'regex:/[0-9]/', // Must contain at least one number
+                'confirmed',     // Ensure password confirmation
+            ],
+            'email_verified_at' => 'nullable|date',
+        ]);
+
+        // Hash the password if it's present in the validation data
+        if (isset($validation['password'])) {
+            $validation['password'] = bcrypt($validation['password']);
+        }
+
+        // Update the user with the validated data
+        $user->update($validation);
+
+        // Return a success response
+        return response()->json(['message' => 'User updated successfully'], 200);
+
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        // Return a response for user not found
+        return response()->json(['message' => 'User not found'], 404);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Return a response for validation errors
+        return response()->json(['errors' => $e->errors()], 422);
+
+    } catch (\Exception $e) {
+        // Return a response for any other errors
+        return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+    }
 }
 public function destroy($id)
 {
