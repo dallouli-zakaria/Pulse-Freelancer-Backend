@@ -57,8 +57,8 @@ class OfferController extends Controller
         try {
             $request->validate([
                 'selected'=>'required|string',
-                'freelancer_id'=>'required|numeric',
-                'post_id'=>'required|numeric'
+                'freelancer_id'=>'nullable|numeric',
+                'post_id'=>'nullable|numeric'
             ]);
 
             $offer = Offer::findOrFail($id);
@@ -124,6 +124,90 @@ class OfferController extends Controller
         try {
             // Retrieve offers with given post_id
             $offers = Offer::where('post_id', $postId)->get();
+            
+            // Extract freelancer ids from offers
+            $freelancerIds = $offers->pluck('freelancer_id')->unique()->toArray();
+            
+            // Retrieve freelancers details for the extracted ids
+            $freelancers = Freelancers::whereIn('id', $freelancerIds)
+            ->with('user:id,name,email') 
+            ->orderBy('created_at', 'DESC')
+            ->get();
+            
+            return response()->json($freelancers);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch freelancer details.'], 500);
+        }
+    }
+
+    public function showByPostAndFreelancerId($post_id, $freelancer_id)
+    {
+        try {
+            $offer = Offer::where('post_id', $post_id)
+                          ->where('freelancer_id', $freelancer_id)
+                          ->first();
+    
+            if (is_null($offer)) {
+                return response()->json(['error' => 'No offers found for this post and freelancer.'], 404);
+            }
+    
+            return response()->json($offer);
+        } catch (\Exception $e) {
+            // Return a more general error message without exposing exception details
+            return response()->json(['error' => 'Failed to fetch offer.'], 500);
+        }
+    }
+
+
+    public function getFreelancerDetailsByPostIdTrue($postId)
+    {
+        try {
+            // Retrieve offers with given post_id
+            $offers = Offer::where('post_id', $postId)->where('selected', 'true')->get();
+            
+            // Extract freelancer ids from offers
+            $freelancerIds = $offers->pluck('freelancer_id')->unique()->toArray();
+            
+            // Retrieve freelancers details for the extracted ids
+            $freelancers = Freelancers::whereIn('id', $freelancerIds)
+            ->with('user:id,name,email') 
+            ->orderBy('created_at', 'DESC')
+            ->get();
+            
+            return response()->json($freelancers);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch freelancer details.'], 500);
+        }
+    }
+
+
+    public function getFreelancerDetailsByPostIdFalse($postId)
+    {
+        try {
+            // Retrieve offers with given post_id
+            $offers = Offer::where('post_id', $postId)->where('selected', 'false')->get();
+            
+            // Extract freelancer ids from offers
+            $freelancerIds = $offers->pluck('freelancer_id')->unique()->toArray();
+            
+            // Retrieve freelancers details for the extracted ids
+            $freelancers = Freelancers::whereIn('id', $freelancerIds)
+            ->with('user:id,name,email') 
+            ->orderBy('created_at', 'DESC')
+            ->get();
+            
+            return response()->json($freelancers);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch freelancer details.'], 500);
+        }
+    }
+    
+
+    public function getFreelancerDetailsByPostIdDeclined($postId)
+    {
+        try {
+            // Retrieve offers with given post_id
+            $offers = Offer::where('post_id', $postId)->where('selected', 'declined')->get();
             
             // Extract freelancer ids from offers
             $freelancerIds = $offers->pluck('freelancer_id')->unique()->toArray();

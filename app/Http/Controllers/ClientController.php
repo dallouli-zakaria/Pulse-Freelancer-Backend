@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Hash;
-use Dotenv\Exception\ValidationException;
 use App\Models\Client; 
 use App\Models\User; 
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
+
 
 class ClientController extends Controller
 {
@@ -53,12 +51,7 @@ class ClientController extends Controller
             
             $user->assignRole('client_role');
 
-            // $role = Role::where('name', $request->name)->firstOrFail();
-  
-            // foreach ($request->users as $user) {
-            //     $user = Client::findOrFail($user);
-            //     $user->assignRole($role->name);
-            // }
+
             return response()->json('created');
         } catch (\Exception $e) {
             return response()->json(['errors' => $e->getMessage()], 500);
@@ -95,20 +88,6 @@ class ClientController extends Controller
             $client = Client::findOrFail($id);
     
        
-            // $user->name = $request->name;
-            // $user->email = $request->email;
-            // if ($request->password) {
-            //     $user->password = Hash::make($request->password);
-            // }
-            // $user->save();
-    
-          
-            // $client->profession = $request->profession;
-            // $client->company_name = $request->company_name;
-            // $client->company_activity = $request->company_activity;
-            // $client->company_email = $request->company_email;
-            // $client->save();
-    
 
             // Update user fields only if they are provided in the request
             if ($request->has('name')) {

@@ -257,25 +257,32 @@ public function showByPostId($post_id)
     }
 
     public function getClientDetailsByPostId($post_id)
-        {
-            try {
-                // Retrieve offers with given post_id
-                $posts = Post::where('id', $post_id)->get();
-                
-                // Extract freelancer ids from offers
-                $clientids = $posts->pluck('client_id')->unique()->toArray();
-                
-                // Retrieve freelancers details for the extracted ids
-                $client = Client::whereIn('id', $clientids)
-                ->with('user:id,name,email') 
-                ->orderBy('created_at', 'DESC')
-                ->get();
-                
-                return response()->json($client);
-            } catch (\Exception $e) {
-                return response()->json($e, 500);
+    {
+        try {
+            // Retrieve the post with the given post_id
+            $post = Post::find($post_id);
+    
+            // Check if the post exists
+            if (!$post) {
+                return response()->json(['error' => 'Post not found'], 404);
             }
+    
+            // Retrieve the client associated with the post
+            $client = Client::where('id', $post->client_id)
+                ->with('user:id,name,email')
+                ->first();  // Use first() to get a single object instead of get()
+    
+            // Check if the client exists
+            if (!$client) {
+                return response()->json(['error' => 'Client not found'], 404);
+            }
+    
+            return response()->json($client);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
         }
+    }
+    
 
 
         public function getSkills($postId)
@@ -290,6 +297,20 @@ public function showByPostId($post_id)
                 return response()->json(['error' => 'Failed to retrieve skills.'], 500);
             }
         }
+
+        public function checkIfOfferExists($post_id)
+            {
+                try {
+                    // Check if there are any offers with the given post_id
+                    $offerExists = DB::table('offers')
+                                        ->where('post_id', $post_id)
+                                        ->exists();
+
+                    return response()->json($offerExists);
+                } catch (\Exception $e) {
+                    return response()->json(['error' => 'Failed to check for offers.'], 500);
+                }
+            }
 
 
 

@@ -15,10 +15,5 @@ class Offer extends Model
         'post_id'
     ] ;
 
-    // function client(){
-    //     return $this->belongsTo(Client::class);
-    // }
-    // function freelancer(){
-    //     return $this->belongsTo(Freelancers::class);
-    // }
+
 }
