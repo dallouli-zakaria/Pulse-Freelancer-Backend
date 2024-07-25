@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
-use App\Models\FreelancerModel;
+
+
 use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class UserContoller extends Controller
 {
@@ -42,6 +44,21 @@ class UserContoller extends Controller
 
  //registration method
 
+
+ public function indexPagination(Request $request)
+{
+    try {
+        $page = $request->query('page', 1);
+        $perPage = 7;
+
+        // Paginate the User model directly
+        $users = User::orderBy('created_at', 'DESC')->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($users);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
  public function register(Request $request)
  {
     //  $user = User::create($request->validated());

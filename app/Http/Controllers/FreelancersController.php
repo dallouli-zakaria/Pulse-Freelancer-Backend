@@ -14,15 +14,36 @@ use Illuminate\Validation\ValidationException;
 
 class FreelancersController extends Controller
 {
-    public function index()
-    {
-        try {
-            $freelancers = Freelancers::with(['user:id,name,email', 'skills'])->orderBy('created_at', 'DESC')->get();
-            return response()->json($freelancers);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+
+   public function index(){
+    try {
+       
+
+        $freelancers = Freelancers::with(['user:id,name,email', 'skills'])
+                                  ->orderBy('created_at', 'DESC');
+                                  
+
+        return response()->json($freelancers);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+   }
+    public function indexPagination(Request $request)
+{
+    try {
+        $page = $request->query('page', 1);
+        $perPage = 7;
+
+        $freelancers = Freelancers::with(['user:id,name,email', 'skills'])
+                                  ->orderBy('created_at', 'DESC')
+                                  ->paginate($perPage);
+
+        return response()->json($freelancers);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
 
     public function store(Request $request)
     {
@@ -328,6 +349,8 @@ public function getVerifiedFreelancers()
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }
+
+
 
 
 

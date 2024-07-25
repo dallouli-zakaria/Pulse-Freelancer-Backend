@@ -17,6 +17,22 @@ class ContractController extends Controller
             return response()->json(['error' => 'Failed to fetch contracts.'], 500);
         }
     }
+  
+    public function indexPagination(Request $request)
+{
+    try {
+        $page = $request->query('page', 1);
+        $perPage = 7;
+
+        // Paginate the User model directly
+        $users = Contract::orderBy('created_at', 'DESC')->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($users);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
 
     public function store(Request $request)
     {

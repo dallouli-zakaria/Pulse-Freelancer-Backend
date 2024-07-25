@@ -45,6 +45,13 @@ Route::resources([
     'pack'=>PackController::class
 ]);
 
+
+//pagination
+Route::get('/freelancerPagination',[FreelancersController::class,'indexPagination']);
+Route::get('/clientPagination',[ClientController::class,'indexPagination']);
+Route::get('/userPagination',[UserContoller::class,'indexPagination']);
+Route::get('/contractPagination',[ContractController::class,'indexPagination']);
+Route::get('/postPagination',[PostController::class,'indexPagination']);
 //get posts related to a client
 Route::get('/posts/client/{client_id}', [PostController::class, 'showPostsByClient']);
 Route::get('/offers/freelancer/{freelancer_id}', [OfferController::class, 'showByFreelancerId']);
@@ -52,8 +59,18 @@ Route::get('/offers/post/{post_id}', [OfferController::class, 'showByPostId']);
 Route::get('/posts/post_id/{post_id}', [PostController::class, 'showByPostId']);
 Route::get('/posts/{postId}/freelancers/{freelancerId}/offer', [PostController::class, 'checkFreelancerOffer']);
 Route::get('/offer/freelancers/{postId}', [OfferController::class, 'getFreelancerDetailsByPostId']);
-Route::get('/posts/{post_id}/client', [PostController::class, 'getClientDetailsByPostId']);
+// get freelancer details from offer_id true
+Route::get('/offer/freelancerTrue/{postId}', [OfferController::class, 'getFreelancerDetailsByPostIdTrue']);  
+// get freelancer details from offer_id false
+Route::get('/offer/freelancerFalse/{postId}', [OfferController::class, 'getFreelancerDetailsByPostIdFalse']);  
+// get freelancer details from offer_id declined
+Route::get('/offer/freelancerDeclined/{postId}', [OfferController::class, 'getFreelancerDetailsByPostIdDeclined']);
 
+Route::get('/posts/{post_id}/client', [PostController::class, 'getClientDetailsByPostId']);
+//show form post and freelancer ids
+Route::get('offers/{post_id}/{freelancer_id}', [OfferController::class, 'showByPostAndFreelancerId']);
+//check if post exists in offer:
+    Route::get('/posts/{post_id}/check-offer', [PostController::class, 'checkIfOfferExists']);
 
 
 //Routes for authentification
