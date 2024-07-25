@@ -71,6 +71,11 @@ Route::get('offers/{post_id}/{freelancer_id}', [OfferController::class, 'showByP
 //check if post exists in offer:
     Route::get('/posts/{post_id}/check-offer', [PostController::class, 'checkIfOfferExists']);
 
+//delete byfreelancerId and skillId
+Route::delete('/freelancer/{freelancer_id}/skill/{skill_id}', [FreelancerSkillController::class, 'deleteSkillbyfreelancerId']);
+
+//get posts with freelancer_id where freelancer is included and status is closeed
+Route::get('/posts/closed-by-freelancer/{freelancer_id}', [PostController::class, 'getClosedPostsByFreelancer']);
 
 //Routes for authentification
 

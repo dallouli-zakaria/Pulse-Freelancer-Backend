@@ -312,6 +312,32 @@ public function showByPostId($post_id)
                 }
             }
 
+       
+            
+
+            public function getClosedPostsByFreelancer($freelancer_id)
+            {
+                try {
+                    // Retrieve closed posts related to the given freelancer_id
+                    $posts = Post::join('offers', 'posts.id', '=', 'offers.post_id')
+                        ->where('posts.status', 'closed')
+                        ->where('offers.freelancer_id', $freelancer_id)
+                        ->select('posts.*')
+                        ->distinct()
+                        ->get();
+                    
+                    // Check if posts are found
+                    if ($posts->isEmpty()) {
+                        return response()->json(['message' => 'No closed posts found for the given freelancer.'], 404);
+                    }
+            
+                    return response()->json($posts);
+                } catch (\Exception $e) {
+                    return response()->json(['error' => 'Failed to retrieve posts.'], 500);
+                }
+            }
+            
+
 
 
         
