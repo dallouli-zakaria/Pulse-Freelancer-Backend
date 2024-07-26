@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Psy\CodeCleaner\ReturnTypePass;
 
 class FreelancersController extends Controller
 {
@@ -28,11 +29,10 @@ class FreelancersController extends Controller
         return response()->json(['error' => $e->getMessage()], 500);
     }
    }
-    public function indexPagination(Request $request)
-{
+    public function indexPagination(Request $request){
     try {
         $page = $request->query('page', 1);
-        $perPage = 7;
+        $perPage = 8;
 
         $freelancers = Freelancers::with(['user:id,name,email', 'skills'])
                                   ->orderBy('created_at', 'DESC')
@@ -42,7 +42,38 @@ class FreelancersController extends Controller
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
+   }
+    
+   
+   public function searchBar() {
+    try {
+        if (isset($_GET['query'])) {
+            $search_bar_input = $_GET['query'];
+            $freelancers = Freelancers::join('users', 'users.id', '=', 'freelancers.id')
+                          ->orderBy('freelancers.id', 'DESC')
+                          ->where(function($query) use ($search_bar_input) {
+                              $query->where('users.name', 'LIKE', $search_bar_input . '%')
+                                    ->orWhere('users.email', 'LIKE', $search_bar_input . '%');
+                          })
+                          ->select('freelancers.*', 'users.name', 'users.email')->with('user')
+                          ->get();
+        } else {
+            $freelancers = Freelancers::join('users', 'users.id', '=', 'freelancers.id')
+                          ->orderBy('freelancers.id', 'DESC')
+                          ->select('freelancers.*', 'users.name', 'users.email')->with('user')
+                          ->get();
+        }
+        return response()->json($freelancers, 200);
+    } catch (\Illuminate\Database\QueryException $e) {
+        // Database-related error
+        return response()->json(['error' => 'Database query error', 'message' => $e->getMessage()], 500);
+    } catch (\Exception $e) {
+        // General error
+        return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
+    }
 }
+
+
 
 
     public function store(Request $request)

@@ -24,8 +24,7 @@ class CustomVerifyEmail extends VerifyEmailNotification
         );
     }
 
-    public function toMail($notifiable)
-    {
+    public function toMail($notifiable){
         $verificationUrl = url('/api/email/verify/' . $notifiable->id . '/' . sha1($notifiable->email));
 
         return (new MailMessage)
@@ -34,5 +33,5 @@ class CustomVerifyEmail extends VerifyEmailNotification
             ->line('Thank you for registering with our application. Please click the button below to verify your email address.')
             ->action('Verify Email Address', $verificationUrl)
             ->line('If you did not create an account, no further action is required.');
-    }
+        }
 }

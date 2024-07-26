@@ -42,6 +42,35 @@ class ClientController extends Controller
         }
     }
 
+    public function searchBar() {
+        try {
+            if (isset($_GET['query'])) {
+                $search_bar_input = $_GET['query'];
+                $clients = Client::join('users', 'users.id', '=', 'clients.id')
+                              ->orderBy('clients.id', 'DESC')
+                              ->where(function($query) use ($search_bar_input) {
+                                  $query->where('users.name', 'LIKE', $search_bar_input . '%')
+                                        ->orWhere('users.email', 'LIKE', $search_bar_input . '%');
+                              })
+                              ->select('clients.*', 'users.name', 'users.email')->with('user')
+                              ->get();
+            } else {
+                $clients = Client::join('users', 'users.id', '=', 'clients.id')
+                              ->orderBy('clients.id', 'DESC')
+                              ->select('clients.*', 'users.name', 'users.email')->with('user')
+                              ->get();
+            }
+            return response()->json($clients, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Database-related error
+            return response()->json(['error' => 'Database query error', 'message' => $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            // General error
+            return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
+        }
+    }
+    
+
     public function store(Request $request)
     {
         try {

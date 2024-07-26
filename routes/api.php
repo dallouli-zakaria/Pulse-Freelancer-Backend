@@ -19,7 +19,6 @@ use App\Http\Controllers\ExpericenceController;
 use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\FreelancerSkillController;
 use App\Http\Controllers\revokeRolesAndPermissions;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
 
 Route::get('/user', function (Request $request) {
@@ -45,7 +44,9 @@ Route::resources([
     'pack'=>PackController::class
 ]);
 
-
+//sersch bar
+Route::get('/searchBar',[FreelancersController::class,'searchBar']);
+Route::get('/clientsearchBar',[ClientController::class,'searchBar']);
 //pagination
 Route::get('/freelancerPagination',[FreelancersController::class,'indexPagination']);
 Route::get('/clientPagination',[ClientController::class,'indexPagination']);
