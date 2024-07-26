@@ -21,6 +21,7 @@ use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
 use App\Http\Controllers\PackController;
 use App\Http\Controllers\PostSkillController;
+use App\Http\Controllers\WishlistController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -50,6 +51,13 @@ Route::resources([
 ]);
 
 
+//wishlist
+Route::get('/wishlist/add/{client_id}/{freelancer_id}', [WishlistController::class, 'addToWishlist']);
+Route::delete('/wishlist/remove/{client_id}/{freelancer_id}', [WishlistController::class, 'removeFromWishlist']);
+Route::get('/wishlist/client/{client_id}', [WishlistController::class, 'getWishlist']);
+
+//get posts related to freelancer:
+Route::get('/posts/freelancer/{freelancer_id}', [PostController::class, 'getPostDetailsByFreelancerId']);
 
 //get posts related to a client
 Route::get('/posts/client/{client_id}', [PostController::class, 'showPostsByClient']);
