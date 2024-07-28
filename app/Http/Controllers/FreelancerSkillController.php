@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Freelancers;
 use App\Models\FreelancerSkill;
 use App\Models\skills;
 use Illuminate\Http\Request;
@@ -117,6 +118,20 @@ class FreelancerSkillController extends Controller
                 return response()->json($FreelancerSkills);
             } catch (\Exception $e) {
                 return response()->json($e, 500);
+            }
+        }
+
+
+
+        public function deleteSkillbyfreelancerId($freelancer_id, $skill_id)
+        {
+            $freelancer = Freelancers::find($freelancer_id);
+    
+            if ($freelancer) {
+                $freelancer->skills()->detach($skill_id);
+                return response()->json(['message' => 'Skill deleted successfully.'], 200);
+            } else {
+                return response()->json(['message' => 'Freelancer not found.'], 404);
             }
         }
 

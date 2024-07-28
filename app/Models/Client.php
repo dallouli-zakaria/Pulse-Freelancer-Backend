@@ -37,6 +37,11 @@ class Client extends User
         return $this->belongsTo(Pack::class);
     }
 
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
 
     
 

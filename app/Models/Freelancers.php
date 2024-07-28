@@ -54,5 +54,9 @@ class Freelancers extends User
     function posts(){
         return $this->belongsToMany(Post::class);
     }
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 
 }

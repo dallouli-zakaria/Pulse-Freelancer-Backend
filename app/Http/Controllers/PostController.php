@@ -219,6 +219,18 @@ class PostController extends Controller
         }
     }
 
+
+    public function showOpenPosts(){
+        try {
+            // Retrieve all posts with their related skills
+            $posts = Post::with('skills')->where('posts.status','open')->orderBy('created_at', 'DESC')->get();
+            
+            return response()->json($posts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function addPost(Request $request,$id){
        $client_id=User::findOrFail($id);
        $post=new Post;
@@ -363,4 +375,62 @@ public function showByPostId($post_id)
                     return response()->json(['error' => 'Failed to check for offers.'], 500);
                 }
             }    
-}
+          
+
+       
+            
+
+    public function getClosedPostsByFreelancer($freelancer_id)
+    {
+        try {
+            // Retrieve closed posts related to the given freelancer_id
+            $posts = Post::join('offers', 'posts.id', '=', 'offers.post_id')
+                ->where('posts.status', 'closed')
+                ->where('offers.freelancer_id', $freelancer_id)
+                ->select('posts.*')
+                ->distinct()
+                ->get();
+            
+            // Check if posts are found
+            if ($posts->isEmpty()) {
+                return response()->json(['message' => 'No closed posts found for the given freelancer.'], 404);
+            }
+    
+            return response()->json($posts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve posts.'], 500);
+        }
+    }
+            
+
+
+    public function getPostDetailsByFreelancerId($freelancer_id)
+        {
+            try {
+                $posts = DB::table('posts')
+                    ->join('offers', 'posts.id', '=', 'offers.post_id')
+                    ->where('offers.freelancer_id', $freelancer_id)
+                    ->select('posts.*')
+                    ->distinct()
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
+
+                if ($posts->isEmpty()) {
+                    return response()->json(['error' => 'No posts found for the given freelancer.'], 404);
+                }
+
+                return response()->json($posts);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to retrieve posts.'], 500);
+            }
+        }
+    }
+
+
+
+
+        
+    
+
+    
+

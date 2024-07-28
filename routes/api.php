@@ -13,13 +13,14 @@ use App\Http\Controllers\SkillsController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\LanguagesController;
-use App\Http\Controllers\PostSkillController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ExpericenceController;
 use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\FreelancerSkillController;
 use App\Http\Controllers\revokeRolesAndPermissions;
 use App\Http\Controllers\grantRolesAndPermissionsContoller;
+use App\Http\Controllers\PostSkillController;
+use App\Http\Controllers\WishlistController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -53,6 +54,20 @@ Route::get('/clientPagination',[ClientController::class,'indexPagination']);
 Route::get('/userPagination',[UserContoller::class,'indexPagination']);
 Route::get('/contractPagination',[ContractController::class,'indexPagination']);
 Route::get('/postPagination',[PostController::class,'indexPagination']);
+
+//wishlist
+Route::get('/wishlist/add/{client_id}/{freelancer_id}', [WishlistController::class, 'addToWishlist']);
+Route::delete('/wishlist/remove/{client_id}/{freelancer_id}', [WishlistController::class, 'removeFromWishlist']);
+Route::get('/wishlist/client/{client_id}', [WishlistController::class, 'getWishlist']);
+Route::get('/wishlist/client/{client_id}/freelancers', [WishlistController::class, 'getWishlistfreelancerdetails']);
+
+//show open posts
+Route::get('/posts/open/all', [PostController::class, 'showOpenPosts']);
+
+
+//get posts related to freelancer:
+Route::get('/posts/freelancer/{freelancer_id}', [PostController::class, 'getPostDetailsByFreelancerId']);
+
 //get posts related to a client
 Route::get('/posts/client/{client_id}', [PostController::class, 'showPostsByClient']);
 Route::get('/offers/freelancer/{freelancer_id}', [OfferController::class, 'showByFreelancerId']);
@@ -73,6 +88,11 @@ Route::get('offers/{post_id}/{freelancer_id}', [OfferController::class, 'showByP
 //check if post exists in offer:
     Route::get('/posts/{post_id}/check-offer', [PostController::class, 'checkIfOfferExists']);
 
+//delete byfreelancerId and skillId
+Route::delete('/freelancer/{freelancer_id}/skill/{skill_id}', [FreelancerSkillController::class, 'deleteSkillbyfreelancerId']);
+
+//get posts with freelancer_id where freelancer is included and status is closeed
+Route::get('/posts/closed-by-freelancer/{freelancer_id}', [PostController::class, 'getClosedPostsByFreelancer']);
 
 //Routes for authentification
 
