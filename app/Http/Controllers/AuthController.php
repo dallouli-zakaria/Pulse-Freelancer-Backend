@@ -16,24 +16,36 @@ class AuthController extends Controller
 {
      // Login method
      public function login(Login $request)
-     {
-         try {
-             $token = auth()->attempt($request->validated());
-             if ($token) {
-                 return $this->responseWithToken($token);
-             } else {
-                 return response()->json([
-                     'status' => 'failed',
-                     'message' => 'Invalid credentials'
-                 ], 401);
-             }
-         } catch (Exception $e) {
-             return response()->json([
-                 'status' => 'error',
-                 'message' => $e->getMessage()
-             ], 500);
-         }
-     }
+{
+    try {
+        $user = User::where('email', $request->email)->first();
+        
+        if ($user && $user->email_verified_at === null) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Please verify your email'
+            ], 403);
+        }else{
+            
+        $token = auth()->attempt($request->validated());
+        
+        if ($token) {
+            return $this->responseWithToken($token);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid credentials'
+            ], 401);
+        }
+        }
+        
+    } catch (Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
 
      public function verifyEmail($id, $hash)
     {
