@@ -28,10 +28,11 @@ class CustomVerifyEmail extends VerifyEmailNotification
         $verificationUrl = url('/api/email/verify/' . $notifiable->id . '/' . sha1($notifiable->email));
 
         return (new MailMessage)
-            ->subject('Please Verify Your Email Address')
-            ->greeting('Hello ' . $notifiable->name . '!')
-            ->line('Thank you for registering with our application. Please click the button below to verify your email address.')
-            ->action('Verify Email Address', $verificationUrl)
-            ->line('If you did not create an account, no further action is required.');
+        ->subject('Please Verify Your Email Address')
+        ->view('notification-Email-verefication', [
+            'name' => $notifiable->name,
+            'verificationUrl' => $verificationUrl,
+        ]);
+           
         }
 }

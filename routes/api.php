@@ -85,7 +85,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     // Email verification routes
-    Route::post('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
+    
 
     Route::post('email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
@@ -93,6 +93,9 @@ Route::group(['prefix' => 'auth'], function () {
     })->middleware(['throttle:6,1'])->name('verification.send');
 });
 
+
+//email verification
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
 //count 
 Route::get('clientCount',[ClientController::class,'count']);
 Route::get('contractCount',[ContractController::class,'count']);

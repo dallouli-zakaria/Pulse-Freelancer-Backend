@@ -36,32 +36,32 @@ class AuthController extends Controller
      }
 
      public function verifyEmail($id, $hash)
-     {
-         try {
-             // Find the user by ID or fail
-             $user = User::findOrFail($id);
-     
-             // Verify the hash
-             if (!Hash::check($user->getEmailForVerification(), $hash)) {
-                 return response()->json(['message' => 'Invalid verification link'], 400);
-             }
-     
-             // Update the email_verified_at field
-             $user->email_verified_at = Carbon::now();
-     
-             if ($user->save()) {
-                 return response()->json(['message' => 'Email verified successfully'], 200);
-             } else {
-                 return response()->json(['message' => 'Failed to update user'], 500);
-             }
-         } catch (ModelNotFoundException $e) {
-             // Return a response for user not found
-             return response()->json(['message' => 'User not found'], 404);
-         } catch (Exception $e) {
-             // Return a response for any other errors
-             return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
-         }
-     }
+    {
+        try {
+            // Find the user by ID or fail
+            $user = User::findOrFail($id);
+
+            // Verify the hash
+            if (!hash_equals(sha1($user->getEmailForVerification()), $hash)) {
+                return view('verify-email')->with('message', 'Invalid verification link');
+            }
+
+            // Update the email_verified_at field
+            $user->email_verified_at = Carbon::now();
+
+            if ($user->save()) {
+                return view('verify-email')->with('message', 'Email verified successfully');
+            } else {
+                return view('verify-email')->with('message', 'Failed to update user');
+            }
+        } catch (ModelNotFoundException $e) {
+            // Return a response for user not found
+            return view('verify-email')->with('message', 'User not found');
+        } catch (Exception $e) {
+            // Return a response for any other errors
+            return view('verify-email')->with('message', 'An error occurred: ' . $e->getMessage());
+        }
+    }
      // Registration method
      public function register(Register $request)
      {

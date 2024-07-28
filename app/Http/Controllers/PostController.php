@@ -39,6 +39,42 @@ class PostController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+
+
+    //search bar
+    
+    public function searchBar() {
+        try {
+            if (isset($_GET['query'])) {
+                $search_bar_input = $_GET['query'];
+                $posts = Post::join('users', 'users.id', '=', 'posts.client_id') // Assuming client_id is the correct foreign key
+                              ->orderBy('posts.id', 'DESC')
+                              ->where(function($query) use ($search_bar_input) {
+                                  $query->where('posts.title', 'LIKE', '%' . $search_bar_input . '%') // Search by title
+                                        ->orWhere('users.name', 'LIKE', '%' . $search_bar_input . '%')
+                                        ->orWhere('users.email', 'LIKE', '%' . $search_bar_input . '%');
+                              })
+                              ->select('posts.*', 'users.name', 'users.email')
+                              ->with('user')
+                              ->get();
+            } else {
+                $posts = Post::join('users', 'users.id', '=', 'posts.client_id') // Assuming client_id is the correct foreign key
+                              ->orderBy('posts.id', 'DESC')
+                              ->select('posts.*', 'users.name', 'users.email')
+                              ->with('user')
+                              ->get();
+            }
+            return response()->json($posts, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Database-related error
+            return response()->json(['error' => 'Database query error', 'message' => $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            // General error
+            return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
+        }
+    }
+    
     public function show($id)
     {
         try {
@@ -326,12 +362,5 @@ public function showByPostId($post_id)
                 } catch (\Exception $e) {
                     return response()->json(['error' => 'Failed to check for offers.'], 500);
                 }
-            }
-
-
-
-        
-    
-
-    
+            }    
 }
