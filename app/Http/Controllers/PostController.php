@@ -167,6 +167,18 @@ class PostController extends Controller
         }
     }
 
+
+    public function showOpenPosts(){
+        try {
+            // Retrieve all posts with their related skills
+            $posts = Post::with('skills')->where('posts.status','open')->orderBy('created_at', 'DESC')->get();
+            
+            return response()->json($posts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function addPost(Request $request,$id){
        $client_id=User::findOrFail($id);
        $post=new Post;
@@ -347,6 +359,7 @@ public function showByPostId($post_id)
                     ->where('offers.freelancer_id', $freelancer_id)
                     ->select('posts.*')
                     ->distinct()
+                    ->orderBy('created_at', 'DESC')
                     ->get();
 
                 if ($posts->isEmpty()) {

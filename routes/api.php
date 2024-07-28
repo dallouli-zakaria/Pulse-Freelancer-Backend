@@ -55,6 +55,11 @@ Route::resources([
 Route::get('/wishlist/add/{client_id}/{freelancer_id}', [WishlistController::class, 'addToWishlist']);
 Route::delete('/wishlist/remove/{client_id}/{freelancer_id}', [WishlistController::class, 'removeFromWishlist']);
 Route::get('/wishlist/client/{client_id}', [WishlistController::class, 'getWishlist']);
+Route::get('/wishlist/client/{client_id}/freelancers', [WishlistController::class, 'getWishlistfreelancerdetails']);
+
+//show open posts
+Route::get('/posts/open/all', [PostController::class, 'showOpenPosts']);
+
 
 //get posts related to freelancer:
 Route::get('/posts/freelancer/{freelancer_id}', [PostController::class, 'getPostDetailsByFreelancerId']);
