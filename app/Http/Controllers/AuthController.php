@@ -77,7 +77,7 @@ class AuthController extends Controller
      // Registration method
      public function register(Register $request)
      {
-         try {
+         try { 
              $user = User::create($request->validated());
              if ($user) {
                  event(new Registered($user)); // Trigger the Registered event to send the email verification
