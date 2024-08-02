@@ -92,12 +92,18 @@ class FreelancersController extends Controller
                 'adress' => 'nullable|string|max:255',
                 'phone' => 'nullable|string|max:20',
                 'portfolio_Url' => 'nullable|url|max:255',
-                'status'=> 'nullable|string'
+                'status'=> 'nullable|string',
+                'user.email_verified_at' => 'nullable|date'
+     
             ]);
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->email_verified_at = $request->email_verified_at;
             $user->password = Hash::make($request->password);
+            if ($request->has('user.email_verified_at')) {
+                $user->email_verified_at = $request->input('user.email_verified_at');
+            }
             $user->save();
             event(new Registered($user));
     

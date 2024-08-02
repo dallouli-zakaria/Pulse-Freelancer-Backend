@@ -82,12 +82,16 @@ class ClientController extends Controller
                 'company_name' => 'nullable|string|max:255',
                 'company_activity' => 'nullable|string|max:255',
                 'company_email' => 'nullable|email',
+                'user.email_verified_at' => 'nullable|date'
             ]);
     
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
+            if ($request->has('user.email_verified_at')) {
+                $user->email_verified_at = $request->input('user.email_verified_at');
+            }
             $user->save();
             event(new Registered($user));
     
@@ -132,7 +136,6 @@ class ClientController extends Controller
                 'company_name' => 'nullable|string|max:255',
                 'company_activity' => 'nullable|string|max:255',
                 'company_email' => 'nullable|email',
-                'email_verified_at'=> 'nullable|string',
             ]);
     
             $user = User::findOrFail($id);
