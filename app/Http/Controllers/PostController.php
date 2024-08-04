@@ -424,7 +424,34 @@ public function showByPostId($post_id)
                 return response()->json(['error' => 'Failed to retrieve posts.'], 500);
             }
         }
+
+
+
+        public function verifyClientPost($client_id, $post_id)
+        {
+            try {
+                // Check if a post exists with the given client_id and post_id
+                $postExists = Post::where('id', $post_id)
+                    ->where('client_id', $client_id)
+                    ->exists();
+    
+                return response()->json($postExists, 200);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to verify post.'], 500);
+            }
+        }
+
+
+
+
+
+
+
+
     }
+
+
+
 
 
 

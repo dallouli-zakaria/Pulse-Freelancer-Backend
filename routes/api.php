@@ -26,6 +26,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+
+
+
+
 //Main routes 
 Route::resources([
     'clients' => ClientController::class,
@@ -44,6 +48,14 @@ Route::resources([
     'post_skills'=>PostSkillController::class,
     'pack'=>PackController::class
 ]);
+
+//refresh token route
+Route::post('refresh', [AuthController::class, 'refresh']);
+// verif client post
+Route::get('verify-client-post/{client_id}/{post_id}', [PostController::class, 'verifyClientPost']);
+//verif freelancer offer and post
+Route::get('verify-freelancer-post/{freelancer_id}/{post_id}', [OfferController::class, 'freelancerExistsInOffer']);
+
 
 //sersch bar
 Route::get('/searchBar',[FreelancersController::class,'searchBar']);
