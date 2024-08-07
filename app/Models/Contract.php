@@ -10,19 +10,20 @@ class Contract extends Model
     use HasFactory;
     protected $fillable=[
         'title',
-        'period',
-        'budget',
-        'project_description',
-        'freelancer_id',
-        'client_id'
+        'start_date',
+        'end_date',
+        'description',
+        'client_id',
         
     ];
 
     
-    function client(){
-        return $this->belongsTo(client::class);
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
     }
-    function freelancer(){
-        return $this->belongsTo(Freelancers::class);
+    public function freelancers()
+    {
+        return $this->belongsToMany(Freelancers::class,'contract_freelancer');
     }
 }

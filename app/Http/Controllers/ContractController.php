@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class ContractController extends Controller
@@ -34,26 +35,41 @@ class ContractController extends Controller
 }
 
 
-    public function store(Request $request)
-    {
-        try {
-            $validatedData = $request->validate([
-                'title' => 'required|string',
-                'period' => 'nullable|string',
-                'budget' => 'nullable|numeric',
-                'project_description' => 'required|string',
-                'client_id'=>'',
-                'freelancer_id'=>''
-            ]);
+public function store(Request $request)
+{
+    try {
+        $validatedData = $request->validate([
+            'title' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'description' => 'required|string',
+            'client_id' => 'required|exists:clients,id',
+            'freelancers' => 'required|array',
+            'freelancers.*' => 'exists:freelancers,id',
+        ]);
 
-            $contract = Contract::create($validatedData);
-            return response()->json(['message' => 'Contract created successfully', 'data' => $contract], 201);
-        } catch (ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create contract.'."erreur".$e], 500);
-        }
+        $contract = Contract::create([
+            'title' => $validatedData['title'],
+            'start_date' => $validatedData['start_date'],
+            'end_date' => $validatedData['end_date'],
+            'description' => $validatedData['description'],
+            'client_id' => $validatedData['client_id'],
+        ]);
+
+
+
+        $contract->freelancers()->attach($validatedData['freelancers']);
+
+        return response()->json(['message' => 'Contract created successfully', 'data' => $contract], 201);
+    } catch (ValidationException $e) {
+        return response()->json(['errors' => $e->errors()], 422);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to create contract. Please try again.', 'debug_message' => $e->getMessage()], 500);
     }
+}
+
+
+
 
     public function show($id)
     {
