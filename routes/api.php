@@ -116,6 +116,12 @@ Route::group(['prefix' => 'auth'], function () {
 
 //email verification
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
+//notifictaion Routes
+
+Route::get('/offer', [MailSend::class, 'index']);
+Route::post('/offers/{id}/validate', [MailSend::class, 'validateOffer']);
+
+
 //count 
 Route::get('clientCount',[ClientController::class,'count']);
 Route::get('contractCount',[ContractController::class,'count']);
