@@ -44,7 +44,8 @@ Route::resources([
     'post_skills'=>PostSkillController::class,
     'pack'=>PackController::class
 ]);
-
+//get Experiences by freelancer
+Route::get('/getByFreelancerId/{id}',[ExpericenceController::class,'getByFreelancerId']);
 //sersch bar
 Route::get('/searchBar',[FreelancersController::class,'searchBar']);
 Route::get('/clientsearchBar',[ClientController::class,'searchBar']);
