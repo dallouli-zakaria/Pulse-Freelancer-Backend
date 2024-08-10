@@ -56,7 +56,8 @@ Route::get('verify-client-post/{client_id}/{post_id}', [PostController::class, '
 //verif freelancer offer and post
 Route::get('verify-freelancer-post/{freelancer_id}/{post_id}', [OfferController::class, 'freelancerExistsInOffer']);
 
-
+//get Experiences by freelancer
+Route::get('/getByFreelancerId/{id}',[ExpericenceController::class,'getByFreelancerId']);
 //sersch bar
 Route::get('/searchBar',[FreelancersController::class,'searchBar']);
 Route::get('/clientsearchBar',[ClientController::class,'searchBar']);
@@ -128,6 +129,12 @@ Route::group(['prefix' => 'auth'], function () {
 
 //email verification
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
+//notifictaion Routes
+
+Route::get('/offer', [MailSend::class, 'index']);
+Route::post('/offers/{id}/validate', [MailSend::class, 'validateOffer']);
+
+
 //count 
 Route::get('clientCount',[ClientController::class,'count']);
 Route::get('contractCount',[ContractController::class,'count']);

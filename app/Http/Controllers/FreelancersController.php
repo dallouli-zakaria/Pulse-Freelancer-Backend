@@ -77,7 +77,7 @@ class FreelancersController extends Controller
 
 
 
-    public function store(Request $request)
+public function store(Request $request)
     {
         try {
             $request->validate([
@@ -126,10 +126,9 @@ class FreelancersController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-    }
-
+ } 
     public function show($id)
     {
         try {
