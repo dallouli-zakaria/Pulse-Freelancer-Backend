@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('period')->nullable();
-            $table->decimal('budget')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->text('project_description');
             $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete();
             $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
-            $table->text('project_description');
             $table->timestamps();
         });
     }

@@ -37,9 +37,11 @@ class Freelancers extends User
          return $this->hasMany(skills::class);
      }
 
-      function contract(){
-        return $this->hasOne(Contract::class);
-      }
+     public function contracts()
+     {
+         return $this->hasMany(Contract::class);
+     }
+
     public function skills()
     {
         return $this->belongsToMany(skills::class,'freelancer_skills', 'freelancer_id', 'skill_id');

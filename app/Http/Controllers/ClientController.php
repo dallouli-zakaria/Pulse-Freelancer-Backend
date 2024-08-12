@@ -155,6 +155,10 @@ class ClientController extends Controller
             if ($request->has('password')) {
                 $user->password = Hash::make($request->password);
             }
+
+            if ($request->has('email_verified_at')) {
+                $user->email_verified_at = $request->email_verified_at;
+            }
             $user->save();
 
             // Update client fields only if they are provided in the request

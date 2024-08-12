@@ -22,6 +22,10 @@ class Client extends User
 
 
 
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
         
     public function user()
     {

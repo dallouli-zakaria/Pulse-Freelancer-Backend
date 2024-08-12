@@ -21,14 +21,15 @@ class FreelancersController extends Controller
        
 
         $freelancers = Freelancers::with(['user:id,name,email', 'skills'])
-                                  ->orderBy('created_at', 'DESC');
-                                  
+                                  ->orderBy('created_at', 'DESC')
+                                  ->get();
 
         return response()->json($freelancers);
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
    }
+
     public function indexPagination(Request $request){
     try {
         $page = $request->query('page', 1);

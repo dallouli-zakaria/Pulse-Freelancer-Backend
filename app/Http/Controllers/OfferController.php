@@ -225,5 +225,23 @@ class OfferController extends Controller
     }
 
 
+    public function freelancerExistsInOffer( $freelancer_id,$post_id)
+    {
+        try {
+            $offerExists = Offer::where('post_id', $post_id)
+                                ->where('freelancer_id', $freelancer_id)
+                                ->exists();
+    
+            if ($offerExists) {
+                return response()->json(true);
+            } else {
+                return response()->json(false);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to check if freelancer exists in offer.'], 500);
+        }
+    }
+
+
     
 }
