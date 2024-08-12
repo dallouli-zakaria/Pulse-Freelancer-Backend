@@ -49,6 +49,12 @@ Route::resources([
     'pack'=>PackController::class
 ]);
 
+//show contracts by client_id
+Route::get('contract/client/{client_id}', [ContractController::class, 'showByClient']);
+ // Show contracts by freelancer_id
+Route::get('contract/freelancer/{freelancer_id}', [ContractController::class, 'showByFreelancer']);
+
+
 //refresh token route
 Route::post('refresh', [AuthController::class, 'refresh']);
 // verif client post

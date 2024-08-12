@@ -90,6 +90,29 @@ class ContractController extends Controller
     }
 
 
+        // Show contracts by freelancer_id
+        public function showByFreelancer($freelancer_id)
+        {
+            try {
+                $contracts = Contract::where('freelancer_id', $freelancer_id)->orderBy('created_at', 'DESC')->get();
+                return response()->json($contracts);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to fetch contracts for the freelancer.'], 500);
+            }
+        }
+    
+        // Show contracts by client_id
+        public function showByClient($client_id)
+        {
+            try {
+                $contracts = Contract::where('client_id', $client_id)->orderBy('created_at', 'DESC')->get();
+                return response()->json($contracts);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Failed to fetch contracts for the client.'], 500);
+            }
+        }   
+
+
 
 
     //counte contract
