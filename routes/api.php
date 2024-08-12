@@ -55,6 +55,10 @@ Route::get('contract/client/{client_id}', [ContractController::class, 'showByCli
 Route::get('contract/freelancer/{freelancer_id}', [ContractController::class, 'showByFreelancer']);
 
 
+//forget password and reset password
+Route::post('forgot-password', [AuthController::class, 'sendResetLinkEmail']);
+Route::post('reset-password', [AuthController::class, 'reset']);
+
 //refresh token route
 Route::post('refresh', [AuthController::class, 'refresh']);
 // verif client post

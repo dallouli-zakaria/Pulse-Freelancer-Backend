@@ -10,6 +10,7 @@ use App\Notifications\CustomVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasPermissions;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -39,6 +40,7 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
         'password',
         'email_verified_at'
     ];
+
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail());
@@ -75,6 +77,10 @@ class User extends Authenticatable implements JWTSubject,MustVerifyEmail
     return $this->belongsToMany(Role::class);
 }
 
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 
 
   /**
