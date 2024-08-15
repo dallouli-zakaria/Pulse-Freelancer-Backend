@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Client;
 use App\Models\Contract;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Freelancers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ContractController extends Controller
 {
@@ -18,7 +22,19 @@ class ContractController extends Controller
             return response()->json(['error' => 'Failed to fetch contracts.'], 500);
         }
     }
+    public function indexPagination(Request $request){
+        try {
+            $page = $request->query('page', 1);
+            $perPage = 8;
     
+            $contracts = Contract::orderBy('created_at', 'DESC')
+                                 ->paginate($perPage);
+    
+            return response()->json($contracts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
     public function store(Request $request)
     {
@@ -33,6 +49,20 @@ class ContractController extends Controller
             ]);
     
             $contract = Contract::create($validatedData);
+              // Récupérer le client et le freelancer
+              $client = User::find($validatedData['client_id']);
+              $freelancer = User::find($validatedData['freelancer_id']);
+      
+        // Vérifier que le client et le freelancer existent
+        if ($client && $freelancer) {
+            // Envoyer l'email au client et au freelancer
+            Mail::send('contract', ['contract' => $contract], function ($message) use ($client, $freelancer) {
+                $message->to($client->email)
+                        ->subject('Nouveau Contrat Créé');
+                $message->cc($freelancer->email)
+                        ->subject('Nouveau Contrat Créé');
+            });
+        }
             return response()->json(['message' => 'Contract created successfully', 'data' => $contract], 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
