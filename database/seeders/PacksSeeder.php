@@ -19,5 +19,17 @@ class PacksSeeder extends Seeder
             'price'=>0
 
         ]);
+        Pack::create([
+            'title' => 'Premium',
+            'description' => 'Pack premium avec plus de fonctionnalités',
+            'price'=>99
+
+        ]);
+        Pack::create([
+            'title' => 'Entreprise',
+            'description' => 'Pack entreprise avec toutes les fonctionnalités',
+            'price'=>399
+
+        ]);
     }
 }
