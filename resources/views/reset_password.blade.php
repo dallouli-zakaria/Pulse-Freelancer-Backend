@@ -9,6 +9,5 @@ Change Password
 
 If you did not request a password reset, no further action is required.
 
-Thanks,<br>
-PULS.freelancer
+<p>Best regards,<br>PULSE.freelancer Team</p>
 @endcomponent

@@ -57,4 +57,8 @@ class MailSend extends Controller
          return response()->json(['message' => 'Offer validated and notification sent.']);
     }
 
+    public function contractNotified(Request $request,$freelancer_id,$client_id){
+      
+    }
+
 }

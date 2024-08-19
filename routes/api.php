@@ -53,8 +53,8 @@ Route::resources([
 Route::get('contract/client/{client_id}', [ContractController::class, 'showByClient']);
  // Show contracts by freelancer_id
 Route::get('contract/freelancer/{freelancer_id}', [ContractController::class, 'showByFreelancer']);
-
-
+//get verified freelancers
+Route::get('freelancer/verified', [FreelancersController::class, 'getVerifiedFreelancers']);
 //forget password and reset password
 Route::post('forgot-password', [AuthController::class, 'sendResetLinkEmail']);
 Route::post('reset-password', [AuthController::class, 'reset']);
@@ -231,6 +231,7 @@ Route::get('/post/{post_id}/skill', [PostSkillController::class, 'showSkillsByPo
 Route::get('/post/{post_id}/skills', [PostSkillController::class, 'showSkillsByPost']);
 
 
+//Skills related
 //assing skills to freelancer
 Route::post('/freelancers/{id}/assign-skills', [FreelancersController::class, 'assignSkills']);
 //get freelancerskills
@@ -239,10 +240,6 @@ Route::get('/freelancers/{id}/skills', [FreelancersController::class, 'getSkills
 Route::get('/posts/{id}/skills', [PostController::class, 'getSkills']);
 //match skills score
 Route::get('/freelancers/{freelancerId}/posts/{postId}/skills-match-score', [SkillsController::class, 'checkFreelancerSkillsMatchWithScore']);
-
-
-
-
 Route::get('/freelancers/{freelancerId}/skills', [FreelancersController::class, 'getFreelancerSkills']);
 Route::get('/freelancers/skills/{skillId}', [FreelancersController::class, 'getFreelancersBySkill']);
 //update freelancer skills
@@ -252,20 +249,12 @@ Route::get('/freelancers/{freelancerId}/profile', [FreelancersController::class,
 
 
 
-//get verified freelancers
-Route::get('freelancer/verified', [FreelancersController::class, 'getVerifiedFreelancers']);
-
-
+//Packs related
 //assign pack to client
 Route::post('packs/{id}/add-client', [PackController::class, 'addClientId']);
-
-
 //get client details from a given pack
 Route::get('packs/{id}/clients', [PackController::class, 'getClientDetails']);
-
 //get pack details from given clientId
 Route::get('/packs/client/{client_id}', [PackController::class, 'getPackByClientId']);
-
 //remove client from pack
 Route::delete('packs/{packId}/revoke-client/{clientId}', [PackController::class, 'revokeClientId']);
-
