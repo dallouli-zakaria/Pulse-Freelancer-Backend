@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Freelancers;
+use App\Notifications\StatusUpdatd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -210,6 +211,14 @@ public function store(Request $request)
             if ($request->has('status')) {
                 $freelancer->status = $request->status;
             }
+
+               $status=$freelancer->status;
+              if($status==="verified"){
+               
+                    $user->notify(new StatusUpdatd($freelancer));
+               
+              };
+            
             $freelancer->save();
     
             return response()->json('updated');
