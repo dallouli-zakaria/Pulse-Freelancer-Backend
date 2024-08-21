@@ -41,15 +41,19 @@ class ResetPasswordNotification extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {
-        $resetUrl = $this->resetUrl($notifiable);
+{
+    $resetUrl = $this->resetUrl($notifiable);
 
-        return (new MailMessage)
-                    ->subject('Reset Your Password')
-                    ->line('You are receiving this email because we received a password reset request for your account.')
-                    ->action('Reset Password', $resetUrl)
-                    ->line('If you did not request a password reset, no further action is required.');
-    }
+    return (new MailMessage)
+        ->subject('Reset Your Password')
+        ->view(
+            'reset_password',
+            [
+                'resetUrl' => $resetUrl,
+                // Add any other variables you want to pass to the view
+            ]
+        );
+}
 
     /**
      * Get the reset URL for the given notifiable.
