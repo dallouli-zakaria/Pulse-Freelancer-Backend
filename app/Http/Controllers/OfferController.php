@@ -3,12 +3,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Freelancers;
+use Log;
+use App\Models\Post;
+use App\Models\User;
 use App\Models\Offer;
+use App\Models\Freelancers;
+use App\Notifications\CandidateSended;
+use App\Notifications\NewCandidateApply;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\ValidationException;
+use App\Notifications\Postcreation;
 use Illuminate\Database\QueryException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OfferController extends Controller
 {
@@ -25,20 +31,47 @@ class OfferController extends Controller
     public function store(Request $request)
     {
         try {
+            // Validation des données d'entrée
             $request->validate([
-                'selected'=>'required|string',
-                'freelancer_id'=>'required|numeric',
-                'post_id'=>'required|numeric'
+                'selected' => 'required|string',
+                'freelancer_id' => 'required|numeric',
+                'post_id' => 'required|numeric'
             ]);
-            
+    
+            // Création de l'offre
             $offer = Offer::create($request->all());
+    
+            // Récupération du freelancer, du post, et du client
+            $freelancer = User::findOrFail($request->freelancer_id);
+            $post = Post::findOrFail($request->post_id);
+            $client = User::findOrFail($post->client_id);
+    
+            // Préparation des données pour les notifications
+            $clientName = $client->name;
+            $postTitle = $post->title;
+            $userName = $freelancer->name;
+    
+            // Envoi des notifications
+            try {
+                $freelancer->notify(new CandidateSended($userName, $postTitle));
+                $client->notify(new NewCandidateApply($clientName, $postTitle));
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e], 500);
+            }
+    
             return response()->json($offer, 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Resource not found.'], 404);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create offer.'], 500);
+            
+            return response()->json(['error' => $e], 500);
         }
     }
+    
+
+    
 
     public function show($id)
     {
