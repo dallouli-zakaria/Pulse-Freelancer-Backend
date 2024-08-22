@@ -42,7 +42,7 @@ class CandidateSended extends Notification
         $url=url('http://localhost:4200/pulse/offers');
         return (new MailMessage)
         ->subject('candidature envoyée avec succès.' )
-                   ->view('CandidateSended',[$name,$titel,$url]);
+        ->view('CandidateSended', ['name' => $name, 'titel' => $titel, 'url' => $url]);
     }
 
     /**

@@ -44,7 +44,7 @@ class OfferController extends Controller
             // Récupération du freelancer, du post, et du client
             $freelancer = User::findOrFail($request->freelancer_id);
             $post = Post::findOrFail($request->post_id);
-            $client = User::findOrFail($post->client_id);
+            $client = User::where('id',$post->client_id)->first();
     
             // Préparation des données pour les notifications
             $clientName = $client->name;
