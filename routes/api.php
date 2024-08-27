@@ -68,15 +68,20 @@ Route::get('verify-freelancer-post/{freelancer_id}/{post_id}', [OfferController:
 
 //get Experiences by freelancer
 Route::get('/getByFreelancerId/{id}',[ExpericenceController::class,'getByFreelancerId']);
-//sersch bar
+//search bar
 Route::get('/searchBar',[FreelancersController::class,'searchBar']);
+Route::get('/verifiedSearchBar',[FreelancersController::class,'verifiedSearchBar']);
 Route::get('/clientsearchBar',[ClientController::class,'searchBar']);
+Route::get('/TitleSearchBar',[FreelancersController::class,'TitleSearchBar']);
+
 //pagination
 Route::get('/freelancerPagination',[FreelancersController::class,'indexPagination']);
+Route::get('/VerifiedfreelancerPagination',[FreelancersController::class,'VerifiedfreelancerPagination']);
 Route::get('/clientPagination',[ClientController::class,'indexPagination']);
 Route::get('/userPagination',[UserContoller::class,'indexPagination']);
 Route::get('/contractPagination',[ContractController::class,'indexPagination']);
 Route::get('/postPagination',[PostController::class,'indexPagination']);
+
 
 //wishlist
 Route::get('/wishlist/add/{client_id}/{freelancer_id}', [WishlistController::class, 'addToWishlist']);
