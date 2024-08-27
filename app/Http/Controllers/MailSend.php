@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 
+use App\Mail\ContactUS;
 use App\Models\Offer;
 use App\Mail\ProfilMail;
 use App\Notifications\OfferApply;
@@ -33,29 +34,34 @@ class MailSend extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
        
-    } public function index()
+    } 
+    public function contact(Request $request)
     {
-        $offers = Offer::all();
-        return view('offers', ['offers' => $offers]);
+        // Définir l'adresse email de destination
+        $emailApp = "freelancerpulse@gmail.com";
+        
+        // Récupérer les données du formulaire et les convertir en chaînes de caractères
+        $emailSender = (string) $request->email;
+        $message = (string) $request->message;
+        $firstName = (string) $request->firstName;
+        $lastName = (string) $request->lastName;
+    
+        try {
+            // Essayer d'envoyer l'email
+            Mail::to($emailApp)->send(new ContactUS($emailSender, $firstName, $lastName, $message));
+            
+            // Retourner une réponse JSON en cas de succès
+            return response()->json(['message' => 'Email envoyé'], 200);
+        } catch (\Exception $e) {
+            // Capturer les exceptions et retourner une réponse JSON avec un message d'erreur
+            return response()->json([
+                'error' => 'Une erreur est survenue lors de l\'envoi de l\'email.',
+                'details' => $e->getMessage()
+            ], 500);
+        }
     }
+    
 
-    public function validateOffer(Request $request, $offerId)
-    {
-        $offer = Offer::find($offerId);
-        $offer->validated = true;
-        $offer->save();
-
-        $offer->user->notify(new OfferValidated($offer));
-
-        return response()->json(['message' => 'Offer validated and notification sent.']);
-    }
-
-    public function applyOffer(Request $requist,$freelancer_id){
- 
-         $offers = Offer::where('freelancer_id', $freelancer_id)->get();
-         $offers->user->notify(new OfferApply($offers));
-         return response()->json(['message' => 'Offer validated and notification sent.']);
-    }
-
+  
   
 }

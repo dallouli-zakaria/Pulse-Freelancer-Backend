@@ -143,6 +143,7 @@ Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])-
 
 Route::get('/offer', [MailSend::class, 'index']);
 Route::post('/offers/{id}/validate', [MailSend::class, 'validateOffer']);
+Route::post('/contactUsMail',[MailSend::class,'contact']);
 
 
 //count 
