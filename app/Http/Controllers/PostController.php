@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
+use App\Models\Freelancers;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\MatchingPostNotification;
 
 class PostController extends Controller
 {
@@ -93,6 +95,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         try {
+            // Validation des données d'entrée
             $data = $request->validate([
                 'title' => 'required|string',
                 'location' => 'required|string',
@@ -104,21 +107,50 @@ class PostController extends Controller
                 'periodvalue' => 'nullable|numeric',
                 'budget' => 'required|string',
                 'budgetvalue' => 'nullable|numeric',
-                'status'=>'nullable|string',
+                'status' => 'nullable|string',
                 'client_id' => 'required'
             ]);
     
+            // Création du post sans les compétences (skills_required)
             $postData = array_diff_key($data, ['skills_required' => '']);
             $post = Post::create($postData);
     
+            // Associer les compétences au post
             if (isset($data['skills_required'])) {
                 $post->skills()->attach($data['skills_required']);
             }
+    
+            // Récupérer tous les freelancers avec leurs compétences
+            $freelancers = Freelancers::with('skills')->get();
+            
+            foreach ($freelancers as $freelancer) {
+                $freelancerSkills = $freelancer->skills->pluck('id')->toArray();
+                $requiredSkills = $data['skills_required'];
+                $matchingSkills = array_intersect($freelancerSkills, $requiredSkills);
+    
+                // Calculer le pourcentage de correspondance des compétences
+                $percentageMatch = (count($matchingSkills) / count($requiredSkills)) * 100;
+    
+                // Si le pourcentage de correspondance est supérieur à 50%, notifier l'utilisateur
+                if ($percentageMatch >= 50) {
+                    $user = User::find($freelancer->id);
+                    if ($user) {
+                        $name=$user->name;
+                        $titlePost=$post->title;
+                        $user->notify(new MatchingPostNotification($titlePost,$name));
+                    }
+                }
+            }
+    
             return response()->json($post->load('skills'), 201);
+    
         } catch (\Exception $e) {
-            return response()->json(['error' =>  $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    
+
+    
     
 
     public function destroy($id)
@@ -202,6 +234,7 @@ class PostController extends Controller
             if (isset($data['skills_required'])) {
                 $post->skills()->sync($data['skills_required']);
             }
+
     
             return response()->json($post->load('skills'), 200);
         } catch (\Exception $e) {

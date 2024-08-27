@@ -28,7 +28,7 @@ class ProfilMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Profil Mail',
+            subject: 'Notification de PULSE.freelancer',
         );
     }
     
@@ -37,13 +37,15 @@ class ProfilMail extends Mailable
      */
     public function content(): Content
     {
-        $random=rand(1000,9999);
+        $url=url('http://localhost:4200/');
+        $email='jhaidasse@gmail.com';
         return new Content(
             view: 'email', 
-         
+             
             with: [  'name' => $this->user->name,
-                    'email' => $this->user->email,
-                    'messageContent'=>$this->message
+                    'email' => $email,
+                    'messageContent'=>$this->message,
+                    'url'=>$url
                   ]
         );
     }

@@ -75,23 +75,23 @@
             <td>
                 <div class="email-container">
                     <!-- Header -->
-                    <!-- <div class="email-header">
+                    {{-- <div class="email-header">
                         <img src="https://example.com/logo.png" alt="Logo de votre entreprise">
-                    </div> -->
+                    </div> --}}
 
                     <!-- Body -->
                     <div class="email-body">
-                        <h1>Notification de PULSE.freelancer</h1>
+                        <h1>Un offre correspond à votre profil</h1>
                         <p>Bonjour {{ $name }},</p>
-                        <p>{{ $messageContent }}</p>
-                        <p>Vous pouvez consulter plus de détails en cliquant sur le bouton ci-dessous :</p>
-                        <a href="{{ $url }}">Voir les détails</a>
+                        <p>Nous avons trouvé une offre qui correspond à votre profil pour le post "<strong>{{ $title }}</strong>".</p>
+                        <p>Vous pouvez consulter les détails de l'offre en cliquant sur le bouton ci-dessous :</p>
+                        <a href="{{ $url }}">Voir l'offre</a>
                         <p>Merci d'utiliser notre application !</p>
                     </div>
 
                     <!-- Footer -->
                     <div class="email-footer">
-                        <p>Si vous avez des questions, n'hésitez pas à <a href="mailto:{{ $email }}">nous contacter</a>.</p>
+                        <p>Si vous avez des questions, n'hésitez pas à <a href="mailto:jhaidasse@gmail.com">nous contacter</a>.</p>
                         <p>&copy; 2024 PULSE.freelancer.</p>
                     </div>
                 </div>

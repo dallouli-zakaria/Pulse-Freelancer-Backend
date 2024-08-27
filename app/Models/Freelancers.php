@@ -11,7 +11,7 @@ class Freelancers extends User
     use HasFactory,HasRoles;
 
     protected $fillable = [
-    
+         
         'title',
         'dateOfBirth',
         'city',
