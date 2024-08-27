@@ -45,6 +45,22 @@ class FreelancersController extends Controller
         return response()->json(['error' => $e->getMessage()], 500);
     }
    }
+   
+   public function VerifiedfreelancerPagination(Request $request){
+    try {
+        $page = $request->query('page', 1);
+        $perPage = 8;
+
+        $freelancers = Freelancers::with(['user:id,name,email', 'skills'])
+                                    ->where('status', 'verified')
+                                    ->orderBy('created_at', 'DESC')
+                                    ->paginate($perPage);
+
+        return response()->json($freelancers);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+   }
     
    
    public function searchBar() {
@@ -74,6 +90,70 @@ class FreelancersController extends Controller
         return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
     }
 }
+
+public function verifiedSearchBar() {
+    try {
+        // Base query for retrieving verified freelancers
+        $query = Freelancers::join('users', 'users.id', '=', 'freelancers.id')
+                            ->where('status', 'verified')
+                            ->orderBy('freelancers.id', 'DESC')
+                            ->select('freelancers.*', 'users.name', 'users.email')
+                            ->with('user');
+
+        // Check if the search query is present and not empty
+        if (!empty($_GET['query'])) {
+            $searchBarInput = $_GET['query'];
+            $query->where(function($q) use ($searchBarInput) {
+                $q->where('users.name', 'LIKE', $searchBarInput . '%')
+                  ->orWhere('users.email', 'LIKE', $searchBarInput . '%');
+            });
+        }
+
+        // Execute the query and get the results
+        $freelancers = $query->get();
+
+        return response()->json($freelancers, 200);
+    } catch (\Illuminate\Database\QueryException $e) {
+        // Database-related error handling
+        return response()->json(['error' => 'Database query error', 'message' => $e->getMessage()], 500);
+    } catch (\Exception $e) {
+        // General error handling
+        return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
+    }
+}
+
+
+public function TitleSearchBar() {
+    try {
+        // Base query for retrieving verified freelancers
+        $query = Freelancers::join('users', 'users.id', '=', 'freelancers.user_id')
+                            ->where('status', 'verified')
+                            ->orderBy('freelancers.id', 'DESC')
+                            ->select('freelancers.*', 'users.name', 'users.email')
+                            ->with('user');
+
+        // Check if the search query is present and not empty
+        if (!empty($_GET['query'])) {
+            $searchBarInput = $_GET['query'];
+            $query->where('freelancers.title', 'LIKE', $searchBarInput . '%');
+        }
+
+        // Execute the query and get the results
+        $freelancers = $query->get();
+
+        return response()->json($freelancers, 200);
+    } catch (\Illuminate\Database\QueryException $e) {
+        // Database-related error handling
+        return response()->json(['error' => 'Database query error', 'message' => $e->getMessage()], 500);
+    } catch (\Exception $e) {
+        // General error handling
+        return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
+    }
+}
+
+
+
+
 
 
 
