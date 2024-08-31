@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Freelancers;
+use Exception;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Freelancers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 use App\Notifications\MatchingPostNotification;
 
 class PostController extends Controller
@@ -21,11 +23,49 @@ class PostController extends Controller
             $posts = Post::with('skills')->orderBy('created_at', 'DESC')->get();
             
             return response()->json($posts);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    public function searchByTitle(Request $request)
+    {
+        try {
+            // Vérifiez si un paramètre 'title' est fourni dans la requête
+            if ($request->has('title')) {
+                $title = $request->input('title');
+    
+                // Rechercher les posts où le titre correspond au terme de recherche
+                $posts = Post::where('title', 'LIKE', '%' . $title . '%')
+                             ->orderBy('id', 'DESC')
+                             ->get();
+            } else {
+                // Si aucun titre n'est fourni, retourner tous les posts
+                $posts = Post::orderBy('id', 'DESC')->get();
+            }
+    
+            // Retourner la réponse JSON avec les résultats
+            return response()->json($posts, 200);
+        } catch (QueryException $e) {
+            // Gestion des erreurs liées à la base de données
+            return response()->json(['error' => 'Database query error', 'message' => $e->getMessage()], 500);
+        } catch (Exception $e) {
+            // Gestion des erreurs générales
+            return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
+        }
+    }
+        public function searchBySkills(Request $request)
+{
+    
 
+    $skills = $request->input('skills');
+    $posts = Post::whereHas('skills', function ($query) use ($skills) {
+        $query->whereIn('skill_id', $skills);
+    })->get();
+
+    return response()->json($posts);
+}
+
+    
 
     public function indexPagination(Request $request)
     {
@@ -37,45 +77,15 @@ class PostController extends Controller
             $users = Post::orderBy('created_at', 'DESC')->paginate($perPage, ['*'], 'page', $page);
     
             return response()->json($users);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
 
 
-    //search bar
+   
     
-    public function searchBar() {
-        try {
-            if (isset($_GET['query'])) {
-                $search_bar_input = $_GET['query'];
-                $posts = Post::join('users', 'users.id', '=', 'posts.client_id') // Assuming client_id is the correct foreign key
-                              ->orderBy('posts.id', 'DESC')
-                              ->where(function($query) use ($search_bar_input) {
-                                  $query->where('posts.title', 'LIKE', '%' . $search_bar_input . '%') // Search by title
-                                        ->orWhere('users.name', 'LIKE', '%' . $search_bar_input . '%')
-                                        ->orWhere('users.email', 'LIKE', '%' . $search_bar_input . '%');
-                              })
-                              ->select('posts.*', 'users.name', 'users.email')
-                              ->with('user')
-                              ->get();
-            } else {
-                $posts = Post::join('users', 'users.id', '=', 'posts.client_id') // Assuming client_id is the correct foreign key
-                              ->orderBy('posts.id', 'DESC')
-                              ->select('posts.*', 'users.name', 'users.email')
-                              ->with('user')
-                              ->get();
-            }
-            return response()->json($posts, 200);
-        } catch (\Illuminate\Database\QueryException $e) {
-            // Database-related error
-            return response()->json(['error' => 'Database query error', 'message' => $e->getMessage()], 500);
-        } catch (\Exception $e) {
-            // General error
-            return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
-        }
-    }
     
     public function show($id)
     {
@@ -88,7 +98,7 @@ class PostController extends Controller
             }
 
             return response()->json($post);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => 'Failed to fetch post.'], 500);
         }
     }
@@ -144,7 +154,7 @@ class PostController extends Controller
     
             return response()->json($post->load('skills'), 201);
     
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -165,7 +175,7 @@ class PostController extends Controller
             $post->delete();
 
             return response()->json(['message' => 'Post deleted successfully']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => 'Failed to delete post.'], 500);
         }
     }
@@ -237,7 +247,7 @@ class PostController extends Controller
 
     
             return response()->json($post->load('skills'), 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' =>  $e->getMessage()], 500);
         }
     }
@@ -247,7 +257,7 @@ class PostController extends Controller
         try {
             $posts = Post::where('title', 'like', '%' . request()->get('title') . '%')->get();
             return response()->json($posts);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => 'Failed to search for posts.'], 500);
         }
     }
@@ -259,7 +269,7 @@ class PostController extends Controller
             $posts = Post::with('skills')->where('posts.status','open')->orderBy('created_at', 'DESC')->get();
             
             return response()->json($posts);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

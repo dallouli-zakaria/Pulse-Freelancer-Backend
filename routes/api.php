@@ -73,6 +73,8 @@ Route::get('/searchBar',[FreelancersController::class,'searchBar']);
 Route::get('/verifiedSearchBar',[FreelancersController::class,'verifiedSearchBar']);
 Route::get('/clientsearchBar',[ClientController::class,'searchBar']);
 Route::get('/TitleSearchBar',[FreelancersController::class,'TitleSearchBar']);
+Route::get('/searchTitle', [PostController::class, 'searchByTitle']);
+Route::get('/searchSkills', [PostController::class, 'searchBySkills']);
 
 //pagination
 Route::get('/freelancerPagination',[FreelancersController::class,'indexPagination']);
