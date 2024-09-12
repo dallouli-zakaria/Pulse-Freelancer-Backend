@@ -39,7 +39,7 @@ class MatchingPostNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
           
-        $url=url('http://localhost:4200/pulse/offers');
+        $url=url('https://pulse-freelancer-frontend-v2j-jawad-haidasses-projects.vercel.app/pulse/offers');
         $title=$this->postTitle;
         $freelancerName=$this->name;
         return (new MailMessage)

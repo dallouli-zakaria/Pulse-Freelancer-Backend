@@ -39,7 +39,7 @@ class NewCandidateApply extends Notification
     {
         $name = $this->clientName;
     $postTitle = $this->postTitle;
-    $url = url('http://localhost:4200/pulse/offers'); // Remplacez par l'URL réelle
+    $url = url('https://pulse-freelancer-frontend-v2j-jawad-haidasses-projects.vercel.app/pulse/offers'); // Remplacez par l'URL réelle
         return (new MailMessage)
                     ->subject('nouveaux candidats postuler a votre offre ')
                     ->view('NewCandidateApply',[
