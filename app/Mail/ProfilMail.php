@@ -37,7 +37,7 @@ class ProfilMail extends Mailable
      */
     public function content(): Content
     {
-        $url=url('http://localhost:4200/');
+        $url=url('https://pulse-freelancer-frontend-v2j-jawad-haidasses-projects.vercel.app/');
         $email='jhaidasse@gmail.com';
         return new Content(
             view: 'email', 

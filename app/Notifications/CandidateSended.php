@@ -39,7 +39,7 @@ class CandidateSended extends Notification
     {
         $name=$this->userName;
         $titel=$this->postTitle;
-        $url=url('http://localhost:4200/pulse/offers');
+        $url=url('https://pulse-freelancer-frontend-v2j-jawad-haidasses-projects.vercel.app/pulse/offers');
         return (new MailMessage)
         ->subject('candidature envoyée avec succès.' )
         ->view('CandidateSended', ['name' => $name, 'titel' => $titel, 'url' => $url]);

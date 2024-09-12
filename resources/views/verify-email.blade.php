@@ -56,7 +56,7 @@
         })();
 
         function redirectToLogin() {
-            window.location.href = "http://localhost:4200/login";
+            window.location.href = "https://pulse-freelancer-frontend-v2j-jawad-haidasses-projects.vercel.app/login";
         }
     </script>
 </body>
