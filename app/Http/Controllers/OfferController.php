@@ -31,38 +31,18 @@ class OfferController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validation des données d'entrée
-            $validatedData = $request->validate([
-                'selected' => 'required|string',
-                'freelancer_id' => 'required|numeric',
-                'post_id' => 'required|numeric'
+            $request->validate([
+                'selected'=>'required|string',
+                'freelancer_id'=>'required|numeric',
+                'post_id'=>'required|numeric'
             ]);
-    
-            // Création de l'offre
-            $offer = Offer::create($validatedData);
-    
-            // Récupération du freelancer, du post, et du client
-            $freelancer = User::findOrFail($validatedData['freelancer_id']);
-            $post = Post::findOrFail($validatedData['post_id']);
-            $client = User::findOrFail($post->client_id);
-    
-            // Préparation des données pour les notifications
-            $clientName = $client->name;
-            $postTitle = $post->title;
-            $userName = $freelancer->name;
-    
-            // Envoi des notifications
-            $freelancer->notify(new CandidateSended($userName, $postTitle));
-            $client->notify(new NewCandidateApply($clientName, $postTitle));
-    
+            
+            $offer = Offer::create($request->all());
             return response()->json($offer, 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Resource not found.'], 404);
         } catch (\Exception $e) {
-            // Log the error for debugging
-            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+            return response()->json(['error' => 'Failed to create offer.'], 500);
         }
     }
     
