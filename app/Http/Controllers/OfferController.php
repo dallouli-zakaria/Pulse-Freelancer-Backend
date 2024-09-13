@@ -48,12 +48,8 @@ $clientName = $client->name;
 $postTitle = $post->title;
 $userName = $freelancer->name;
 
-try {
     $freelancer->notify(new CandidateSended($userName, $postTitle));
     $client->notify(new NewCandidateApply($clientName, $postTitle));
-} catch (\Exception $e) {
-    return response()->json(['error' => $e], 500);
-}
             return response()->json($offer, 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
