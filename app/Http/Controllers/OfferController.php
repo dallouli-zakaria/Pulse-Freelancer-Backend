@@ -38,6 +38,22 @@ class OfferController extends Controller
             ]);
             
             $offer = Offer::create($request->all());
+// Récupération du freelancer, du post, et du client
+$freelancer = User::findOrFail($request->freelancer_id);
+$post = Post::findOrFail($request->post_id);
+$client = User::where('id',$post->client_id)->first();
+
+// Préparation des données pour les notifications
+$clientName = $client->name;
+$postTitle = $post->title;
+$userName = $freelancer->name;
+
+try {
+    $freelancer->notify(new CandidateSended($userName, $postTitle));
+    $client->notify(new NewCandidateApply($clientName, $postTitle));
+} catch (\Exception $e) {
+    return response()->json(['error' => $e], 500);
+}
             return response()->json($offer, 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
