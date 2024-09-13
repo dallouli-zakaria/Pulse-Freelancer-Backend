@@ -32,19 +32,19 @@ class OfferController extends Controller
     {
         try {
             // Validation des données d'entrée
-            $request->validate([
+            $validatedData = $request->validate([
                 'selected' => 'required|string',
                 'freelancer_id' => 'required|numeric',
                 'post_id' => 'required|numeric'
             ]);
     
             // Création de l'offre
-            $offer = Offer::create($request->all());
+            $offer = Offer::create($validatedData);
     
             // Récupération du freelancer, du post, et du client
-            $freelancer = User::findOrFail($request->freelancer_id);
-            $post = Post::findOrFail($request->post_id);
-            $client = User::where('id',$post->client_id)->first();
+            $freelancer = User::findOrFail($validatedData['freelancer_id']);
+            $post = Post::findOrFail($validatedData['post_id']);
+            $client = User::findOrFail($post->client_id);
     
             // Préparation des données pour les notifications
             $clientName = $client->name;
@@ -52,12 +52,8 @@ class OfferController extends Controller
             $userName = $freelancer->name;
     
             // Envoi des notifications
-            try {
-                $freelancer->notify(new CandidateSended($userName, $postTitle));
-                $client->notify(new NewCandidateApply($clientName, $postTitle));
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e], 500);
-            }
+            $freelancer->notify(new CandidateSended($userName, $postTitle));
+            $client->notify(new NewCandidateApply($clientName, $postTitle));
     
             return response()->json($offer, 201);
         } catch (ValidationException $e) {
@@ -65,8 +61,8 @@ class OfferController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Resource not found.'], 404);
         } catch (\Exception $e) {
-            
-            return response()->json(['error' => $e], 500);
+            // Log the error for debugging
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
         }
     }
     
