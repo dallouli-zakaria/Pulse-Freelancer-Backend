@@ -42,7 +42,7 @@ class OfferController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create offer.'], 500);
+            return response()->json(['error' => $e], 500);
         }
     }
     
