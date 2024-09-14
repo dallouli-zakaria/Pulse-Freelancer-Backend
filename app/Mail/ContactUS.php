@@ -47,7 +47,7 @@ class ContactUS extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'ContactUS',
+            view: 'contactUsMail',
        
         with: [  
             'firstName' => $this->firstName,
