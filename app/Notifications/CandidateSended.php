@@ -42,7 +42,7 @@ class CandidateSended extends Notification
         $url=url('https://pulse-freelancer.vercel.app/#/pulse/client-profile/client-offers-open');
         return (new MailMessage)
         ->subject('candidature envoyée avec succès.' )
-        ->view('CandidateSended', ['name' => $name, 'title' => $title, 'url' => $url]);
+        ->view('candidateSent', ['name' => $name, 'title' => $title, 'url' => $url]);
     }
 
     /**
