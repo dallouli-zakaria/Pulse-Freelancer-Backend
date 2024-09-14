@@ -46,7 +46,7 @@ class StatusUpdatd extends Notification
                     ->subject('Verification de votre profile')
                     ->greeting('Bonjour ' . $this->freelancer->name . ',')
                     ->line('votre status est bien changer a: ' . $this->freelancer->status)
-                    ->action('Voire les Details', url('https://pulse-freelancer.vercel.app/login'))
+                    ->action('Voire les Details', url('https://pulse-freelancer.vercel.app/#/login'))
                     ->line('Merci pour utiliser notre application!.')
                     ->salutation('cordialement , 
                     PULSE.freelancer')
