@@ -65,17 +65,17 @@
                     <div class="email-header">
                         <h1>Nouveau Message Reçu</h1>
                     </div>
-
+    
                     <!-- Body -->
                     <div class="email-body">
                         <p>Bonjour,</p>
                         <p>Vous avez reçu un nouveau message de la part de {{ $firstName }} {{ $lastName }}.</p>
                         <p><strong>Email de l'expéditeur :</strong> {{ $emailSender }}</p>
                         <p><strong>Message :</strong></p>
-                        <p>{{ $message }}</p>
+                        <p>{{ $userMessage }}</p> <!-- Utilisation de $userMessage -->
                         <p>Veuillez consulter votre application pour voir les détails et y répondre.</p>
                     </div>
-                  
+    
                     <!-- Footer -->
                     <div class="email-footer">
                         <p>Merci d'utiliser notre application !</p>
@@ -85,5 +85,6 @@
             </td>
         </tr>
     </table>
+    
 </body>
 </html>
