@@ -7,12 +7,13 @@ use Log;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Offer;
+use PHPUnit\Exception;
 use App\Models\Freelancers;
-use App\Notifications\CandidateSended;
-use App\Notifications\NewCandidateApply;
 use Illuminate\Http\Request;
 use App\Notifications\Postcreation;
+use App\Notifications\CandidateSended;
 use Illuminate\Database\QueryException;
+use App\Notifications\NewCandidateApply;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -55,18 +56,18 @@ class OfferController extends Controller
             try {
                 $freelancer->notify(new CandidateSended($userName, $postTitle));
                 $client->notify(new NewCandidateApply($clientName, $postTitle));
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e], 500);
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
             }
     
             return response()->json($offer, 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Resource not found.'], 404);
+            return response()->json(['error' => $e->getMessage()], 404);
         } catch (\Exception $e) {
             
-            return response()->json(['error' => $e], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
     
