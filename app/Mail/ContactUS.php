@@ -21,14 +21,14 @@ class ContactUS extends Mailable
     private $emailSender;
     private $firstName;
     private $lastName;
-    private $message;
+    private $userMessage;
 
-    public function __construct($emailSender, $firstName, $lastName, $message)
+    public function __construct($emailSender, $firstName, $lastName, $userMessage)
     {
         $this->emailSender = (string) $emailSender;
         $this->firstName = (string) $firstName;
         $this->lastName = (string) $lastName;
-        $this->message = (string) $message;
+        $this->userMessage = (string) $userMessage; // Renommé ici
     }
 
     /**
@@ -53,7 +53,7 @@ class ContactUS extends Mailable
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'emailSender' => $this->emailSender,
-            'message' => $this->message,
+            'userMessage' => $this->userMessage, // Renommé ici
       ]
         );
     }
