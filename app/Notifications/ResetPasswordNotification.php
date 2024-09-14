@@ -45,7 +45,7 @@ class ResetPasswordNotification extends Notification
     $resetUrl = $this->resetUrl($notifiable);
 
     return (new MailMessage)
-        ->subject('Reset Your Password')
+        ->subject('Réinitialisation du mot de passe')
         ->view(
             'reset_password',
             [
