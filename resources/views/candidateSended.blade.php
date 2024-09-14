@@ -83,7 +83,7 @@
                     <div class="email-body">
                         <h1>Candidature envoyée avec succès</h1>
                         <p>Bonjour {{ $name }},</p>
-                        <p>Nous sommes heureux de vous informer que votre candidature pour le post "<strong>{{ $titel }}</strong>" a été envoyée avec succès.</p>
+                        <p>Nous sommes heureux de vous informer que votre candidature pour le post "<strong>{{ $title }}</strong>" a été envoyée avec succès.</p>
                         <p>Vous pouvez consulter les détails de votre candidature en cliquant sur le bouton ci-dessous :</p>
                         <a href="{{ $url }}">Voir le post</a>
                         <p>Merci d'utiliser notre application !</p>

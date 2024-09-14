@@ -38,11 +38,11 @@ class CandidateSended extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $name=$this->userName;
-        $titel=$this->postTitle;
-        $url=url('https://pulse-freelancer.vercel.app/#/pulse/offers');
+        $title=$this->postTitle;
+        $url=url('https://pulse-freelancer.vercel.app/#/pulse/client-profile/client-offers-open');
         return (new MailMessage)
         ->subject('candidature envoyée avec succès.' )
-        ->view('CandidateSended', ['name' => $name, 'titel' => $titel, 'url' => $url]);
+        ->view('CandidateSended', ['name' => $name, 'title' => $title, 'url' => $url]);
     }
 
     /**
