@@ -6,10 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "adyen/php-api-library": "^19.0",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "spatie/laravel-permission": "^6.7",
+        "spatie/laravel-permission": "^6.9",
         "tymon/jwt-auth": "^2.1"
     },
     "require-dev": {

@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('freelancers', function (Blueprint $table) {
 
             $table->foreignId('id')->constrained('users')->primary()->cascadeOnDelete();
-            $table->string('title');
-            $table->date('dateOfBirth');
-            $table->string('city');
-            $table->string('TJM');
-            $table->text('summary');
-            $table->string('availability');
-            $table->string('adress');
-            $table->string('phone');
-            $table->string('portfolio_url')->nullable();
-            $table->string('cv')->nullable();
+            $table->string('title')->nullable();;
+            $table->date('dateOfBirth')->nullable();;
+            $table->string('city')->nullable();;
+            $table->string('TJM')->nullable();;
+            $table->text('summary')->nullable();;
+            $table->string('availability')->nullable();;
+            $table->string('adress')->nullable();;
+            $table->string('phone')->nullable();;
+            $table->string('portfolio_Url')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

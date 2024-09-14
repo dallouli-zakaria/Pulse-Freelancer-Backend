@@ -2,25 +2,74 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Hash;
-use Dotenv\Exception\ValidationException;
-use App\Models\Client; 
 use App\Models\User; 
+
+use App\Models\Client; 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Dotenv\Exception\ValidationException;
+
 class ClientController extends Controller
 {
     public function index()
      {
         try{
-            $clients = Client::with('user:id,name,email')->get();
+            $clients = Client::with('user:id,name,email')->orderBy('created_at', 'DESC')->get();
 
             return response()->json($clients);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch clients.'], 500);
         }
     }
+
+
+    public function indexPagination(Request $request)
+    {
+        try {
+            $page = $request->query('page', 1);
+            $perPage = 7;
+    
+            $freelancers = Client::with('user:id,name,email')
+                                      ->orderBy('created_at', 'DESC')
+                                      ->paginate($perPage);
+    
+            return response()->json($freelancers);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function searchBar() {
+        try {
+            if (isset($_GET['query'])) {
+                $search_bar_input = $_GET['query'];
+                $clients = Client::join('users', 'users.id', '=', 'clients.id')
+                              ->orderBy('clients.id', 'DESC')
+                              ->where(function($query) use ($search_bar_input) {
+                                  $query->where('users.name', 'LIKE', $search_bar_input . '%')
+                                        ->orWhere('users.email', 'LIKE', $search_bar_input . '%');
+                              })
+                              ->select('clients.*', 'users.name', 'users.email')->with('user')
+                              ->get();
+            } else {
+                $clients = Client::join('users', 'users.id', '=', 'clients.id')
+                              ->orderBy('clients.id', 'DESC')
+                              ->select('clients.*', 'users.name', 'users.email')->with('user')
+                              ->get();
+            }
+            return response()->json($clients, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Database-related error
+            return response()->json(['error' => 'Database query error', 'message' => $e->getMessage()], 500);
+        } catch (\Exception $e) {
+            // General error
+            return response()->json(['error' => 'An unexpected error occurred', 'message' => $e->getMessage()], 500);
+        }
+    }
+    
 
     public function store(Request $request)
     {
@@ -33,13 +82,18 @@ class ClientController extends Controller
                 'company_name' => 'nullable|string|max:255',
                 'company_activity' => 'nullable|string|max:255',
                 'company_email' => 'nullable|email',
+                'user.email_verified_at' => 'nullable|date'
             ]);
     
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
+            if ($request->has('user.email_verified_at')) {
+                $user->email_verified_at = $request->input('user.email_verified_at');
+            }
             $user->save();
+            event(new Registered($user));
     
             $client = new Client;
             $client->id = $user->id;
@@ -48,17 +102,24 @@ class ClientController extends Controller
             $client->company_activity = $request->company_activity;
             $client->company_email = $request->company_email;
             $client->save();
+            
+            $user->assignRole('client_role');
+
+
             return response()->json('created');
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create client: ' . $e->getMessage()], 500);
+            return response()->json(['errors' => $e->getMessage()], 500);
         }
     }
+
+   
 
     public function show($id)
     {
         try {
             
             $client = Client::with('user:id,name,email')->findOrFail($id);
+            
 
             return response()->json($client);
         } catch (\Exception $e) {
@@ -70,30 +131,19 @@ class ClientController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email,' . $id,
+                'name' => 'nullable|string|max:255',
+                'email' => 'nullable|email|unique:users,email,' . $id,
                 'password' => 'nullable|string|min:6',
-                'profession' => 'required|string|max:255',
+                'profession' => 'nullable|string|max:255',
+                'company_name' => 'nullable|string|max:255',
+                'company_activity' => 'nullable|string|max:255',
+                'company_email' => 'nullable|email',
             ]);
     
             $user = User::findOrFail($id);
             $client = Client::findOrFail($id);
     
        
-            // $user->name = $request->name;
-            // $user->email = $request->email;
-            // if ($request->password) {
-            //     $user->password = Hash::make($request->password);
-            // }
-            // $user->save();
-    
-          
-            // $client->profession = $request->profession;
-            // $client->company_name = $request->company_name;
-            // $client->company_activity = $request->company_activity;
-            // $client->company_email = $request->company_email;
-            // $client->save();
-    
 
             // Update user fields only if they are provided in the request
             if ($request->has('name')) {
@@ -104,6 +154,10 @@ class ClientController extends Controller
             }
             if ($request->has('password')) {
                 $user->password = Hash::make($request->password);
+            }
+
+            if ($request->has('email_verified_at')) {
+                $user->email_verified_at = $request->email_verified_at;
             }
             $user->save();
 
@@ -147,4 +201,8 @@ class ClientController extends Controller
         $clientCount = Client::count();
         return response()->json($clientCount);
     }
+
+
+
+    
 }

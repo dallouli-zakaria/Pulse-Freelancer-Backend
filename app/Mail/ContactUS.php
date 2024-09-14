@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,16 +9,26 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ProfileMail extends Mailable
+class ContactUS extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(private readonly User $user)
+
+   
+    private $emailSender;
+    private $firstName;
+    private $lastName;
+    private $message;
+
+    public function __construct($emailSender, $firstName, $lastName, $message)
     {
-        
+        $this->emailSender = (string) $emailSender;
+        $this->firstName = (string) $firstName;
+        $this->lastName = (string) $lastName;
+        $this->message = (string) $message;
     }
 
     /**
@@ -28,7 +37,7 @@ class ProfileMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Profile Mail',
+            subject: 'un utilisateur envoiyer un message ',
         );
     }
 
@@ -37,14 +46,15 @@ class ProfileMail extends Mailable
      */
     public function content(): Content
     {
-        $random=rand(1000,9999);
         return new Content(
-            view: 'email', 
-         
-            with: [  'name' => $this->user->name,
-                    'email' => $this->user->email,
-                    'random'=>$random
-                  ]
+            view: 'ContactUS',
+       
+        with: [  
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'emailSender' => $this->emailSender,
+            'message' => $this->message,
+      ]
         );
     }
 

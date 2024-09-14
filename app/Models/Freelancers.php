@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 
 class Freelancers extends User
 {
-    use HasFactory;
+    use HasFactory,HasRoles;
 
     protected $fillable = [
-    
+         
         'title',
         'dateOfBirth',
         'city',
@@ -20,7 +21,7 @@ class Freelancers extends User
         'adress',
         'phone',
         'portfolio_Url',
-        'CV'
+        'status'
     ];
 
 
@@ -29,19 +30,21 @@ class Freelancers extends User
         return $this->belongsTo(User::class,'id','id');
     }
 
-     function lunguage(){
+     function language(){
         return $this->hasMany(languages::class);
      }
      function skill(){
          return $this->hasMany(skills::class);
      }
 
-      function contract(){
-        return $this->hasOne(Contract::class);
-      }
+     public function contracts()
+     {
+         return $this->hasMany(Contract::class);
+     }
+
     public function skills()
     {
-        return $this->belongsToMany(skills::class, 'freelancer_skill')->withPivot('proficiency');
+        return $this->belongsToMany(skills::class,'freelancer_skills', 'freelancer_id', 'skill_id');
     }
     function experience(){
         return $this->hasMany(Expericence::class);
@@ -52,6 +55,10 @@ class Freelancers extends User
     }
     function posts(){
         return $this->belongsToMany(Post::class);
+    }
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
     }
 
 }

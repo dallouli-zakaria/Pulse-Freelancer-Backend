@@ -3,16 +3,31 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Notifications\CustomVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasPermissions;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Models\Role;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject,MustVerifyEmail
 {
-    use HasFactory, Notifiable , HasRoles;
+    use HasFactory, Notifiable,HasRoles, HasPermissions ; 
+
     
+
+
+    //TO REVISITE !
+    public function permissions()
+    {
+        return $this->getAllPermissions();
+    }
+
+     // Rest omitted for brevity
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +38,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'email_verified_at'
     ];
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail());
+    }
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -53,4 +76,30 @@ class User extends Authenticatable
 {
     return $this->belongsToMany(Role::class);
 }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
+
+
+  /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

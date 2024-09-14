@@ -4,23 +4,28 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Traits\HasRoles;
 
 class Client extends User
 {
-    use HasFactory;
+    use HasFactory,HasRoles;
+
+
     protected $fillable = [
-          
+
         'profession',
         'company_name',
         'company_activity',
         'company_email',
         
-    
-        
     ];
 
 
 
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
         
     public function user()
     {
@@ -29,6 +34,16 @@ class Client extends User
 
     public function posts(){
         return $this->hasMany(Post::class);
+    }
+
+    public function pack()
+    {
+        return $this->belongsTo(Pack::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
     }
 
 

@@ -17,7 +17,7 @@ class ProfilMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private readonly User $user)
+    public function __construct(private readonly User $user, public $message)
     {
         //
     }
@@ -28,7 +28,7 @@ class ProfilMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Profil Mail',
+            subject: 'Notification de PULSE.freelancer',
         );
     }
     
@@ -37,13 +37,15 @@ class ProfilMail extends Mailable
      */
     public function content(): Content
     {
-        $random=rand(1000,9999);
+        $url=url('https://pulse-freelancer.vercel.app/');
+        $email='jhaidasse@gmail.com';
         return new Content(
             view: 'email', 
-         
+             
             with: [  'name' => $this->user->name,
-                    'email' => $this->user->email,
-                    'random'=>$random
+                    'email' => $email,
+                    'messageContent'=>$this->message,
+                    'url'=>$url
                   ]
         );
     }

@@ -35,7 +35,7 @@ class ExpericenceController extends Controller
             ]);
 
             $expericence = Expericence::create($validatedData);
-            return response()->json(['message' => 'expericence created successfully', 'data' => $expericence], 201);
+            return response()->json($expericence, 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
@@ -47,7 +47,7 @@ class ExpericenceController extends Controller
     {
         try {
             $expericence = Expericence::findOrFail($id);
-            return response()->json(['data' => $expericence]);
+            return response()->json($expericence);
         } catch (\Exception $e) {
             return response()->json(['error' => 'expericence not found.'], 404);
         }
@@ -69,7 +69,7 @@ class ExpericenceController extends Controller
             $expericence = Expericence::findOrFail($id);
             $expericence->update($validatedData);
 
-            return response()->json(['message' => 'expericence updated successfully', 'data' => $expericence]);
+            return response()->json($expericence);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
@@ -87,6 +87,45 @@ class ExpericenceController extends Controller
             return response()->json(['error' => 'Failed to delete expericence.'], 500);
         }
     }
+
+
+
+
+    public function getByFreelancerId($freelancerId)
+    {
+        try {
+            $experiences = Expericence::where('freelancer_id', $freelancerId)->orderBy('created_at', 'desc')->get();
+            
+            if ($experiences->isEmpty()) {
+                return response()->json(['message' => 'No experiences found for this freelancer.'], 404);
+            }
+            
+            return response()->json($experiences);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch experiences for the freelancer.'], 500);
+        }
+    }
+
+    public function getExperienceDetails($freelancer_id, $title, $companyName)
+    {
+        try {
+            $experience = Expericence::where('freelancer_id', $freelancer_id)
+                ->where('title', $title)
+                ->where('companyName', $companyName)
+                ->first();
+            
+            if (!$experience) {
+                return response()->json(['message' => 'Experience not found.'], 404);
+            }
+            
+            return response()->json($experience);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch experience details.'], 500);
+        }
+    }
+
+
+
 }
 
 
