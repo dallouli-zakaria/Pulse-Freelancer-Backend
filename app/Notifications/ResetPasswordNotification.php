@@ -63,7 +63,7 @@ class ResetPasswordNotification extends Notification
      */
     protected function resetUrl($notifiable)
     {
-        return rtrim(env('FRONTEND_URL'), '/') . '/reset-password?token=' . $this->token . '&email=' . urlencode($notifiable->email);
+        return rtrim(env('https://pulse-freelancer.vercel.app/#/home/pulse'), '/') . '/reset-password?token=' . $this->token . '&email=' . urlencode($notifiable->email);
     }
 
     /**
