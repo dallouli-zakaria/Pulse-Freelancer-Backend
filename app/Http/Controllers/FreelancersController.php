@@ -163,7 +163,7 @@ public function store(Request $request)
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email',
+                'email' => 'required|email',
                 'password' => 'required|string|min:6',
                 'title' => 'nullable|string|max:255',
                 'dateOfBirth' => 'nullable|date',
@@ -303,7 +303,7 @@ public function store(Request $request)
     
             return response()->json('updated');
         } catch (ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
+            return response()->json(['errors' => $e], 422);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
