@@ -14,9 +14,6 @@ class Contract extends Model
         'start_date',
         'end_date',
         'project_description',
-        'freelancer_id',
-        'client_id'
-        
     ];
 
     

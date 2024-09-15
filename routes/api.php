@@ -4,6 +4,7 @@ use App\Http\Controllers\MailSend;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserContoller;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientContractController;
 use App\Http\Controllers\PackController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\OfferController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\EducationController;
 use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ExpericenceController;
+use App\Http\Controllers\FreelancerContractController;
 use App\Http\Controllers\FreelancersController;
 use App\Http\Controllers\FreelancerSkillController;
 use App\Http\Controllers\revokeRolesAndPermissions;
@@ -46,7 +48,9 @@ Route::resources([
     'role'=>RolesController::class,
     'freelancer_skills'=>FreelancerSkillController::class,
     'post_skills'=>PostSkillController::class,
-    'pack'=>PackController::class
+    'pack'=>PackController::class,
+    'clientcontract'=>ClientContractController::class,
+    'freelancercontract'=>FreelancerContractController::class
 ]);
 
 //show contracts by client_id
