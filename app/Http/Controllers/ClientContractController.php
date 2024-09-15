@@ -103,7 +103,7 @@ class ClientContractController extends Controller
 {
     try {
         $validatedData = $request->validate([
-            'client_Id' => 'integer|string',
+            'client_Id' => 'required|integer',
 
         ]);
 
