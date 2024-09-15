@@ -42,7 +42,7 @@ class NewCandidateApply extends Notification
     $url = url('https://pulse-freelancer.vercel.app/#/pulse/offers'); 
         return (new MailMessage)
                     ->subject('nouveaux candidats postuler a votre offre ')
-                    ->view('NewCandidateApply',[
+                    ->view('newCandidateApplyToPost',[
                         'clientName' => $name,
                         'postTitle' => $postTitle,
                         'url' => $url

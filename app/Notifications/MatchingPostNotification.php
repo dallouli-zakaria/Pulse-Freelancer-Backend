@@ -44,7 +44,8 @@ class MatchingPostNotification extends Notification
         $freelancerName=$this->name;
         return (new MailMessage)
                     ->subject('Un offre correspond à votre profil')
-                    ->view('MatchingPostNotification',['title'=>$title,'name'=>$freelancerName,"url"=>$url]);
+
+                    ->view('matchingPostFreelancer',['title'=>$title,'name'=>$freelancerName,"url"=>$url]);
     }   
 
     /**
