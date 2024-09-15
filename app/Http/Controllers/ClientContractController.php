@@ -51,12 +51,12 @@ class ClientContractController extends Controller
             // Rename keys to match your database columns
             $contractData = [
                 'title' => $validatedData['title'],
-                'start_date' => $validatedData['startDate'], 
-                'end_date' => $validatedData['endDate'],     
+                'startDate' => $validatedData['startDate'], 
+                'endDate' => $validatedData['endDate'],     
                 'project_description' => $validatedData['project_description'],
             ];
     
-            $contract = Contract::create($contractData);
+            $contract = Contract::create(attributes: $contractData);
     
             // Create FreelancerContract entry with freelancer_id and contract_id
             ClientContract::create(attributes: [
@@ -72,8 +72,8 @@ class ClientContractController extends Controller
                 // Send an email to the freelancer
                 Mail::send('contract', [
                     'contract' => $contract,
-                    'formatted_start_date' => $contract->start_date->format('d/m/Y'),
-                    'formatted_end_date' => $contract->end_date->format('d/m/Y'),
+                    'formatted_start_date' => $contract->startDate->format('d/m/Y'),
+                    'formatted_end_date' => $contract->endDate->format('d/m/Y'),
                 ], function ($message) use ($client) {
                     $message->to($client->email)
                             ->subject('Nouveau Contrat Créé');
