@@ -70,7 +70,7 @@ class ClientContractController extends Controller
             // Verify that the freelancer exists
             if ($client) {
                 // Send an email to the freelancer
-                Mail::send('contract', [
+                Mail::send('contract-client', [
                     'contract' => $contract,
                     'formatted_start_date' => $contract->startDate->format('d/m/Y'),
                     'formatted_end_date' => $contract->endDate->format('d/m/Y'),
