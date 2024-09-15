@@ -52,8 +52,8 @@ class FreelancerContractController extends Controller
             // Rename keys to match your database columns
             $contractData = [
                 'title' => $validatedData['title'],
-                'startDate' => Carbon::parse($validatedData['startDate']), 
-                'endDate' => Carbon::parse($validatedData['endDate']),     
+'start_date' => Carbon::parse($validatedData['startDate']),
+                'end_date' => Carbon::parse($validatedData['endDate']), 
                 'project_description' => $validatedData['project_description'],
             ];
     
