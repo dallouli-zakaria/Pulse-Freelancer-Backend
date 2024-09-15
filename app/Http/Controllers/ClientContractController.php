@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClientContract;
 use App\Models\Contract;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -51,8 +52,8 @@ class ClientContractController extends Controller
             // Rename keys to match your database columns
             $contractData = [
                 'title' => $validatedData['title'],
-                'startDate' => $validatedData['startDate'], 
-                'endDate' => $validatedData['endDate'],     
+                'startDate' => Carbon::parse($validatedData['startDate']), 
+                'endDate' => Carbon::parse($validatedData['endDate']),     
                 'project_description' => $validatedData['project_description'],
             ];
     
