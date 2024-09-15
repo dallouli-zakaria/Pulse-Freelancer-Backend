@@ -59,22 +59,22 @@ class ClientContractController extends Controller
     
             $contract = Contract::create(attributes: $contractData);
     
-            // Create FreelancerContract entry with freelancer_id and contract_id
+            // Create ClientContract entry with freelancer_id and contract_id
             ClientContract::create(attributes: [
                 'client_id' => $validatedData['client_id'],
                 'id' => $contract->id,
             ]);
     
-            // Retrieve the freelancer by ID
+            // Retrieve the client by ID
             $client = User::find($validatedData['client_id']);
     
-            // Verify that the freelancer exists
+            // Verify that the client exists
             if ($client) {
-                // Send an email to the freelancer
+                // Send an email to the client
                 Mail::send('contract-client', [
                     'contract' => $contract,
-                    'formatted_start_date' => $contract->startDate->format('d/m/Y'),
-                    'formatted_end_date' => $contract->endDate->format('d/m/Y'),
+                    'formatted_startDate' => $contract->startDate->format('d/m/Y'),
+                    'formatted_endDate' => $contract->endDate->format('d/m/Y'),
                 ], function ($message) use ($client) {
                     $message->to($client->email)
                             ->subject('Nouveau Contrat Créé');

@@ -73,8 +73,8 @@ class FreelancerContractController extends Controller
                 // Send an email to the freelancer
                 Mail::send('contract-freelancer', [
                     'contract' => $contract,
-                    'formatted_start_date' => $contract->startDate->format('d/m/Y'),
-                    'formatted_end_date' => $contract->endDate->format('d/m/Y'),
+                    'formatted_startDate' => $contract->startDate->format('d/m/Y'),
+                    'formatted_endDate' => $contract->endDate->format('d/m/Y'),
                 ], function ($message) use ($freelancer) {
                     $message->to($freelancer->email)
                             ->subject('Nouveau Contrat Créé');
