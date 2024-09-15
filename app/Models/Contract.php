@@ -11,8 +11,8 @@ class Contract extends Model
     use HasFactory;
     protected $fillable=[
         'title',
-        'start_date',
-        'end_date',
+        'startDate',
+        'endDate',
         'project_description',
     ];
 

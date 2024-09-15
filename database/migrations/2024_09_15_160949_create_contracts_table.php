@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->date('startDate')->nullable();
+            $table->date('endDate')->nullable();
             $table->text('project_description');
             $table->timestamps();
         });

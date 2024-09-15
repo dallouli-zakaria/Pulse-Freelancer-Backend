@@ -52,32 +52,14 @@ class ContractController extends Controller
             // Rename keys to match your database columns
             $contractData = [
                 'title' => $validatedData['title'],
-                'start_date' => Carbon::parse($validatedData['startDate']),
-                'end_date' => Carbon::parse($validatedData['endDate']),
+                'startDate' => Carbon::parse($validatedData['startDate']),
+                'endDate' => Carbon::parse($validatedData['endDate']),
                 'project_description' => $validatedData['project_description'],
 
             ];
     
             $contract = Contract::create($contractData);
     
-            // Récupérer le client et le freelancer
-            $client = User::find($contractData['client_id']);
-            $freelancer = User::find($contractData['freelancer_id']);
-    
-            // Vérifier que le client et le freelancer existent
-            if ($client && $freelancer) {
-                // Envoyer l'email au client et au freelancer
-                Mail::send('contract', [
-                    'contract' => $contract,
-                    'formatted_start_date' => $contract->start_date->format('d/m/Y'),
-                    'formatted_end_date' => $contract->end_date->format('d/m/Y'),
-                ], function ($message) use ($client, $freelancer) {
-                    $message->to($client->email)
-                            ->subject('Nouveau Contrat Créé');
-                    $message->cc($freelancer->email)
-                            ->subject('Nouveau Contrat Créé');
-                });
-            }
     
             return response()->json(['message' => 'Contract created successfully', 'data' => $contract], 201);
         } catch (ValidationException $e) {
@@ -102,8 +84,8 @@ class ContractController extends Controller
     try {
         $validatedData = $request->validate([
             'title' => 'required|string',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'startDate' => 'nullable|date',
+            'endDate' => 'nullable|date|after_or_equal:start_date',
             'project_description' => 'required|string',
         ]);
 
