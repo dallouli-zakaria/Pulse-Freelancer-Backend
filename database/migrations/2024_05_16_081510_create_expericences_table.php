@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('companyName');
             $table->string('country');
             $table->string('city');
-            $table->date('startDate');
-            $table->date('endDate');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->text('description');
             $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete()->nullable();
             $table->timestamps();

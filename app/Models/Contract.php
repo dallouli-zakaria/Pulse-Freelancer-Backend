@@ -11,8 +11,8 @@ class Contract extends Model
     use HasFactory;
     protected $fillable=[
         'title',
-        'startDate',
-        'endDate',
+        'start_date',
+        'end_date',
         'project_description',
     ];
 
@@ -23,12 +23,12 @@ class Contract extends Model
     function freelancer(){
         return $this->belongsTo(Freelancers::class);
     }
-    public function getFormattedStartDateAttribute()
+    public function getFormattedstart_dateAttribute()
     {
         return $this->start_date ? Carbon::parse($this->start_date)->format('d/m/Y') : '';
     }
 
-    public function getFormattedEndDateAttribute()
+    public function getFormattedend_dateAttribute()
     {
         return $this->end_date ? Carbon::parse($this->end_date)->format('d/m/Y') : '';
     }

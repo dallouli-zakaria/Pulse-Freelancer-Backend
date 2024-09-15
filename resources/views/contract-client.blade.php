@@ -78,8 +78,8 @@
             <p class="text-center">Un nouveau contrat a été créé avec les détails suivants :</p>
             <p class="text-center mb-10"><strong>Titre:</strong> {{ $contract->title }}</p>
             <p class="mb-10"><strong>Description du projet:</strong> {{ $contract->project_description }}</p>
-            <p class="mb-10"><strong>Date de début:</strong> {{ $contract->formatted_startDate }}</p>
-            <p class="mb-10"><strong>Date de fin:</strong> {{ $contract->formatted_endDate }}</p>
+            <p class="mb-10"><strong>Date de début:</strong> {{ $contract->formatted_start_date }}</p>
+            <p class="mb-10"><strong>Date de fin:</strong> {{ $contract->formatted_end_date }}</p>
             
         </div>
     </div>

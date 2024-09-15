@@ -44,16 +44,16 @@ class ContractController extends Controller
         try {
             $validatedData = $request->validate([
                 'title' => 'required|string',
-                'startDate' => 'required|date',
-                'endDate' => 'required|date|after_or_equal:startDate',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
                 'project_description' => 'required|string',
             ]);
     
             // Rename keys to match your database columns
             $contractData = [
                 'title' => $validatedData['title'],
-                'startDate' => Carbon::parse($validatedData['startDate']),
-                'endDate' => Carbon::parse($validatedData['endDate']),
+                'start_date' => Carbon::parse($validatedData['start_date']),
+                'end_date' => Carbon::parse($validatedData['end_date']),
                 'project_description' => $validatedData['project_description'],
 
             ];
@@ -84,8 +84,8 @@ class ContractController extends Controller
     try {
         $validatedData = $request->validate([
             'title' => 'required|string',
-            'startDate' => 'nullable|date',
-            'endDate' => 'nullable|date|after_or_equal:start_date',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
             'project_description' => 'required|string',
         ]);
 

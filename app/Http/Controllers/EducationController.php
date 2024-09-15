@@ -24,8 +24,8 @@ class EducationController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|string',
                 'description' => 'required|string',
-                'startDate' => 'required|date',
-                'endDate' => 'required|date',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
                 'institution' => 'required|string',
                 'city' => 'required|string',
                 'freelancer_id'=>'required|numeric'
@@ -56,8 +56,8 @@ class EducationController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|string',
                 'description' => 'required|string',
-                'startDate' => 'required|date',
-                'endDate' => 'required|date',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
                 'institution' => 'required|string',
                 'city' => 'required|string'
             ]);

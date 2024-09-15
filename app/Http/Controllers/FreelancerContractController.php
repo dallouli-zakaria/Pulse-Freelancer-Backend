@@ -43,8 +43,8 @@ class FreelancerContractController extends Controller
         try {
             $validatedData = $request->validate([
                 'title' => 'required|string',
-                'startDate' => 'required|date',
-                'endDate' => 'required|date|after_or_equal:startDate',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
                 'project_description' => 'required|string',
                 'freelancer_id' => 'required|integer',
             ]);
@@ -52,8 +52,8 @@ class FreelancerContractController extends Controller
             // Rename keys to match your database columns
             $contractData = [
                 'title' => $validatedData['title'],
-'start_date' => Carbon::parse($validatedData['startDate']),
-                'end_date' => Carbon::parse($validatedData['endDate']), 
+'start_date' => Carbon::parse($validatedData['start_date']),
+                'end_date' => Carbon::parse($validatedData['end_date']), 
                 'project_description' => $validatedData['project_description'],
             ];
     
@@ -73,8 +73,8 @@ class FreelancerContractController extends Controller
                 // Send an email to the freelancer
                 Mail::send('contract-freelancer', [
                     'contract' => $contract,
-                    'formatted_startDate' => $contract->startDate->format('d/m/Y'),
-                    'formatted_endDate' => $contract->endDate->format('d/m/Y'),
+                    'formatted_start_date' => $contract->start_date->format('d/m/Y'),
+                    'formatted_end_date' => $contract->end_date->format('d/m/Y'),
                 ], function ($message) use ($freelancer) {
                     $message->to($freelancer->email)
                             ->subject('Nouveau Contrat Créé');

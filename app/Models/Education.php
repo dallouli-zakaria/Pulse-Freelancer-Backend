@@ -12,8 +12,8 @@ class Education extends Model
     protected $fillable=[
         'title',
         'description',
-        'startDate',
-        'endDate',
+        'start_date',
+        'end_date',
         'institution',
         'city',
         'freelancer_id'
