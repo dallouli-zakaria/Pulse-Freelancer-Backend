@@ -85,7 +85,7 @@
                         <p>Bonjour {{ $clientName }},</p>
                         <p>Nous sommes heureux de vous informer qu'un nouveau candidat a postulé pour le post "<strong>{{ $postTitle }}</strong>".</p>
                         <p>Vous pouvez consulter les détails de la candidature en cliquant sur le bouton ci-dessous :</p>
-                        <a href="{{ $url/pulse/client-profile/client-offers-open }}">Voir le post</a>
+                        <a href="{{ $url }}/pulse/client-profile/client-offers-open">Voir le post</a>
                         <p>Merci d'utiliser notre application !</p>
                     </div>
 
