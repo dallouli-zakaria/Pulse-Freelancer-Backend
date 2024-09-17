@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Client;
+use App\Models\ClientContract;
 use App\Models\Contract;
-use App\Models\Freelancers;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ContractController extends Controller
+class ClientContractController extends Controller
 {
     public function index()
     {
         try {
-            $contracts = Contract::orderBy('created_at', 'DESC')->get();
+            $contracts = ClientContract::orderBy('created_at', 'DESC')->get();
             return response()->json($contracts);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch contracts.'], 500);
@@ -28,7 +27,7 @@ class ContractController extends Controller
             $page = $request->query('page', 1);
             $perPage = 8;
     
-            $contracts = Contract::orderBy('created_at', 'DESC')
+            $contracts = ClientContract::orderBy('created_at', 'DESC')
                                  ->paginate($perPage);
     
             return response()->json($contracts);
@@ -47,19 +46,40 @@ class ContractController extends Controller
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
                 'project_description' => 'required|string',
+                'client_id' => 'required|integer',
             ]);
     
             // Rename keys to match your database columns
             $contractData = [
                 'title' => $validatedData['title'],
                 'start_date' => Carbon::parse($validatedData['start_date']),
-                'end_date' => Carbon::parse($validatedData['end_date']),
+                'end_date' => Carbon::parse($validatedData['end_date']), 
                 'project_description' => $validatedData['project_description'],
-
             ];
     
-            $contract = Contract::create($contractData);
+            $contract = Contract::create(attributes: $contractData);
     
+            // Create ClientContract entry with freelancer_id and contract_id
+            ClientContract::create(attributes: [
+                'client_id' => $validatedData['client_id'],
+                'id' => $contract->id,
+            ]);
+    
+            // Retrieve the client by ID
+            $client = User::find($validatedData['client_id']);
+    
+            // Verify that the client exists
+            if ($client) {
+                // Send an email to the client
+                Mail::send('contract-client', [
+                    'contract' => $contract,
+                    'formatted_start_date' => $contract->start_date->format('d/m/Y'),
+                    'formatted_end_date' => $contract->end_date->format('d/m/Y'),
+                ], function ($message) use ($client) {
+                    $message->to($client->email)
+                            ->subject('Nouveau Contrat Créé');
+                });
+            }
     
             return response()->json(['message' => 'Contract created successfully', 'data' => $contract], 201);
         } catch (ValidationException $e) {
@@ -68,11 +88,12 @@ class ContractController extends Controller
             return response()->json(['error' => 'Failed to create contract. ' . $e->getMessage()], 500);
         }
     }
+    
 
     public function show($id)
     {
         try {
-            $contract = Contract::findOrFail($id);
+            $contract = ClientContract::findOrFail($id);
             return response()->json(['data' => $contract]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Contract not found.'], 404);
@@ -83,13 +104,11 @@ class ContractController extends Controller
 {
     try {
         $validatedData = $request->validate([
-            'title' => 'required|string',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'project_description' => 'required|string',
+            'client_Id' => 'required|integer',
+
         ]);
 
-        $contract = Contract::findOrFail($id);
+        $contract = ClientContract::findOrFail($id);
 
         $contract->update($validatedData);
 
@@ -107,43 +126,11 @@ class ContractController extends Controller
     public function destroy($id)
     {
         try {
-            $contract = Contract::findOrFail($id);
+            $contract = ClientContract::findOrFail($id);
             $contract->delete();
             return response()->json(['message' => 'Contract deleted successfully']);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to delete contract.'], 500);
         }
-    }
-
-
-        // Show contracts by freelancer_id
-        public function showByFreelancer($freelancer_id)
-        {
-            try {
-                $contracts = Contract::where('freelancer_id', $freelancer_id)->orderBy('created_at', 'DESC')->get();
-                return response()->json($contracts);
-            } catch (\Exception $e) {
-                return response()->json(['error' => 'Failed to fetch contracts for the freelancer.'], 500);
-            }
-        }
-    
-        // Show contracts by client_id
-        public function showByClient($client_id)
-        {
-            try {
-                $contracts = Contract::where('client_id', $client_id)->orderBy('created_at', 'DESC')->get();
-                return response()->json($contracts);
-            } catch (\Exception $e) {
-                return response()->json(['error' => 'Failed to fetch contracts for the client.'], 500);
-            }
-        }   
-
-
-
-
-    //counte contract
-    public function count(){
-        $contract=Contract::count();
-        return response()->json($contract);
     }
 }

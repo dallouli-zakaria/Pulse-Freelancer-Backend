@@ -86,7 +86,7 @@
                         <p>{{ $messageContent }}</p>
                         <p>Vous pouvez consulter plus de détails en cliquant sur le bouton ci-dessous :</p>
                         <a href="{{ $url }}">Voir les détails</a>
-                        <p>Merci d'utiliser notre application !</p>
+                        <p>Merci d'avoir choisi PULSE.FREELANCER  !</p>
                     </div>
 
                     <!-- Footer -->

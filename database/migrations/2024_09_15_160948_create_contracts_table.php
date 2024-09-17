@@ -17,8 +17,6 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->text('project_description');
-            $table->foreignId('freelancer_id')->constrained('freelancers')->cascadeOnDelete();
-            $table->foreignId('client_id')->constrained('clients')->cascadeOnDelete();
             $table->timestamps();
         });
     }
