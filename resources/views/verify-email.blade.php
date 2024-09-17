@@ -56,7 +56,7 @@
         })();
 
         function redirectToLogin() {
-            window.location.href = "https://pulse-freelancer.vercel.app/login";
+            window.location.href = "https://pulse-freelancer.vercel.app/#/login";
         }
     </script>
 </body>

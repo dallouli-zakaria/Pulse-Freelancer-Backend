@@ -15,8 +15,8 @@ class Expericence extends Model
         'companyName',
         'country',
         'city',
-        'start_date',
-        'end_date',
+        'startDate',
+        'endDate',
         'description',
         'freelancer_id'
     ];

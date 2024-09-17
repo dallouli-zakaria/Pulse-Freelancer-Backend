@@ -28,8 +28,8 @@ class ExpericenceController extends Controller
                 'companyName' => 'required|string',
                 'country' => 'required|string',
                 'city' => 'required|string',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date',
+                'startDate' => 'required|date',
+                'endDate' => 'required|date',
                 'description' => 'required|string',
                 'freelancer_id'=>'required|numeric'
             ]);
@@ -61,8 +61,8 @@ class ExpericenceController extends Controller
                 'companyName' => 'required|string',
                 'country' => 'required|string',
                 'city' => 'required|string',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date',
+                'startDate' => 'required|date',
+                'endDate' => 'required|date',
                 'description' => 'required|string'
             ]);
 
