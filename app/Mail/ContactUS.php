@@ -53,7 +53,7 @@ class ContactUS extends Mailable
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'emailSender' => $this->emailSender,
-            'userMessage' => $this->userMessage, // Renommé ici
+            'userMessage' => $this->userMessage, 
       ]
         );
     }
