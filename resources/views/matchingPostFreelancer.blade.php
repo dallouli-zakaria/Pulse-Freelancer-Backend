@@ -86,7 +86,7 @@
                         <p>Nous avons trouvé une offre qui correspond à votre profil pour le post "<strong>{{ $title }}</strong>".</p>
                         <p>Vous pouvez consulter les détails de l'offre en cliquant sur le bouton ci-dessous :</p>
                         <a href="{{ $url }}">Voir l'offre</a>
-                        <p>Merci d'utiliser notre application !</p>
+                        <p>Merci d'avoir choisi PULSE.FREELANCER  !</p>
                     </div>
 
                     <!-- Footer -->

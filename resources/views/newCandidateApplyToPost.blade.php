@@ -86,7 +86,7 @@
                         <p>Nous sommes heureux de vous informer qu'un nouveau candidat a postulé pour le post "<strong>{{ $postTitle }}</strong>".</p>
                         <p>Vous pouvez consulter les détails de la candidature en cliquant sur le bouton ci-dessous :</p>
                         <a href="{{ $url }}">Voir le post</a>
-                        <p>Merci d'utiliser notre application !</p>
+                        <p>Merci d'avoir choisi PULSE.FREELANCER  !</p>
                     </div>
 
                     <!-- Footer -->

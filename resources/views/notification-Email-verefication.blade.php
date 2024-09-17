@@ -88,7 +88,7 @@
 
                     <!-- Footer -->
                     <div class="email-footer">
-                        <p>Merci d'utiliser notre application !</p>
+                        <p>Merci d'avoir choisi PULSE.FREELANCER  !</p>
                         <p>Cordialement,<br>L'équipe PULSE.freelancer</p>
                     </div>
                 </div>

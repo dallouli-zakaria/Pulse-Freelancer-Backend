@@ -78,7 +78,7 @@
     
                     <!-- Footer -->
                     <div class="email-footer">
-                        <p>Merci d'utiliser notre application !</p>
+                        <p>Merci d'avoir choisi PULSE.FREELANCER  !</p>
                         <p>&copy; 2024 PULSE.freelancer.</p>
                     </div>
                 </div>
